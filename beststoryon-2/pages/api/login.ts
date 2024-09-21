@@ -19,7 +19,7 @@ export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  return new Promise((resolve) => {
+  return new Promise<void>((resolve) => {
     if (req.method !== "POST") {
       return res.status(405).json({ message: "Method Not Allowed" });
     }
@@ -52,7 +52,7 @@ export default function handler(
             .json({ message: "Something went wrong" });
         }
 
-        resolve(true);
+        resolve();
       });
     };
 

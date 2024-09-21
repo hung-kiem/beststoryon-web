@@ -15,7 +15,7 @@ export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<unknown>
 ) {
-  return new Promise((resolve) => {
+  return new Promise<void>((resolve) => {
     // convert cookie to token
     console.log("in here");
     const cookies = new Cookies(req, res);
@@ -37,7 +37,7 @@ export default function handler(
     });
 
     proxy.once("proxyRes", () => {
-      resolve(true);
+      resolve();
     });
   });
 }
