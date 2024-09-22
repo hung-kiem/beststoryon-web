@@ -31,16 +31,24 @@ export default function PostDetail(props: Post) {
 
 export const getStaticPaths: GetStaticPaths = async () => {
   console.log("\nGET STATIC PATH");
-  const res = await loadPosts();
-  const posts = res.data;
+  try {
+    const res = await loadPosts();
+    const posts = res.data;
 
-  const paths = posts.map((post: Post) => ({
-    params: { postId: `${post.id}` },
-  }));
-  return {
-    paths,
-    fallback: true,
-  };
+    const paths = posts.map((post: Post) => ({
+      params: { postId: `${post.id}` },
+    }));
+    return {
+      paths,
+      fallback: true,
+    };
+  } catch (error) {
+    console.error("Error in getStaticPaths:", error);
+    return {
+      paths: [],
+      fallback: true,
+    };
+  }
 };
 
 export const getStaticProps: GetStaticProps = async (
@@ -49,9 +57,14 @@ export const getStaticProps: GetStaticProps = async (
   console.log("\nGET STATIC PROPS " + context.params?.postId);
   const postId = context.params?.postId as string;
   if (!postId) return { notFound: true };
-  const post = await loadPostDetail(postId);
-  return {
-    props: post,
-    revalidate: 5,
-  };
+  try {
+    const post = await loadPostDetail(postId);
+    return {
+      props: post,
+      revalidate: 5,
+    };
+  } catch (error) {
+    console.error("Error in getStaticProps:", error);
+    return { notFound: true };
+  }
 };

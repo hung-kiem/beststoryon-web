@@ -1,15 +1,25 @@
+import axios from "axios";
+
 export async function loadPosts() {
-  const response = await fetch("http://localhost:3000/api/posts");
-  if (!response.ok) {
-    throw new Error("Network response was not ok");
+  try {
+    const response = await axios.get(
+      "https://js-post-api.herokuapp.com/api/posts"
+    );
+    return response;
+  } catch (error) {
+    console.error("Error loading posts:", error);
+    throw error;
   }
-  const data = await response.json();
-  return data;
 }
 
-export async function loadPostDetail(id: string) {
-  const res = await fetch(`https://js-post-api.herokuapp.com/api/posts/${id}`);
-  const posts = await res.json();
-
-  return posts;
+export async function loadPostDetail(postId: string) {
+  try {
+    const response = await axios.get(
+      `https://js-post-api.herokuapp.com/api/posts/${postId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error loading post detail:", error);
+    throw error;
+  }
 }

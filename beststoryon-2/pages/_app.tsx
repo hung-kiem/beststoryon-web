@@ -3,20 +3,34 @@ import { EmptyLayout } from "@/components/layout";
 import { AppPropsWithLayout } from "@/models";
 import "@/styles/globals.css";
 import { SWRConfig } from "swr";
+import { createEmotionCache, theme } from "@utils/index";
+import { CacheProvider, ThemeProvider } from "@emotion/react";
+import { CssBaseline } from "@mui/material";
 
-export default function App({ Component, pageProps }: AppPropsWithLayout) {
+const clientSideEmotionCache = createEmotionCache();
+
+export default function App({
+  Component,
+  pageProps,
+  emotionCache = clientSideEmotionCache,
+}: AppPropsWithLayout) {
   const Layout = Component.Layout ? Component.Layout : EmptyLayout;
 
   return (
-    <SWRConfig
-      value={{
-        fetcher: (url) => axiosClient.get(url),
-        shouldRetryOnError: false,
-      }}
-    >
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
-    </SWRConfig>
+    <CacheProvider value={emotionCache}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <SWRConfig
+          value={{
+            fetcher: (url) => axiosClient.get(url),
+            shouldRetryOnError: false,
+          }}
+        >
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </SWRConfig>
+      </ThemeProvider>
+    </CacheProvider>
   );
 }
