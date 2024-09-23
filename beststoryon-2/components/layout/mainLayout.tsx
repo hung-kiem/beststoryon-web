@@ -13,12 +13,7 @@ export function MainLayout({ children }: LayoutProps) {
                 component='main'
                 flexGrow={1}
             >
-                <Container
-                    maxWidth='sm'
-                    sx={{ bgcolor: 'primary.main' }}
-                >
-                    {children}
-                </Container>
+                <Container maxWidth='sm'>{children}</Container>
             </Box>
             <Footer />
         </Stack>
