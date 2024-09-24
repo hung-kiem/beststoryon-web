@@ -5,6 +5,7 @@ import { ROUTE_LIST } from './routes';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import clsx from 'clsx';
+import ThemeToggle from './ThemeToggle';
 
 export function HeaderDesktop() {
     const router = useRouter();
@@ -38,6 +39,7 @@ export function HeaderDesktop() {
                         </Link>
                     ))}
                 </Stack>
+                <ThemeToggle />
             </Container>
         </Box>
     );
