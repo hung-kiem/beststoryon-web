@@ -47,6 +47,7 @@ export function RecentPost() {
                     <Link
                         passHref
                         href='/categories'
+                        legacyBehavior
                     >
                         <MuiLink>View all</MuiLink>
                     </Link>

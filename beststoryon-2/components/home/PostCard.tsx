@@ -10,7 +10,6 @@ export function PostCard({ post }: PostCardProps) {
     if (!post) {
         return null;
     }
-    console.log(post);
     return (
         <Card>
             <CardContent>

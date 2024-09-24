@@ -1,39 +1,39 @@
 {
-  "name": "beststoryon-2",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "@emotion/cache": "^11.13.1",
-    "@emotion/react": "^11.13.3",
-    "@emotion/server": "^11.11.0",
-    "@emotion/styled": "^11.13.0",
-    "@mui/icons-material": "^6.1.1",
-    "@mui/material": "^6.1.1",
-    "@mui/material-nextjs": "^6.1.1",
-    "axios": "^1.7.7",
-    "clsx": "^2.1.1",
-    "cookies": "^0.9.1",
-    "http-proxy": "^1.18.1",
-    "next": "14.2.11",
-    "react": "^18",
-    "react-dom": "^18",
-    "swr": "^2.2.5"
-  },
-  "devDependencies": {
-    "@types/axios": "^0.14.0",
-    "@types/cookies": "^0.9.0",
-    "@types/http-proxy": "^1.17.15",
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.11",
-    "typescript": "^5"
-  }
+    "name": "beststoryon-2",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint"
+    },
+    "dependencies": {
+        "@emotion/cache": "^11.13.1",
+        "@emotion/react": "^11.13.3",
+        "@emotion/server": "^11.11.0",
+        "@emotion/styled": "^11.13.0",
+        "@mui/icons-material": "^6.1.1",
+        "@mui/material": "^6.1.1",
+        "@mui/material-nextjs": "^6.1.1",
+        "axios": "^1.7.7",
+        "clsx": "^2.1.1",
+        "cookies": "^0.9.1",
+        "http-proxy": "^1.18.1",
+        "next": "14.2.11",
+        "react": "^18",
+        "react-dom": "^18",
+        "swr": "^2.2.5"
+    },
+    "devDependencies": {
+        "@types/axios": "^0.14.0",
+        "@types/cookies": "^0.9.0",
+        "@types/http-proxy": "^1.17.15",
+        "@types/node": "^20",
+        "@types/react": "^18",
+        "@types/react-dom": "^18",
+        "eslint": "^8",
+        "eslint-config-next": "14.2.11",
+        "typescript": "^5"
+    }
 }

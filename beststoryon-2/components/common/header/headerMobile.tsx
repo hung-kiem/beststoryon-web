@@ -6,7 +6,7 @@ import { ROUTE_LIST } from './routes';
 import Link from 'next/link';
 import clsx from 'clsx';
 import { useRouter } from 'next/router';
-import MenuIcon from '@mui/icons-material/Menu';
+// import MenuIcon from '@mui/icons-material/Menu';
 
 export function HeaderMobile() {
     const router = useRouter();
@@ -24,9 +24,9 @@ export function HeaderMobile() {
             }}
         >
             <Container sx={{ mt: 1 }}>
-                <MenuIcon onClick={toggleDrawer()} />
+                {/* <MenuIcon onClick={toggleDrawer()} /> */}
                 <SwipeableDrawer
-                    anchor={'left'}
+                    anchor={'right'}
                     open={open}
                     onClose={toggleDrawer()}
                     onOpen={toggleDrawer()}
