@@ -1,24 +1,20 @@
-import { useThemeContext } from '@context/theme-context';
-import DarkModeIcon from '@mui/icons-material/DarkMode';
-import LightModeIcon from '@mui/icons-material/LightMode';
-import { Fragment } from 'react';
+import { useThemeContext } from "@context/theme-context";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import { Fragment } from "react";
 
 const ThemeToggle = () => {
-    const { mode, toggleTheme } = useThemeContext();
+  const { mode, toggleTheme } = useThemeContext();
 
-    return (
-        // <Button onClick={toggleTheme}>
-        //     Switch to {mode === 'light' ? 'dark' : 'light'} mode
-        // </Button>
-
-        <Fragment>
-            {mode === 'light' ? (
-                <DarkModeIcon onClick={toggleTheme} />
-            ) : (
-                <LightModeIcon onClick={toggleTheme} />
-            )}
-        </Fragment>
-    );
+  return (
+    <Fragment>
+      {mode === "light" ? (
+        <DarkModeIcon onClick={toggleTheme} fontSize="medium" />
+      ) : (
+        <LightModeIcon onClick={toggleTheme} fontSize="medium" />
+      )}
+    </Fragment>
+  );
 };
 
 export default ThemeToggle;
