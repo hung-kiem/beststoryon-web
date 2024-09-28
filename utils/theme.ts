@@ -8,12 +8,18 @@ export let lightTheme = createTheme({
   },
   palette: {
     mode: "light",
+    background: {
+      default: "#EDF7FA",
+      paper: "#1E90FF",
+    },
     primary: {
       main: "#FF6464",
     },
     secondary: {
       light: "#EDF7FA",
       main: "#00A8CC",
+      dark: "#ba000d",
+      contrastText: "#FFFFFF",
     },
     error: {
       main: red.A400,
