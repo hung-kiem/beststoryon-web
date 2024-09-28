@@ -7,11 +7,11 @@ import {
 } from "@mui/material";
 import * as React from "react";
 import Link from "next/link";
-import TrendingUpIcon from "@mui/icons-material/TrendingUp";
+import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 import { NovelCard } from "./NovelCard";
 import Grid from "@mui/material/Grid2";
 
-export function TrendingNovel() {
+export function HotNovel() {
   return (
     <Box component="section" bgcolor={"background.default"} py={4}>
       <Container>
@@ -22,9 +22,9 @@ export function TrendingNovel() {
           alignItems="center"
         >
           <Stack direction="row" spacing={1} alignItems="center">
-            <TrendingUpIcon />
+            <LocalFireDepartmentIcon />
             <Typography variant="h4" fontWeight="bold">
-              Trending
+              Hot
             </Typography>
           </Stack>
           <Link passHref href="/categories" legacyBehavior>

@@ -1,10 +1,5 @@
 import { Seo } from "@/components/common";
-import {
-  HeroSection,
-  FeaturedWork,
-  RecentPost,
-  TrendingNovel,
-} from "@/components/home";
+import { NewRelease, HotNovel, TrendingNovel } from "@/components/home";
 import { MainLayout } from "@/components/layout";
 import { NextPageWithLayout } from "@/models";
 import { Box } from "@mui/material";
@@ -21,7 +16,8 @@ const Home: NextPageWithLayout = () => {
         }}
       />
       <TrendingNovel />
-      {/* <RecentPost /> */}
+      <NewRelease />
+      <HotNovel />
     </Box>
   );
 };
