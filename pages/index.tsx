@@ -1,5 +1,11 @@
 import { Seo } from "@/components/common";
-import { NewRelease, HotNovel, TrendingNovel, Banner } from "@/components/home";
+import {
+  NewRelease,
+  HotNovel,
+  TrendingNovel,
+  Banner,
+  RecommendForYou,
+} from "@/components/home";
 import { MainLayout } from "@/components/layout";
 import { NextPageWithLayout } from "@/models";
 import { Box } from "@mui/material";
@@ -20,6 +26,7 @@ const Home: NextPageWithLayout = () => {
       <NewRelease />
       <HotNovel />
       <Banner />
+      <RecommendForYou />
     </Box>
   );
 };

@@ -1,6 +1,5 @@
 import { Box, Stack, Typography, Card, CardMedia } from "@mui/material";
 import * as React from "react";
-import Image from "next/image";
 import ImportContactsIcon from "@mui/icons-material/ImportContacts";
 
 export function ChapterRelease() {
