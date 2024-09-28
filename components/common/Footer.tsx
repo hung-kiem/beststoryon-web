@@ -1,5 +1,4 @@
-import { Facebook, Instagram, Twitter, LinkedIn } from "@mui/icons-material";
-import { Container, Icon, Stack, Typography } from "@mui/material";
+import { Container, Stack, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
@@ -7,33 +6,10 @@ import EmailIcon from "@mui/icons-material/Email";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 
 export function Footer() {
-  const socialLinks = [
-    {
-      name: "Twitter",
-      url: "https://twitter.com/",
-      icon: Twitter,
-    },
-    {
-      name: "Facebook",
-      url: "https://www.facebook.com/",
-      icon: Facebook,
-    },
-    {
-      name: "Instagram",
-      url: "https://www.instagram.com/",
-      icon: Instagram,
-    },
-    {
-      name: "LinkedIn",
-      url: "https://www.linkedin.com/",
-      icon: LinkedIn,
-    },
-  ];
-
   return (
     <Box
       component="footer"
-      py={2}
+      py={5}
       textAlign="center"
       sx={{
         backgroundColor: "background.paper",
@@ -41,7 +17,7 @@ export function Footer() {
     >
       <Container>
         <Stack
-          direction="row"
+          direction={["column", "row"]}
           sx={{
             color: "#FFFFFF",
           }}
@@ -58,56 +34,85 @@ export function Footer() {
             </Typography>
             <Stack direction="row" spacing={1}>
               <LocalPhoneIcon />
-              <Typography variant="body2">+91 1234567890</Typography>
+              <Typography fontSize="small">0123456789</Typography>
             </Stack>
             <Stack direction="row" spacing={1}>
               <EmailIcon />
-              <Typography variant="body2">abc@gmail.com</Typography>
+              <Typography fontSize="small">example@gmail.com</Typography>
             </Stack>
             <Stack direction="row" spacing={1}>
               <LocationOnIcon />
-              <Typography variant="body2">Hanoi, Vietnam</Typography>
+              <Typography fontSize="small">
+                1234 Đường 567 phường 789 quận 12
+              </Typography>
             </Stack>
           </Stack>
-          <Stack direction="row" flex={1}>
-            <Stack direction="row" spacing={1}>
-              <Box
-                alignItems="center"
-                justifyContent="start"
-                sx={{ backgroundColor: "violet" }}
+          <Stack
+            direction={{ sx: "column", md: "row" }}
+            flex={1}
+            mt={{ xs: 4, sm: 0, md: 2 }}
+            spacing={4}
+          >
+            <Stack
+              direction="row"
+              spacing={4}
+              justifyContent={["space-between", "flex-start"]}
+            >
+              <Stack
+                direction="column"
+                textAlign="start"
+                spacing={1}
+                width={112}
               >
-                <Typography fontWeight="bold">BestStoryOn</Typography>
-                <Typography variant="body2">Privacy Policy</Typography>
-                <Typography variant="body2">Terms of Service</Typography>
-                <Typography variant="body2">DMCA Notices</Typography>
-              </Box>
-              <Box sx={{ backgroundColor: "red" }}>
-                <Typography fontWeight="bold">Contact Us</Typography>
-                <Typography variant="body2">Facebook</Typography>
-                <Typography variant="body2">Instagram</Typography>
-                <Typography variant="body2">Linkedin</Typography>
-              </Box>
-            </Stack>
-            <Box justifyContent="start" sx={{ backgroundColor: "green" }}>
-              <Typography fontWeight="bold">Tags</Typography>
-              <Stack direction="row" spacing={1}>
-                <Box>
-                  <Typography>Novel Ranking</Typography>
-                  <Typography>Latest Chapters</Typography>
-                  <Typography>Latest Novels</Typography>
-                </Box>
-                <Box>
-                  <Typography>Romance</Typography>
-                  <Typography>Fantasy</Typography>
-                  <Typography>Sci-fi</Typography>
-                </Box>
-                <Box>
-                  <Typography>Slice of Life</Typography>
-                  <Typography>Supernatural</Typography>
-                  <Typography>Video Games</Typography>
-                </Box>
+                <Typography fontWeight="bold" variant="body1">
+                  BestStoryOn
+                </Typography>
+                <Typography variant="caption">Privacy Policy</Typography>
+                <Typography variant="caption">Terms of Service</Typography>
+                <Typography variant="caption">DMCA Notices</Typography>
               </Stack>
-            </Box>
+              <Stack
+                direction="column"
+                textAlign="start"
+                width={88}
+                spacing={1}
+              >
+                <Typography fontWeight="bold" variant="body1">
+                  Contact Us
+                </Typography>
+                <Typography variant="caption">Facebook</Typography>
+                <Typography variant="caption">Instagram</Typography>
+                <Typography variant="caption">Linkedin</Typography>
+              </Stack>
+            </Stack>
+            <Stack
+              direction="column"
+              textAlign="start"
+              width={{ sm: "100%", md: 280 }}
+              spacing={1}
+              mt={{ xs: 4, md: 0 }}
+            >
+              <Typography fontWeight="bold" variant="body1">
+                Tags
+              </Typography>
+              <Stack direction="row" spacing={1} justifyContent="space-between">
+                <Stack direction="column" spacing={1}>
+                  <Typography variant="caption">Novel Ranking</Typography>
+                  <Typography variant="caption">Latest Chapters</Typography>
+                  <Typography variant="caption">Latest Novels</Typography>
+                </Stack>
+                <Stack direction="column" spacing={1}>
+                  <Typography variant="caption">Romance</Typography>
+                  <Typography variant="caption">Fantasy</Typography>
+                  <Typography variant="caption">Sci-fi</Typography>
+                </Stack>
+                <Stack direction="column" spacing={1}>
+                  <Typography variant="caption">Slice of Life</Typography>
+                  <Typography variant="caption">Supernatural</Typography>
+                  <Typography variant="caption">Video Games</Typography>
+                </Stack>
+              </Stack>
+            </Stack>
           </Stack>
         </Stack>
       </Container>
