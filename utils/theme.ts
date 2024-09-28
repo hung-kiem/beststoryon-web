@@ -9,7 +9,7 @@ export let lightTheme = createTheme({
   palette: {
     mode: "light",
     background: {
-      default: "#EDF7FA",
+      default: "#FFFFFF",
       paper: "#1E90FF",
     },
     primary: {
