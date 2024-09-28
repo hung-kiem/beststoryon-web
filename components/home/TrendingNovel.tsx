@@ -23,9 +23,10 @@ export function TrendingNovel() {
         >
           <Stack direction="row" spacing={1} alignItems="center">
             <TrendingUpIcon />
-            <Typography variant="h5">Trending</Typography>
+            <Typography variant="h4" fontWeight="bold">
+              Trending
+            </Typography>
           </Stack>
-
           <Link passHref href="/categories" legacyBehavior>
             <MuiLink>View all</MuiLink>
           </Link>
