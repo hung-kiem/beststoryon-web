@@ -13,7 +13,7 @@ export let lightTheme = createTheme({
       paper: "#1E90FF",
     },
     primary: {
-      main: "#FF6464",
+      main: "#5856D6",
     },
     secondary: {
       light: "#EDF7FA",
@@ -32,21 +32,7 @@ export let lightTheme = createTheme({
   components: {
     MuiContainer: {
       defaultProps: {
-        maxWidth: "md",
-      },
-      styleOverrides: {
-        maxWidthSm: {
-          maxWidth: "680px",
-          "@media (min-width: 600px)": {
-            maxWidth: "680px",
-          },
-        },
-        maxWidthMd: {
-          maxWidth: "860px",
-          "@media (min-width: 900px)": {
-            maxWidth: "860px",
-          },
-        },
+        maxWidth: "lg",
       },
     },
     MuiLink: {
@@ -58,7 +44,7 @@ export let lightTheme = createTheme({
           color: "black",
 
           "&:hover, &.active": {
-            color: "#FF6464",
+            color: "#1E90FF",
           },
         },
       },
@@ -101,6 +87,10 @@ export let darkTheme = createTheme({
   },
   palette: {
     mode: "dark",
+    background: {
+      default: "#0F172A",
+      paper: "#1E90FF",
+    },
     primary: {
       main: "#CC1100",
     },
@@ -118,23 +108,7 @@ export let darkTheme = createTheme({
   components: {
     MuiContainer: {
       defaultProps: {
-        maxWidth: "md",
-      },
-      styleOverrides: {
-        maxWidthSm: {
-          maxWidth: "680px",
-
-          "@media (min-width: 600px)": {
-            maxWidth: "680px",
-          },
-        },
-        maxWidthMd: {
-          maxWidth: "860px",
-
-          "@media (min-width: 900px)": {
-            maxWidth: "860px",
-          },
-        },
+        maxWidth: "lg",
       },
     },
     MuiLink: {
@@ -143,10 +117,10 @@ export let darkTheme = createTheme({
       },
       styleOverrides: {
         root: {
-          color: "black",
+          color: "#FFFFFF",
 
           "&:hover, &.active": {
-            color: "#FF6464",
+            color: "#1E90FF",
           },
         },
       },
