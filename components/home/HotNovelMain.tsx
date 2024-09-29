@@ -114,7 +114,12 @@ export function HotNovelMain() {
                   >
                     Hot
                   </Typography>
-                  <LocalFireDepartmentIcon fontSize="small" />
+                  <LocalFireDepartmentIcon
+                    fontSize="small"
+                    sx={{
+                      color: "secondary.contrastText",
+                    }}
+                  />
                 </Stack>
                 <Stack
                   direction="column"

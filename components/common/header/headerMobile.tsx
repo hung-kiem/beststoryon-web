@@ -67,6 +67,7 @@ export function HeaderMobile() {
             open={open}
             onClose={toggleDrawer()}
             onOpen={toggleDrawer()}
+            color="pink"
           >
             {ROUTE_LIST.map((route) => (
               <Link key={route.path} href={route.path} passHref legacyBehavior>
@@ -76,6 +77,7 @@ export function HeaderMobile() {
                   className={clsx({
                     active: route.path === router.pathname,
                   })}
+                  color="text.primary"
                 >
                   {route.label}
                 </MuiLink>
