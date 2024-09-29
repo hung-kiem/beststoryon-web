@@ -1,11 +1,27 @@
-import { Box } from '@mui/material';
-import React from 'react';
-import { MainLayout } from '@/components/layout';
+import React from "react";
+import { MainLayout } from "@/components/layout";
+import { NextPageWithLayout } from "@/models";
+import { Box } from "@mui/material";
+import { Seo } from "@/components/common";
+import { CategoryPage } from "@/components/category";
 
-function CategoriesPage() {
-    return <Box>Categories Page</Box>;
-}
+const Category: NextPageWithLayout = () => {
+  return (
+    <Box>
+      <Seo
+        data={{
+          url: "https://beststoryon.com/",
+          title: "BestStoryOn",
+          description:
+            "BestStoryOn is a blog website that provides quality content on various topics.",
+          thumbnailUrl: "https://beststoryon.com/thumbnail.png",
+        }}
+      />
+      <CategoryPage />
+    </Box>
+  );
+};
 
-CategoriesPage.Layout = MainLayout;
+Category.Layout = MainLayout;
 
-export default CategoriesPage;
+export default Category;
