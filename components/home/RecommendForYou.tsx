@@ -30,7 +30,7 @@ export function RecommendForYou() {
               Recommend
             </Typography>
           </Stack>
-          <Link passHref href="/categories" legacyBehavior>
+          <Link passHref href="/recommend" legacyBehavior>
             <MuiLink color="background.paper">View all</MuiLink>
           </Link>
         </Stack>

@@ -44,7 +44,7 @@ export let lightTheme = createTheme({
           color: "black",
 
           "&:hover, &.active": {
-            color: "#EDF7FA",
+            color: "#1E90FF",
           },
         },
       },
@@ -123,7 +123,7 @@ export let darkTheme = createTheme({
           color: "#FFFFFF",
 
           "&:hover, &.active": {
-            color: "#0F172A",
+            color: "#1E90FF",
           },
         },
       },

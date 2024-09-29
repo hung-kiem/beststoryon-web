@@ -27,7 +27,7 @@ export function HotNovel() {
               Hot
             </Typography>
           </Stack>
-          <Link passHref href="/categories" legacyBehavior>
+          <Link passHref href="/hot" legacyBehavior>
             <MuiLink color="background.paper">View all</MuiLink>
           </Link>
         </Stack>

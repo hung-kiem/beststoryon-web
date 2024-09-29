@@ -8,8 +8,10 @@ import clsx from "clsx";
 import { useRouter } from "next/router";
 import MenuIcon from "@mui/icons-material/Menu";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
+import { useTheme } from "@mui/material/styles";
 
 export function HeaderMobile() {
+  const theme = useTheme();
   const router = useRouter();
   const [open, setOpen] = useState(false);
 
@@ -67,7 +69,12 @@ export function HeaderMobile() {
             open={open}
             onClose={toggleDrawer()}
             onOpen={toggleDrawer()}
-            color="pink"
+            PaperProps={{
+              style: {
+                backgroundColor:
+                  theme.palette.mode === "light" ? "#EDF7FA" : "#0F172A",
+              },
+            }}
           >
             {ROUTE_LIST.map((route) => (
               <Link key={route.path} href={route.path} passHref legacyBehavior>

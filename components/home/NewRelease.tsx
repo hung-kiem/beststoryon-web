@@ -28,7 +28,7 @@ export function NewRelease() {
               New Releases
             </Typography>
           </Stack>
-          <Link passHref href="/categories" legacyBehavior>
+          <Link passHref href="/newRelease" legacyBehavior>
             <MuiLink color="background.paper">View all</MuiLink>
           </Link>
         </Stack>

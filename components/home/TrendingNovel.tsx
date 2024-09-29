@@ -27,7 +27,7 @@ export function TrendingNovel() {
               Trending
             </Typography>
           </Stack>
-          <Link passHref href="/categories" legacyBehavior>
+          <Link passHref href="/trending" legacyBehavior>
             <MuiLink color="background.paper">View all</MuiLink>
           </Link>
         </Stack>
