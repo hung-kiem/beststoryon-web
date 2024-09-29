@@ -6,3 +6,4 @@ export * from "./HotNovel";
 export * from "./NewRelease";
 export * from "./Banner";
 export * from "./RecommendForYou";
+export * from "./HotNovelMain";

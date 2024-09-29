@@ -92,17 +92,20 @@ export let darkTheme = createTheme({
       paper: "#1E90FF",
     },
     primary: {
-      main: "#CC1100",
+      main: "#5856D6",
     },
     secondary: {
       light: "#EDF7FA",
       main: "#00A8CC",
+      dark: "#ba000d",
+      contrastText: "#FFFFFF",
     },
     error: {
       main: red.A400,
     },
     text: {
       primary: "#FFFFFF",
+      secondary: "#757575",
     },
   },
   components: {

@@ -5,6 +5,7 @@ import {
   TrendingNovel,
   Banner,
   RecommendForYou,
+  HotNovelMain,
 } from "@/components/home";
 import { MainLayout } from "@/components/layout";
 import { NextPageWithLayout } from "@/models";
@@ -21,6 +22,7 @@ const Home: NextPageWithLayout = () => {
           thumbnailUrl: "https://beststoryon.com/thumbnail.png",
         }}
       />
+      <HotNovelMain />
       <TrendingNovel />
       <Banner />
       <NewRelease />
