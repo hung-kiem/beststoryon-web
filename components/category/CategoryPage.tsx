@@ -1,10 +1,29 @@
 import { Box, Container, Stack, Typography, Button } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import Grid from "@mui/material/Grid2";
 import { NovelCard } from "./NovelCard";
 import Pagination from "@mui/material/Pagination";
+import useSWR from "swr";
+import { categoryApi } from "@/api-client/category-api";
+import { CategoryButton } from "./CategoryButton";
+
+const MILLISECOND_PER_HOUR = 1000 * 60 * 60;
+const statusArr = ["All", "Ongoing", "Completed"];
+const sortByArr = ["Name", "Views", "Rating"];
 
 export function CategoryPage() {
+  const [category, setCategory] = useState("All");
+  const [status, setStatus] = useState("All");
+  const [sortBy, setSortBy] = useState("Name");
+  const { data: categories } = useSWR(
+    `/category/getList`,
+    categoryApi.getList,
+    {
+      revalidateOnFocus: false,
+      dedupingInterval: MILLISECOND_PER_HOUR,
+    }
+  );
+
   return (
     <Box>
       <Container>
@@ -16,82 +35,23 @@ export function CategoryPage() {
             <Stack direction="row" spacing={1}>
               <Grid container spacing={1}>
                 <Grid>
-                  <Button
-                    variant="contained"
-                    sx={{
-                      backgroundColor: "background.paper",
-                      color: "secondary.contrastText",
-                    }}
-                  >
-                    All
-                  </Button>
+                  <CategoryButton
+                    title="All"
+                    code="All"
+                    isActive={category === "All"}
+                    onClick={setCategory}
+                  />
                 </Grid>
-                <Grid>
-                  <Button
-                    variant="contained"
-                    sx={{
-                      backgroundColor: "background.paper",
-                      color: "secondary.contrastText",
-                    }}
-                  >
-                    All
-                  </Button>
-                </Grid>
-                <Grid>
-                  <Button
-                    variant="contained"
-                    sx={{
-                      backgroundColor: "background.paper",
-                      color: "secondary.contrastText",
-                    }}
-                  >
-                    All
-                  </Button>
-                </Grid>
-                <Grid>
-                  <Button
-                    variant="contained"
-                    sx={{
-                      backgroundColor: "background.paper",
-                      color: "secondary.contrastText",
-                    }}
-                  >
-                    All
-                  </Button>
-                </Grid>
-                <Grid>
-                  <Button
-                    variant="contained"
-                    sx={{
-                      backgroundColor: "background.paper",
-                      color: "secondary.contrastText",
-                    }}
-                  >
-                    All
-                  </Button>
-                </Grid>
-                <Grid>
-                  <Button
-                    variant="contained"
-                    sx={{
-                      backgroundColor: "background.paper",
-                      color: "secondary.contrastText",
-                    }}
-                  >
-                    All
-                  </Button>
-                </Grid>
-                <Grid>
-                  <Button
-                    variant="contained"
-                    sx={{
-                      backgroundColor: "background.paper",
-                      color: "secondary.contrastText",
-                    }}
-                  >
-                    All
-                  </Button>
-                </Grid>
+                {categories?.map((cat) => (
+                  <Grid key={cat.catCode}>
+                    <CategoryButton
+                      title={cat.catName}
+                      code={cat.catCode}
+                      isActive={cat.catCode === category}
+                      onClick={setCategory}
+                    />
+                  </Grid>
+                ))}
               </Grid>
             </Stack>
           </Stack>
@@ -100,33 +60,15 @@ export function CategoryPage() {
               Status
             </Typography>
             <Stack direction="row" spacing={1}>
-              <Button
-                variant="contained"
-                sx={{
-                  backgroundColor: "background.paper",
-                  color: "secondary.contrastText",
-                }}
-              >
-                All
-              </Button>
-              <Button
-                variant="outlined"
-                sx={{
-                  borderColor: "background.paper",
-                  color: "background.paper",
-                }}
-              >
-                Ongoing
-              </Button>
-              <Button
-                variant="outlined"
-                sx={{
-                  borderColor: "background.paper",
-                  color: "background.paper",
-                }}
-              >
-                Completed
-              </Button>
+              {statusArr.map((s) => (
+                <CategoryButton
+                  key={s}
+                  title={s}
+                  code={s}
+                  isActive={s === status}
+                  onClick={setStatus}
+                />
+              ))}
             </Stack>
           </Stack>
           <Stack direction="column" spacing={1}>
@@ -134,33 +76,15 @@ export function CategoryPage() {
               Sort By
             </Typography>
             <Stack direction="row" spacing={1}>
-              <Button
-                variant="contained"
-                sx={{
-                  backgroundColor: "background.paper",
-                  color: "secondary.contrastText",
-                }}
-              >
-                Name
-              </Button>
-              <Button
-                variant="outlined"
-                sx={{
-                  borderColor: "background.paper",
-                  color: "background.paper",
-                }}
-              >
-                Views
-              </Button>
-              <Button
-                variant="outlined"
-                sx={{
-                  borderColor: "background.paper",
-                  color: "background.paper",
-                }}
-              >
-                Rating
-              </Button>
+              {sortByArr.map((s) => (
+                <CategoryButton
+                  key={s}
+                  title={s}
+                  code={s}
+                  isActive={s === sortBy}
+                  onClick={setSortBy}
+                />
+              ))}
             </Stack>
           </Stack>
           <Box sx={{ flexGrow: 1 }}>

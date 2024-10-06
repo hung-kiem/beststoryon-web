@@ -4,8 +4,16 @@ import { NextPageWithLayout } from "@/models";
 import { Box } from "@mui/material";
 import { Seo } from "@/components/common";
 import { CategoryPage } from "@/components/category";
+import useSWR from "swr";
 
+const MILLISECOND_PER_HOUR = 1000 * 60 * 60;
 const Category: NextPageWithLayout = () => {
+  // const { data } = useSWR(`/category/getList`, {
+  //   revalidateOnFocus: false,
+  //   dedupingInterval: MILLISECOND_PER_HOUR,
+  // });
+  // console.log("Category data:", data);
+
   return (
     <Box>
       <Seo
