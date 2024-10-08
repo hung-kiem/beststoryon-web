@@ -6,15 +6,18 @@ import Pagination from "@mui/material/Pagination";
 import useSWR from "swr";
 import { categoryApi } from "@/api-client/category-api";
 import { CategoryButton } from "./CategoryButton";
+import { storyApi } from "@/api-client/story-api";
+import { url } from "inspector";
 
 const MILLISECOND_PER_HOUR = 1000 * 60 * 60;
 const statusArr = ["All", "Ongoing", "Completed"];
-const sortByArr = ["Name", "Views", "Rating"];
+const sortByArr = ["Popular", "New", "Update"];
 
 export function CategoryPage() {
-  const [category, setCategory] = useState("All");
+  const [catCode, setCatCode] = useState("All");
   const [status, setStatus] = useState("All");
-  const [sortBy, setSortBy] = useState("Name");
+  const [sortCondition, setSortCondition] = useState("Popular");
+  const [pageIndex, setPageIndex] = useState(1);
   const { data: categories } = useSWR(
     `/category/getList`,
     categoryApi.getList,
@@ -23,6 +26,29 @@ export function CategoryPage() {
       dedupingInterval: MILLISECOND_PER_HOUR,
     }
   );
+  const { data: stories, error } = useSWR(
+    [`/story/getListByCatId`, catCode, status, sortCondition, pageIndex],
+
+    ([url, catCode, status, sortCondition, pageIndex]) =>
+      storyApi.getListByCatId({
+        catCode,
+        status,
+        sortCondition,
+        pageIndex,
+        pageSize: 2,
+      }),
+    {
+      revalidateOnFocus: false,
+      dedupingInterval: MILLISECOND_PER_HOUR,
+    }
+  );
+
+  const handleChangePageIndex = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPageIndex(value);
+  };
 
   return (
     <Box>
@@ -38,8 +64,8 @@ export function CategoryPage() {
                   <CategoryButton
                     title="All"
                     code="All"
-                    isActive={category === "All"}
-                    onClick={setCategory}
+                    isActive={catCode === "All"}
+                    onClick={setCatCode}
                   />
                 </Grid>
                 {categories?.map((cat) => (
@@ -47,8 +73,8 @@ export function CategoryPage() {
                     <CategoryButton
                       title={cat.catName}
                       code={cat.catCode}
-                      isActive={cat.catCode === category}
-                      onClick={setCategory}
+                      isActive={cat.catCode === catCode}
+                      onClick={setCatCode}
                     />
                   </Grid>
                 ))}
@@ -81,63 +107,41 @@ export function CategoryPage() {
                   key={s}
                   title={s}
                   code={s}
-                  isActive={s === sortBy}
-                  onClick={setSortBy}
+                  isActive={s === sortCondition}
+                  onClick={setSortCondition}
                 />
               ))}
             </Stack>
           </Stack>
           <Box sx={{ flexGrow: 1 }}>
             <Grid container spacing={2}>
-              <Grid size={{ xs: 6, sm: 3, md: 2 }}>
-                <NovelCard />
-              </Grid>
-              <Grid size={{ xs: 6, sm: 3, md: 2 }}>
-                <NovelCard />
-              </Grid>
-              <Grid size={{ xs: 6, sm: 3, md: 2 }}>
-                <NovelCard />
-              </Grid>
-              <Grid size={{ xs: 6, sm: 3, md: 2 }}>
-                <NovelCard />
-              </Grid>
-              <Grid size={{ xs: 6, sm: 3, md: 2 }}>
-                <NovelCard />
-              </Grid>
-              <Grid size={{ xs: 6, sm: 3, md: 2 }}>
-                <NovelCard />
-              </Grid>
-              <Grid size={{ xs: 6, sm: 3, md: 2 }}>
-                <NovelCard />
-              </Grid>
-              <Grid size={{ xs: 6, sm: 3, md: 2 }}>
-                <NovelCard />
-              </Grid>
-              <Grid size={{ xs: 6, sm: 3, md: 2 }}>
-                <NovelCard />
-              </Grid>
-              <Grid size={{ xs: 6, sm: 3, md: 2 }}>
-                <NovelCard />
-              </Grid>
-              <Grid size={{ xs: 6, sm: 3, md: 2 }}>
-                <NovelCard />
-              </Grid>
-              <Grid size={{ xs: 6, sm: 3, md: 2 }}>
-                <NovelCard />
-              </Grid>
+              {stories?.data?.map((story) => (
+                <Grid key={story.storyId} size={{ xs: 6, sm: 3, md: 2 }}>
+                  <NovelCard
+                    storyName={story.storyName}
+                    rating={story.likeCount}
+                    status={story.status}
+                    chapterNumber={story.chapterNumber}
+                  />
+                </Grid>
+              ))}
             </Grid>
           </Box>
-          <Pagination
-            count={20}
-            variant="outlined"
-            shape="rounded"
-            boundaryCount={1}
-            siblingCount={1}
-            sx={{
-              alignSelf: "center",
-              mt: 2,
-            }}
-          />
+          {stories?.totalPage && (
+            <Pagination
+              count={stories.totalPage}
+              variant="outlined"
+              shape="rounded"
+              boundaryCount={1}
+              siblingCount={1}
+              sx={{
+                alignSelf: "center",
+                mt: 2,
+              }}
+              page={pageIndex}
+              onChange={handleChangePageIndex}
+            />
+          )}
         </Stack>
       </Container>
     </Box>

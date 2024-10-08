@@ -20,7 +20,7 @@ export default function handler(
     console.log("in here");
     const cookies = new Cookies(req, res);
     const accessToken = cookies.get("accessToken");
-    console.log("accessToken", accessToken);
+    console.log("payload", req.body);
     if (accessToken) {
       req.headers.Authorization = `Bearer ${accessToken}`;
     }
