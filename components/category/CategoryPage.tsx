@@ -18,6 +18,7 @@ export function CategoryPage() {
   const [status, setStatus] = useState("All");
   const [sortCondition, setSortCondition] = useState("Popular");
   const [pageIndex, setPageIndex] = useState(1);
+  //test commit
   const { data: categories } = useSWR(
     `/category/getList`,
     categoryApi.getList,
