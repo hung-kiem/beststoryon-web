@@ -1,4 +1,4 @@
-import { Box, Container, Stack, Typography, Button } from "@mui/material";
+import { Box, Container, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
 import Grid from "@mui/material/Grid2";
 import { NovelCard } from "./NovelCard";
@@ -18,7 +18,6 @@ export function CategoryPage() {
   const [status, setStatus] = useState("All");
   const [sortCondition, setSortCondition] = useState("Popular");
   const [pageIndex, setPageIndex] = useState(1);
-  //test commit
   const { data: categories } = useSWR(
     `/category/getList`,
     categoryApi.getList,
