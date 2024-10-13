@@ -10,8 +10,17 @@ import Link from "next/link";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import { NovelCard } from "./NovelCard";
 import Grid from "@mui/material/Grid2";
+import { homeApi } from "@/api-client/home-api";
+import useSWR from "swr";
+
+const fetcher = () =>
+  homeApi.getTrendingList({
+    requestId: "1",
+  });
 
 export function TrendingNovel() {
+  const { data: trendingList } = useSWR("/home/getTrendingList", fetcher);
+
   return (
     <Box component="section" bgcolor={"background.default"} py={4}>
       <Container>
@@ -33,42 +42,11 @@ export function TrendingNovel() {
         </Stack>
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={2}>
-            <Grid size={{ xs: 6, sm: 3, md: 2 }}>
-              <NovelCard />
-            </Grid>
-            <Grid size={{ xs: 6, sm: 3, md: 2 }}>
-              <NovelCard />
-            </Grid>
-            <Grid size={{ xs: 6, sm: 3, md: 2 }}>
-              <NovelCard />
-            </Grid>
-            <Grid size={{ xs: 6, sm: 3, md: 2 }}>
-              <NovelCard />
-            </Grid>
-            <Grid size={{ xs: 6, sm: 3, md: 2 }}>
-              <NovelCard />
-            </Grid>
-            <Grid size={{ xs: 6, sm: 3, md: 2 }}>
-              <NovelCard />
-            </Grid>
-            <Grid size={{ xs: 6, sm: 3, md: 2 }}>
-              <NovelCard />
-            </Grid>
-            <Grid size={{ xs: 6, sm: 3, md: 2 }}>
-              <NovelCard />
-            </Grid>
-            <Grid size={{ xs: 6, sm: 3, md: 2 }}>
-              <NovelCard />
-            </Grid>
-            <Grid size={{ xs: 6, sm: 3, md: 2 }}>
-              <NovelCard />
-            </Grid>
-            <Grid size={{ xs: 6, sm: 3, md: 2 }}>
-              <NovelCard />
-            </Grid>
-            <Grid size={{ xs: 6, sm: 3, md: 2 }}>
-              <NovelCard />
-            </Grid>
+            {trendingList?.data?.map((story, index) => (
+              <Grid size={{ xs: 6, sm: 3, md: 2 }}>
+                <NovelCard key={index} story={story} />
+              </Grid>
+            ))}
           </Grid>
         </Box>
       </Container>

@@ -1,7 +1,9 @@
 import {
   GetBannerListResponse,
+  GetHotListResponse,
   GetHotTopListRequest,
   GetHotTopListResponse,
+  GetNewReleaseListResponse,
   GetTrendingListResponse,
 } from "@/models/home";
 import axiosClient from "./axios-client";
@@ -16,14 +18,34 @@ export const homeApi = {
       })
       .then((response) => response.data);
   },
-  getTrendingList(): Promise<GetTrendingListResponse> {
+  getTrendingList(
+    requestData: GetHotTopListRequest
+  ): Promise<GetTrendingListResponse> {
     return axiosClient
-      .get<GetTrendingListResponse>("/home/getTrendingList")
+      .post<GetTrendingListResponse>("/home/getTrendingList", {
+        params: requestData,
+      })
       .then((response) => response.data);
   },
   getBannerList(): Promise<GetBannerListResponse> {
     return axiosClient
       .get<GetBannerListResponse>("/home/getBannerList")
+      .then((response) => response.data);
+  },
+  getNewReleaseList(
+    requestData: GetHotTopListRequest
+  ): Promise<GetNewReleaseListResponse> {
+    return axiosClient
+      .post<GetNewReleaseListResponse>("/home/getNewReleaseList", {
+        params: requestData,
+      })
+      .then((response) => response.data);
+  },
+  getHotList(requestData: GetHotTopListRequest): Promise<GetHotListResponse> {
+    return axiosClient
+      .post<GetHotListResponse>("/home/getHotList", {
+        params: requestData,
+      })
       .then((response) => response.data);
   },
 };

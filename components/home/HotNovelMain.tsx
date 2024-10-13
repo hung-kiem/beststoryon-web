@@ -18,16 +18,12 @@ import { homeApi } from "@/api-client/home-api";
 
 function sanitizeHTML(content: string) {
   return {
-    __html: DOMPurify.sanitize(content), // Làm sạch HTML để tránh các lỗ hổng bảo mật
+    __html: DOMPurify.sanitize(content),
   };
 }
 
 export function StorySummary({ summaryContent }: { summaryContent: string }) {
-  return (
-    <div
-      dangerouslySetInnerHTML={sanitizeHTML(summaryContent)} // Render HTML an toàn
-    />
-  );
+  return <div dangerouslySetInnerHTML={sanitizeHTML(summaryContent)} />;
 }
 
 type ChapterHotProps = {

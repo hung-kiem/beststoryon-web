@@ -11,8 +11,17 @@ import { NovelCard } from "./NovelCard";
 import Grid from "@mui/material/Grid2";
 import VerifiedIcon from "@mui/icons-material/Verified";
 import { ChapterRelease } from "./ChapterRelease";
+import { homeApi } from "@/api-client/home-api";
+import useSWR from "swr";
+
+const fetcher = () =>
+  homeApi.getNewReleaseList({
+    requestId: "1",
+  });
 
 export function NewRelease() {
+  const { data: newReleaseList } = useSWR("/home/getNewReleaseList", fetcher);
+
   return (
     <Box component="section" bgcolor={"background.default"} py={4}>
       <Container>
@@ -47,30 +56,11 @@ export function NewRelease() {
               width: "600px",
             }}
           >
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <ChapterRelease />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <ChapterRelease />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <ChapterRelease />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <ChapterRelease />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <ChapterRelease />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <ChapterRelease />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <ChapterRelease />
-            </Grid>
-            <Grid size={{ xs: 12, sm: 6 }}>
-              <ChapterRelease />
-            </Grid>
+            {newReleaseList?.data?.map((story, index) => (
+              <Grid size={{ xs: 12, sm: 6 }}>
+                <ChapterRelease key={index} story={story} />
+              </Grid>
+            ))}
           </Grid>
         </Box>
       </Container>

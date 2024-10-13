@@ -1,14 +1,23 @@
 import { Banner } from "./banner";
-import { Story } from "./story";
 
-export interface GetHotTopListRequest {}
+export interface GetHotTopListRequest {
+  requestId: string;
+}
 
 export interface GetHotTopListResponse {
   data: StoryHome[];
 }
 
 export interface GetTrendingListResponse {
-  data: Story[];
+  data: StoryHome[];
+}
+
+export interface GetNewReleaseListResponse {
+  data: StoryHome[];
+}
+
+export interface GetHotListResponse {
+  data: StoryHome[];
 }
 
 export interface GetBannerListResponse {

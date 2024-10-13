@@ -2,8 +2,13 @@ import { Stack, Typography, Card, CardMedia } from "@mui/material";
 import * as React from "react";
 import ImportContactsIcon from "@mui/icons-material/ImportContacts";
 import StarIcon from "@mui/icons-material/Star";
+import { StoryHome } from "@/models";
 
-export function NovelCard() {
+interface NovelCardProps {
+  story: StoryHome;
+}
+
+export function NovelCard({ story }: NovelCardProps) {
   return (
     <Stack spacing={1} direction="column" mt={2}>
       <Card
@@ -67,12 +72,23 @@ export function NovelCard() {
           }}
         >
           <Typography variant="caption" color="secondary.contrastText">
-            On going
+            {story?.status}
           </Typography>
         </Stack>
       </Card>
-      <Typography variant="body2" fontWeight="bold" fontSize="medium">
-        Solo Leveling
+      <Typography
+        variant="body2"
+        fontWeight="bold"
+        fontSize="medium"
+        sx={{
+          overflow: "hidden",
+          display: "-webkit-box",
+          WebkitBoxOrient: "vertical",
+          WebkitLineClamp: 2,
+          lineClamp: 2,
+        }}
+      >
+        {story?.storyName}
       </Typography>
       <Stack direction="row" spacing={1} alignItems="center">
         <ImportContactsIcon
@@ -81,7 +97,7 @@ export function NovelCard() {
           }}
         />
         <Typography variant="body2" color="text.secondary" fontSize="small">
-          Number of Chapters
+          {story?.chapterNumber} Chapter
         </Typography>
       </Stack>
     </Stack>
