@@ -1,7 +1,17 @@
 import { Divider, Stack, Typography } from "@mui/material";
 import React from "react";
 
-export function ChapterTitle() {
+interface ChapterTitleProps {
+  chapterNumber: string;
+  title: string;
+  date: string;
+}
+
+export function ChapterTitle({
+  chapterNumber,
+  title,
+  date,
+}: ChapterTitleProps) {
   return (
     <Stack
       direction="row"
@@ -12,13 +22,13 @@ export function ChapterTitle() {
       }}
     >
       <Stack direction="column" spacing={0}>
-        <Typography variant="caption">Chương 1</Typography>
+        <Typography variant="caption">{chapterNumber}</Typography>
         <Typography variant="body1" fontWeight="bold">
-          Whispers of the Ancients
+          {title}
         </Typography>
       </Stack>
       <Typography variant="body2" fontWeight="bold">
-        10 day ago
+        {date}
       </Typography>
     </Stack>
   );

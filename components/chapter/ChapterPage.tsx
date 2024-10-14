@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useThemeContext } from "@context/theme-context";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import HomeIcon from "@mui/icons-material/Home";
 import SettingsIcon from "@mui/icons-material/Settings";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
@@ -22,6 +22,14 @@ import TextDecreaseIcon from "@mui/icons-material/TextDecrease";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import { useTheme } from "@mui/material/styles";
+import {
+  GetChapterByIndexPayload,
+  GetChapterDetailPayload,
+} from "@/models/chapter";
+import { chapterApi, storyApi } from "@/api-client";
+import { useRouter } from "next/router";
+import useSWR from "swr";
+import { GetStoryDetailPayload } from "@/models/story";
 
 const style = {
   position: "absolute" as "absolute",
@@ -34,17 +42,70 @@ const style = {
   p: 4,
 };
 
+const fetcherStory = (url: string, payload: GetStoryDetailPayload) => {
+  return storyApi.getDetail(payload);
+};
+
+const fetchChapterByIndex = (
+  url: string,
+  payload: GetChapterByIndexPayload
+) => {
+  return chapterApi.getByIndex(payload);
+};
+
 export const ChapterPage = () => {
+  const router = useRouter();
+  const { storyId, index } = router.query;
+  console.log("Story id:", storyId);
+  console.log("Index:", index);
   const theme = useTheme();
-  const [chapter, setChapter] = useState("");
   const [open, setOpen] = useState(false);
   const { mode, toggleTheme } = useThemeContext();
+  const [chapterIndex, setChapterIndex] = useState(1);
+
+  const payload: GetChapterByIndexPayload | null = storyId
+    ? {
+        storyId: Array.isArray(storyId) ? storyId[0] : (storyId as string),
+        chapterIndex: chapterIndex,
+      }
+    : null;
+
+  const { data: chapterDetail, error } = useSWR(
+    payload ? ["/chapter/getQuickByIndex", payload] : null,
+    ([url, payload]) => fetchChapterByIndex(url, payload)
+  );
+  console.log("Chapter detail:", chapterDetail);
+
+  const storyPayload: GetStoryDetailPayload = {
+    storyId: Array.isArray(storyId) ? storyId[0] : (storyId as string),
+    pageIndex: 1,
+    pageSize: 5000,
+  };
+
+  const { data: storyDetail } = useSWR(
+    storyPayload ? ["/story/getDetail", storyPayload] : null,
+    ([url, payload]) => fetcherStory(url, payload)
+  );
+  console.log("Story detail:", storyDetail);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const handleChange = (event: SelectChangeEvent) => {
-    setChapter(event.target.value);
+    const newIndex = Number(event.target.value);
+    setChapterIndex(newIndex);
+  };
+
+  const handleNextChapter = () => {
+    if (chapterIndex < (storyDetail?.totalRecord || 1)) {
+      setChapterIndex((prevIndex) => prevIndex + 1);
+    }
+  };
+
+  const handlePrevChapter = () => {
+    if (chapterIndex > 1) {
+      setChapterIndex((prevIndex) => prevIndex - 1);
+    }
   };
 
   return (
@@ -52,7 +113,7 @@ export const ChapterPage = () => {
       <Container>
         <Stack direction="column" spacing={2} alignItems="center" mb={4}>
           <Typography variant="h4" fontWeight="bold">
-            Solo Leveling
+            {chapterDetail?.data?.storyName}
           </Typography>
           <Stack
             direction="row"
@@ -108,6 +169,7 @@ export const ChapterPage = () => {
             </Button>
             <Button
               variant="outlined"
+              onClick={handlePrevChapter}
               startIcon={<ArrowLeftIcon />}
               sx={{
                 color: "secondary.contrastText",
@@ -125,7 +187,7 @@ export const ChapterPage = () => {
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={chapter}
+                value={chapterIndex.toString()}
                 label="Chapter"
                 onChange={handleChange}
                 color="primary"
@@ -147,14 +209,21 @@ export const ChapterPage = () => {
                   },
                 }}
               >
-                <MenuItem value={1}>Chapter 1</MenuItem>
-                <MenuItem value={2}>Chapter 2</MenuItem>
-                <MenuItem value={3}>Chapter 3</MenuItem>
+                {storyDetail?.totalRecord &&
+                  Array.from(
+                    { length: storyDetail.totalRecord },
+                    (_, index) => (
+                      <MenuItem key={index + 1} value={index + 1}>
+                        Chapter {index + 1}
+                      </MenuItem>
+                    )
+                  )}
               </Select>
             </FormControl>
             <Button
               variant="outlined"
               startIcon={<ArrowRightIcon />}
+              onClick={handleNextChapter}
               sx={{
                 color: "secondary.contrastText",
                 backgroundColor: "background.paper",
@@ -175,36 +244,13 @@ export const ChapterPage = () => {
               <SettingsIcon />
             </Button>
           </Stack>
-          <Typography variant="body2" textAlign="left">
-            Why is this dream still continuing?Seal, once again, <br />
-            Why is this dream still continuing?Seal, once again, <br />
-            He saw the same breathtaking buildings built on top of the clouds.
-            <br />
-            He saw the same breathtaking buildings built on top of the
-            clouds.Even though yesterday was the last day for The World of
-            Etomity this place still lived onBut it wasn't like everything was
-            the same as yesterday. There was clearly something
-            different...Where..is everyone?
-            <br />
-            He saw the same breathtaking buildings built on top of the
-            clouds.Even though yesterday was the last day for The World of
-            Etomity this place still lived onBut it wasn't like everything was
-            the same as yesterday. There was clearly something
-            different...Where..is everyone?
-            <br />
-            He saw the same breathtaking buildings built on top of the
-            clouds.Even though yesterday was the last day for The World of
-            Etomity this place still lived onBut it wasn't like everything was
-            the same as yesterday. There was clearly something
-            different...Where..is everyone?
-            <br />
-            He saw the same breathtaking buildings built on top of the
-            clouds.Even though yesterday was the last day for The World of
-            Etomity this place still lived onBut it wasn't like everything was
-            the same as yesterday. There was clearly something
-            different...Where..is everyone?
-            <br />
-          </Typography>
+          <Typography
+            variant="body2"
+            textAlign="left"
+            dangerouslySetInnerHTML={{
+              __html: chapterDetail?.data.content || "",
+            }}
+          ></Typography>
         </Stack>
         <Modal
           open={open}

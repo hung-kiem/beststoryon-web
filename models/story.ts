@@ -42,3 +42,50 @@ export interface Story {
   isHot: string;
   isTopFocus: string;
 }
+
+export interface GetStoryDetailPayload {
+  storyId: string;
+  pageIndex: number;
+  pageSize: number;
+}
+
+export interface GetStoryDetailResponse {
+  story: StoryDetail;
+  data: Chapter[];
+  totalRecord: number;
+  totalPage: number;
+  pageIndex: number;
+  pageSize: number;
+}
+
+export interface StoryDetail {
+  storyId: number;
+  storyName: string;
+  status: string;
+  chapterNumber: number;
+  displayOrder: number;
+  urlAvatar: string;
+  lastAddNewChapterLabel: string;
+  lastAddNewChapter: string;
+  summaryContent: string;
+  author: string;
+  catList: string[];
+  tagList: string[];
+}
+
+export interface Chapter {
+  chapterId: number;
+  storyName: string;
+  content: string | null;
+  chapterName: string;
+  createdDateLabel: string;
+  createdDate: string;
+}
+
+export interface GetStoryListReferPayload {
+  storyId: string;
+}
+
+export interface GetStoryListReferResponse {
+  data: StoryDetail[];
+}

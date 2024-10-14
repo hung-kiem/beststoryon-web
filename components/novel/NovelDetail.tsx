@@ -18,12 +18,55 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ImportContactsIcon from "@mui/icons-material/ImportContacts";
 import { ChapterTitle } from "./ChapterTitle";
 import { NovelCard } from "./NovelCard";
+import { useRouter } from "next/router";
+import { storyApi } from "@/api-client/story-api";
+import useSWR from "swr";
+import {
+  GetStoryDetailPayload,
+  GetStoryListReferPayload,
+} from "@/models/story";
+
+const fetcher = (url: string, payload: GetStoryDetailPayload) => {
+  return storyApi.getDetail(payload);
+};
+
+const fetcherRefer = (url: string, payload: GetStoryListReferPayload) => {
+  return storyApi.getListRefer(payload);
+};
 
 export function NovelDetail() {
+  const router = useRouter();
+  const { storyId } = router.query;
   const [showFullDescription, setShowFullDescription] = useState(false);
+  const [pageIndex, setPageIndex] = useState(1);
+  const payload: GetStoryDetailPayload = {
+    storyId: Array.isArray(storyId) ? (storyId[0] as string) : "",
+    pageIndex: pageIndex,
+    pageSize: 10,
+  };
+  const payloadRefer: GetStoryListReferPayload = {
+    storyId: Array.isArray(storyId) ? (storyId[0] as string) : "",
+  };
+
+  const { data: storyDetail, error } = useSWR(
+    ["/story/getDetail", payload],
+    ([url, payload]) => fetcher(url, payload)
+  );
+
+  const { data: storyRefer, error: errorRefer } = useSWR(
+    ["/story/getListRefer", payloadRefer],
+    ([url, payload]) => fetcherRefer(url, payload)
+  );
 
   const toggleDescription = () => {
     setShowFullDescription(!showFullDescription);
+  };
+
+  const handleChangePageIndex = (
+    event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPageIndex(value);
   };
 
   return (
@@ -54,7 +97,7 @@ export function NovelDetail() {
             <Grid size={{ xs: 12, sm: 12, lg: 8 }}>
               <Stack direction="column" spacing={1}>
                 <Typography fontWeight="bold" variant="h4">
-                  Solo Leveling
+                  {storyDetail?.story.storyName}
                 </Typography>
                 <Stack direction="row" spacing={2}>
                   <Stack direction="row" spacing={1} alignItems="center">
@@ -87,7 +130,7 @@ export function NovelDetail() {
                       fontSize="small"
                       fontWeight="bold"
                     >
-                      42 Chapter
+                      {storyDetail?.story.chapterNumber} Chapter
                     </Typography>
                   </Stack>
                 </Stack>
@@ -105,7 +148,7 @@ export function NovelDetail() {
                     color="text.secondary"
                     fontSize="medium"
                   >
-                    On Going
+                    {storyDetail?.story.status}
                   </Typography>
                 </Stack>
                 <Stack direction="row" spacing={1}>
@@ -122,7 +165,7 @@ export function NovelDetail() {
                     color="text.secondary"
                     fontSize="medium"
                   >
-                    Nguyễn Hữu Đại
+                    {storyDetail?.story.author}
                   </Typography>
                 </Stack>
                 <Stack direction="row" spacing={1} alignItems="center">
@@ -134,42 +177,21 @@ export function NovelDetail() {
                   >
                     Genre:
                   </Typography>
-                  <Typography
-                    variant="body2"
-                    color="secondary.contrastText"
-                    fontWeight="regular"
-                    sx={{
-                      backgroundColor: "background.paper",
-                      borderRadius: 2,
-                      p: 1,
-                    }}
-                  >
-                    Fantasy
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="secondary.contrastText"
-                    fontWeight="regular"
-                    sx={{
-                      backgroundColor: "background.paper",
-                      borderRadius: 2,
-                      p: 1,
-                    }}
-                  >
-                    Action
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="secondary.contrastText"
-                    fontWeight="regular"
-                    sx={{
-                      backgroundColor: "background.paper",
-                      borderRadius: 2,
-                      p: 1,
-                    }}
-                  >
-                    Adventure
-                  </Typography>
+                  {storyDetail?.story.catList?.map((cat, index) => (
+                    <Typography
+                      key={index}
+                      variant="body2"
+                      color="secondary.contrastText"
+                      fontWeight="regular"
+                      sx={{
+                        backgroundColor: "background.paper",
+                        borderRadius: 2,
+                        p: 1,
+                      }}
+                    >
+                      {cat}
+                    </Typography>
+                  ))}
                 </Stack>
                 <Stack direction="column" spacing={1}>
                   <Typography
@@ -182,16 +204,10 @@ export function NovelDetail() {
                       WebkitLineClamp: showFullDescription ? "none" : 3,
                       maxHeight: showFullDescription ? "none" : "4.5em",
                     }}
-                  >
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    Duis aute irure dolor in reprehenderit in voluptate velit
-                    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
-                    occaecat cupidatat non proident, sunt in culpa qui officia
-                    deserunt mollit anim id est laborum.
-                  </Typography>
+                    dangerouslySetInnerHTML={{
+                      __html: storyDetail?.story.summaryContent || "",
+                    }}
+                  />
                   <Button
                     onClick={toggleDescription}
                     sx={{ color: "background.paper" }}
@@ -242,10 +258,10 @@ export function NovelDetail() {
           </Typography>
           <Stack direction="column" spacing={0}>
             <Typography variant="body1" fontWeight="bold">
-              904 Chapter
+              {storyDetail?.story.chapterNumber} Chapter
             </Typography>
             <Typography variant="body2" fontWeight="regular">
-              Truyện phát hành từ thứ Hai đến thứ Năm hàng tuần!
+              {storyDetail?.story.lastAddNewChapterLabel}
             </Typography>
           </Stack>
           <Stack
@@ -264,37 +280,24 @@ export function NovelDetail() {
                 Date
               </Typography>
             </Stack>
-            <Stack direction="row" spacing={2} justifyContent="space-between">
-              <ChapterTitle />
-            </Stack>
-            <Divider />
-            <Stack direction="row" spacing={2} justifyContent="space-between">
-              <ChapterTitle />
-            </Stack>
-            <Divider />
-            <Stack direction="row" spacing={2} justifyContent="space-between">
-              <ChapterTitle />
-            </Stack>
-            <Divider />
-            <Stack direction="row" spacing={2} justifyContent="space-between">
-              <ChapterTitle />
-            </Stack>
-            <Divider />
-            <Stack direction="row" spacing={2} justifyContent="space-between">
-              <ChapterTitle />
-            </Stack>
-            <Divider />
-            <Stack direction="row" spacing={2} justifyContent="space-between">
-              <ChapterTitle />
-            </Stack>
-            <Divider />
-            <Stack direction="row" spacing={2} justifyContent="space-between">
-              <ChapterTitle />
-            </Stack>
+            {storyDetail?.data.map((chapter, index) => (
+              <Stack
+                key={index}
+                direction="row"
+                spacing={2}
+                justifyContent="space-between"
+              >
+                <ChapterTitle
+                  chapterNumber={chapter.chapterName}
+                  title={chapter.chapterName}
+                  date={chapter.createdDateLabel}
+                />
+              </Stack>
+            ))}
             <Divider />
           </Stack>
           <Pagination
-            count={20}
+            count={storyDetail?.totalPage || 0}
             variant="outlined"
             shape="rounded"
             boundaryCount={1}
@@ -303,6 +306,8 @@ export function NovelDetail() {
               alignSelf: "center",
               mt: 2,
             }}
+            page={pageIndex}
+            onChange={handleChangePageIndex}
           />
         </Stack>
         <Stack direction="column" spacing={2} my={4}>
@@ -331,42 +336,16 @@ export function NovelDetail() {
             }}
           >
             <Grid container spacing={2}>
-              <Grid size={{ xs: 6, sm: 3, md: 2 }}>
-                <NovelCard />
-              </Grid>
-              <Grid size={{ xs: 6, sm: 3, md: 2 }}>
-                <NovelCard />
-              </Grid>
-              <Grid size={{ xs: 6, sm: 3, md: 2 }}>
-                <NovelCard />
-              </Grid>
-              <Grid size={{ xs: 6, sm: 3, md: 2 }}>
-                <NovelCard />
-              </Grid>
-              <Grid size={{ xs: 6, sm: 3, md: 2 }}>
-                <NovelCard />
-              </Grid>
-              <Grid size={{ xs: 6, sm: 3, md: 2 }}>
-                <NovelCard />
-              </Grid>
-              <Grid size={{ xs: 6, sm: 3, md: 2 }}>
-                <NovelCard />
-              </Grid>
-              <Grid size={{ xs: 6, sm: 3, md: 2 }}>
-                <NovelCard />
-              </Grid>
-              <Grid size={{ xs: 6, sm: 3, md: 2 }}>
-                <NovelCard />
-              </Grid>
-              <Grid size={{ xs: 6, sm: 3, md: 2 }}>
-                <NovelCard />
-              </Grid>
-              <Grid size={{ xs: 6, sm: 3, md: 2 }}>
-                <NovelCard />
-              </Grid>
-              <Grid size={{ xs: 6, sm: 3, md: 2 }}>
-                <NovelCard />
-              </Grid>
+              {storyRefer?.data.map((story, index) => (
+                <Grid key={index} size={{ xs: 6, sm: 3, md: 2 }}>
+                  <NovelCard
+                    storyId={story.storyId}
+                    storyName={story.storyName}
+                    status={story.status}
+                    numberChapter={story.chapterNumber}
+                  />
+                </Grid>
+              ))}
             </Grid>
           </Box>
         </Stack>

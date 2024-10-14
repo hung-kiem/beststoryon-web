@@ -2,8 +2,6 @@ import { authApi } from "@/api-client/auth-api";
 import useSWR from "swr";
 import { PublicConfiguration } from "swr/_internal";
 
-// Auth --> Protected Pages
-// <Auth>{children}</Auth>
 export function useAuth(options?: Partial<PublicConfiguration>) {
   const {
     data: profile,
