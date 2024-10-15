@@ -22,7 +22,7 @@ export function ChapterTitle({
       }}
     >
       <Stack direction="column" spacing={0}>
-        <Typography variant="caption">{chapterNumber}</Typography>
+        <Typography variant="caption">Chapter {chapterNumber}</Typography>
         <Typography variant="body1" fontWeight="bold">
           {title}
         </Typography>

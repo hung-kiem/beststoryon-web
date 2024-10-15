@@ -4,14 +4,12 @@ import ImportContactsIcon from "@mui/icons-material/ImportContacts";
 import StarIcon from "@mui/icons-material/Star";
 
 export interface NovelCardProps {
-  storyId: number;
   storyName: string;
   numberChapter: number;
   status: string;
 }
 
 export function NovelCard({
-  storyId,
   storyName,
   numberChapter,
   status,

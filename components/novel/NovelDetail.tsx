@@ -48,12 +48,12 @@ export function NovelDetail() {
     storyId: Array.isArray(storyId) ? (storyId[0] as string) : "",
   };
 
-  const { data: storyDetail, error } = useSWR(
+  const { data: storyDetail } = useSWR(
     ["/story/getDetail", payload],
     ([url, payload]) => fetcher(url, payload)
   );
 
-  const { data: storyRefer, error: errorRefer } = useSWR(
+  const { data: storyRefer } = useSWR(
     ["/story/getListRefer", payloadRefer],
     ([url, payload]) => fetcherRefer(url, payload)
   );
@@ -97,7 +97,7 @@ export function NovelDetail() {
             <Grid size={{ xs: 12, sm: 12, lg: 8 }}>
               <Stack direction="column" spacing={1}>
                 <Typography fontWeight="bold" variant="h4">
-                  {storyDetail?.story.storyName}
+                  {storyDetail?.story?.storyName}
                 </Typography>
                 <Stack direction="row" spacing={2}>
                   <Stack direction="row" spacing={1} alignItems="center">
@@ -130,7 +130,7 @@ export function NovelDetail() {
                       fontSize="small"
                       fontWeight="bold"
                     >
-                      {storyDetail?.story.chapterNumber} Chapter
+                      {storyDetail?.story?.chapterNumber} Chapter
                     </Typography>
                   </Stack>
                 </Stack>
@@ -148,7 +148,7 @@ export function NovelDetail() {
                     color="text.secondary"
                     fontSize="medium"
                   >
-                    {storyDetail?.story.status}
+                    {storyDetail?.story?.status}
                   </Typography>
                 </Stack>
                 <Stack direction="row" spacing={1}>
@@ -165,7 +165,7 @@ export function NovelDetail() {
                     color="text.secondary"
                     fontSize="medium"
                   >
-                    {storyDetail?.story.author}
+                    {storyDetail?.story?.author}
                   </Typography>
                 </Stack>
                 <Stack direction="row" spacing={1} alignItems="center">
@@ -177,7 +177,7 @@ export function NovelDetail() {
                   >
                     Genre:
                   </Typography>
-                  {storyDetail?.story.catList?.map((cat, index) => (
+                  {storyDetail?.story?.catList?.map((cat, index) => (
                     <Typography
                       key={index}
                       variant="body2"
@@ -205,7 +205,7 @@ export function NovelDetail() {
                       maxHeight: showFullDescription ? "none" : "4.5em",
                     }}
                     dangerouslySetInnerHTML={{
-                      __html: storyDetail?.story.summaryContent || "",
+                      __html: storyDetail?.story?.summaryContent || "",
                     }}
                   />
                   <Button
@@ -215,7 +215,7 @@ export function NovelDetail() {
                     {showFullDescription ? "Show Less" : "Watch More"}
                   </Button>
                 </Stack>
-                <Stack direction="row" spacing={2}>
+                <Stack direction="row" spacing={2} justifyContent="center">
                   <Button
                     variant="contained"
                     sx={{
@@ -258,10 +258,10 @@ export function NovelDetail() {
           </Typography>
           <Stack direction="column" spacing={0}>
             <Typography variant="body1" fontWeight="bold">
-              {storyDetail?.story.chapterNumber} Chapter
+              {storyDetail?.story?.chapterNumber} Chapter
             </Typography>
             <Typography variant="body2" fontWeight="regular">
-              {storyDetail?.story.lastAddNewChapterLabel}
+              {storyDetail?.story?.lastAddNewChapterLabel}
             </Typography>
           </Stack>
           <Stack
@@ -280,20 +280,23 @@ export function NovelDetail() {
                 Date
               </Typography>
             </Stack>
-            {storyDetail?.data.map((chapter, index) => (
-              <Stack
-                key={index}
-                direction="row"
-                spacing={2}
-                justifyContent="space-between"
-              >
-                <ChapterTitle
-                  chapterNumber={chapter.chapterName}
-                  title={chapter.chapterName}
-                  date={chapter.createdDateLabel}
-                />
-              </Stack>
-            ))}
+            {storyDetail?.data?.map((chapter, index) => {
+              const chapterIndex =
+                (storyDetail.pageIndex - 1) * storyDetail.pageSize + index + 1;
+              return (
+                <Link
+                  href={`/story/${storyDetail.story.storyId}/chapter/${chapterIndex}`}
+                  passHref
+                  key={index}
+                >
+                  <ChapterTitle
+                    chapterNumber={chapterIndex.toString()}
+                    title={chapter.chapterName}
+                    date={chapter.createdDateLabel}
+                  />
+                </Link>
+              );
+            })}
             <Divider />
           </Stack>
           <Pagination
@@ -336,14 +339,15 @@ export function NovelDetail() {
             }}
           >
             <Grid container spacing={2}>
-              {storyRefer?.data.map((story, index) => (
+              {storyRefer?.data?.map((story, index) => (
                 <Grid key={index} size={{ xs: 6, sm: 3, md: 2 }}>
-                  <NovelCard
-                    storyId={story.storyId}
-                    storyName={story.storyName}
-                    status={story.status}
-                    numberChapter={story.chapterNumber}
-                  />
+                  <Link href={`/story/${story.storyId}`} passHref>
+                    <NovelCard
+                      storyName={story.storyName}
+                      status={story.status}
+                      numberChapter={story.chapterNumber}
+                    />
+                  </Link>
                 </Grid>
               ))}
             </Grid>

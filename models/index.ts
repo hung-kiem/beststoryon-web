@@ -5,3 +5,4 @@ export * from "./work";
 export * from "./category";
 export * from "./home";
 export * from "./tag";
+export * from "./search";

@@ -55,13 +55,13 @@ const fetchChapterByIndex = (
 
 export const ChapterPage = () => {
   const router = useRouter();
-  const { storyId, index } = router.query;
-  console.log("Story id:", storyId);
-  console.log("Index:", index);
+  const { storyId, index = [1] } = router.query;
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const { mode, toggleTheme } = useThemeContext();
-  const [chapterIndex, setChapterIndex] = useState(1);
+  const [chapterIndex, setChapterIndex] = useState(
+    index ? (index[0] as number) : 1
+  );
 
   const payload: GetChapterByIndexPayload | null = storyId
     ? {
@@ -74,7 +74,6 @@ export const ChapterPage = () => {
     payload ? ["/chapter/getQuickByIndex", payload] : null,
     ([url, payload]) => fetchChapterByIndex(url, payload)
   );
-  console.log("Chapter detail:", chapterDetail);
 
   const storyPayload: GetStoryDetailPayload = {
     storyId: Array.isArray(storyId) ? storyId[0] : (storyId as string),

@@ -15,6 +15,7 @@ import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 import useSWR from "swr";
 import DOMPurify from "dompurify";
 import { homeApi } from "@/api-client/home-api";
+import Link from "next/link";
 
 function sanitizeHTML(content: string) {
   return {
@@ -203,6 +204,8 @@ export function HotNovelMain() {
                           color="secondary.contrastText"
                           fontWeight="regular"
                           sx={{
+                            height: "fit-content",
+                            width: "fit-content",
                             backgroundColor: "background.paper",
                             borderRadius: 2,
                             p: 1,
@@ -215,6 +218,8 @@ export function HotNovelMain() {
                           color="secondary.contrastText"
                           fontWeight="regular"
                           sx={{
+                            height: "fit-content",
+                            width: "fit-content",
                             backgroundColor: "background.paper",
                             borderRadius: 2,
                             p: 1,
@@ -223,20 +228,25 @@ export function HotNovelMain() {
                           {firstStory.status}
                         </Typography>
                       </Stack>
-                      <Button
-                        variant="text"
-                        endIcon={<ArrowRightIcon />}
-                        sx={{
-                          height: "fit-content",
-                          width: "fit-content",
-                          borderRadius: 2,
-                          backgroundColor: "background.paper",
-                          color: "secondary.contrastText",
-                          mt: 2,
-                        }}
-                      >
-                        Read
-                      </Button>
+
+                      <Stack direction="row">
+                        <Link href={`/story/${firstStory.storyId}`} passHref>
+                          <Button
+                            variant="text"
+                            endIcon={<ArrowRightIcon />}
+                            sx={{
+                              height: "fit-content",
+                              width: "fit-content",
+                              borderRadius: 2,
+                              backgroundColor: "background.paper",
+                              color: "secondary.contrastText",
+                              // mt: 2,
+                            }}
+                          >
+                            Read
+                          </Button>
+                        </Link>
+                      </Stack>
                     </Stack>
                   </Stack>
                 </Card>
@@ -257,11 +267,13 @@ export function HotNovelMain() {
                 }}
               >
                 {hotTopList?.data?.slice(1).map((story, id) => (
-                  <ChapterHot
-                    key={id}
-                    storyName={story.storyName}
-                    numberOfChapter={story.chapterNumber}
-                  />
+                  <Link href={`/story/${story.storyId}`} passHref>
+                    <ChapterHot
+                      key={id}
+                      storyName={story.storyName}
+                      numberOfChapter={story.chapterNumber}
+                    />
+                  </Link>
                 ))}
               </Stack>
             </Grid>

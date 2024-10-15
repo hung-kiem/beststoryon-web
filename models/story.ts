@@ -59,7 +59,7 @@ export interface GetStoryDetailResponse {
 }
 
 export interface StoryDetail {
-  storyId: number;
+  storyId: string;
   storyName: string;
   status: string;
   chapterNumber: number;

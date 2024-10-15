@@ -24,31 +24,37 @@ export function TrendingNovel() {
   return (
     <Box component="section" bgcolor={"background.default"} py={4}>
       <Container>
-        <Stack
-          direction="row"
-          mb={2}
-          justifyContent="space-between"
-          alignItems="center"
-        >
-          <Stack direction="row" spacing={1} alignItems="center">
-            <TrendingUpIcon />
-            <Typography variant="h4" fontWeight="bold">
-              Trending
-            </Typography>
-          </Stack>
-          <Link passHref href="/trending" legacyBehavior>
-            <MuiLink color="background.paper">View all</MuiLink>
-          </Link>
-        </Stack>
-        <Box sx={{ flexGrow: 1 }}>
-          <Grid container spacing={2}>
-            {trendingList?.data?.map((story, index) => (
-              <Grid size={{ xs: 6, sm: 3, md: 2 }}>
-                <NovelCard key={index} story={story} />
+        {trendingList?.data?.length !== 0 && (
+          <>
+            <Stack
+              direction="row"
+              mb={2}
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <Stack direction="row" spacing={1} alignItems="center">
+                <TrendingUpIcon />
+                <Typography variant="h4" fontWeight="bold">
+                  Trending
+                </Typography>
+              </Stack>
+              <Link passHref href="/trending" legacyBehavior>
+                <MuiLink color="background.paper">View all</MuiLink>
+              </Link>
+            </Stack>
+            <Box sx={{ flexGrow: 1 }}>
+              <Grid container spacing={2}>
+                {trendingList?.data?.map((story, index) => (
+                  <Grid size={{ xs: 6, sm: 3, md: 2 }}>
+                    <Link passHref href={`/story/${story.storyId}`}>
+                      <NovelCard key={index} story={story} />
+                    </Link>
+                  </Grid>
+                ))}
               </Grid>
-            ))}
-          </Grid>
-        </Box>
+            </Box>
+          </>
+        )}
       </Container>
     </Box>
   );

@@ -30,8 +30,12 @@ export function TagPage() {
             spacing={1}
             sx={{
               display: "flex",
-              justifyContent: "center",
               alignItems: "center",
+              justifyContent: { xs: "start", sm: "center" },
+              overflowX: "auto", // Kích hoạt cuộn ngang khi cần
+              whiteSpace: "nowrap", // Đảm bảo các phần tử nằm trên một dòng
+              width: "100%", // Đặt chiều rộng đầy đủ
+              padding: "0 10px",
             }}
           >
             {alphabet.map((letter) => (
