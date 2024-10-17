@@ -180,10 +180,8 @@ export function HotNovelMain() {
                     >
                       {firstStory.storyName}
                     </Typography>
-                    <Typography
-                      variant="body2"
+                    <Stack
                       color="secondary.contrastText"
-                      fontWeight="regular"
                       sx={{
                         textShadow: "1px 1px 1px #000",
                         overflow: "hidden",
@@ -196,7 +194,7 @@ export function HotNovelMain() {
                       <StorySummary
                         summaryContent={firstStory.summaryContent}
                       />
-                    </Typography>
+                    </Stack>
                     <Stack direction={{ xs: "row", sm: "column" }} spacing={2}>
                       <Stack direction="row" spacing={2}>
                         <Typography
@@ -267,7 +265,7 @@ export function HotNovelMain() {
                 }}
               >
                 {hotTopList?.data?.slice(1).map((story, id) => (
-                  <Link href={`/story/${story.storyId}`} passHref>
+                  <Link key={id} href={`/story/${story.storyId}`} passHref>
                     <ChapterHot
                       key={id}
                       storyName={story.storyName}

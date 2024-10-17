@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useThemeContext } from "@context/theme-context";
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import HomeIcon from "@mui/icons-material/Home";
 import SettingsIcon from "@mui/icons-material/Settings";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
@@ -22,10 +22,7 @@ import TextDecreaseIcon from "@mui/icons-material/TextDecrease";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import { useTheme } from "@mui/material/styles";
-import {
-  GetChapterByIndexPayload,
-  GetChapterDetailPayload,
-} from "@/models/chapter";
+import { GetChapterByIndexPayload } from "@/models/chapter";
 import { chapterApi, storyApi } from "@/api-client";
 import { useRouter } from "next/router";
 import useSWR from "swr";
@@ -63,6 +60,12 @@ export const ChapterPage = () => {
     index ? (index[0] as number) : 1
   );
 
+  useEffect(() => {
+    if (index && Array.isArray(index)) {
+      setChapterIndex(Number(index[0]) || 1);
+    }
+  }, [index]);
+
   const payload: GetChapterByIndexPayload | null = storyId
     ? {
         storyId: Array.isArray(storyId) ? storyId[0] : (storyId as string),
@@ -85,7 +88,6 @@ export const ChapterPage = () => {
     storyPayload ? ["/story/getDetail", storyPayload] : null,
     ([url, payload]) => fetcherStory(url, payload)
   );
-  console.log("Story detail:", storyDetail);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -97,13 +99,15 @@ export const ChapterPage = () => {
 
   const handleNextChapter = () => {
     if (chapterIndex < (storyDetail?.totalRecord || 1)) {
-      setChapterIndex((prevIndex) => prevIndex + 1);
+      console.log("chapterIndex", chapterIndex);
+      setChapterIndex((prevIndex) => (prevIndex as number) + 1);
     }
   };
 
   const handlePrevChapter = () => {
     if (chapterIndex > 1) {
-      setChapterIndex((prevIndex) => prevIndex - 1);
+      console.log("chapterIndex", chapterIndex);
+      setChapterIndex((prevIndex) => (prevIndex as number) - 1);
     }
   };
 

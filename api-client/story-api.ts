@@ -28,4 +28,25 @@ export const storyApi = {
       .post<GetStoryListReferResponse>("/story/getListRefer", payload)
       .then((response) => response.data);
   },
+  getNewReleaseList(
+    payload: GetStoryByCategoryPayload
+  ): Promise<GetStoryByCategoryResponse> {
+    return axiosClient
+      .post<GetStoryByCategoryResponse>("/story/getNewReleaseList", payload)
+      .then((response) => response.data);
+  },
+  getTrendingList(
+    payload: GetStoryByCategoryPayload
+  ): Promise<GetStoryByCategoryResponse> {
+    return axiosClient
+      .post<GetStoryByCategoryResponse>("/story/getTrendingList", payload)
+      .then((response) => response.data);
+  },
+  getHotList(
+    payload: GetStoryByCategoryPayload
+  ): Promise<GetStoryByCategoryResponse> {
+    return axiosClient
+      .post<GetStoryByCategoryResponse>("/story/getHotList", payload)
+      .then((response) => response.data);
+  },
 };

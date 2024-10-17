@@ -105,6 +105,7 @@ export function HeaderMobile() {
             options={
               searchResults?.data?.map((option) => option.storyName) || []
             }
+            fullWidth
             onInputChange={handleInputChange}
             onChange={handleOptionSelect}
             value={searchValue}
