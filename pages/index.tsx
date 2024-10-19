@@ -28,7 +28,7 @@ const Home: NextPageWithLayout = () => {
       <NewRelease />
       <HotNovel />
       <Banner />
-      <RecommendForYou />
+      {/* <RecommendForYou /> */}
     </Box>
   );
 };

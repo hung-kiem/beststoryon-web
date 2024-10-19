@@ -16,6 +16,7 @@ export function ChapterRelease({ story }: ChapterReleaseProps) {
           my: 1,
           height: "88px",
           width: "72px",
+          minWidth: "72px",
         }}
       >
         <CardMedia
@@ -26,7 +27,12 @@ export function ChapterRelease({ story }: ChapterReleaseProps) {
           alt="Novel image"
         />
       </Card>
-      <Stack direction="column">
+      <Stack
+        direction="column"
+        sx={{
+          maxWidth: "calc(100% - 72px)",
+        }}
+      >
         <Typography
           fontWeight="bold"
           variant="subtitle1"

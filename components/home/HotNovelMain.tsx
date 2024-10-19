@@ -34,24 +34,42 @@ type ChapterHotProps = {
 
 function ChapterHot({ storyName, numberOfChapter }: ChapterHotProps) {
   return (
-    <Stack direction="row" spacing={2} mt={2}>
+    <Stack
+      direction="row"
+      spacing={2}
+      mt={2}
+      sx={{
+        height: "64px",
+      }}
+    >
       <Card
         sx={{
           borderRadius: 2,
           my: 1,
           height: "64px",
           width: "64px",
+          overflow: "hidden",
+          minWidth: "64px",
         }}
       >
         <CardMedia
           component="img"
-          height="64px"
-          width="64px"
           image="https://plus.unsplash.com/premium_photo-1682125773446-259ce64f9dd7?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
           alt="Novel image"
+          sx={{
+            height: "100%",
+            width: "100%",
+            objectFit: "cover", // Đảm bảo hình ảnh được cắt để lấp đầy khung hình mà không bị biến dạng
+            objectPosition: "center", // Căn giữa hình ảnh
+          }}
         />
       </Card>
-      <Stack direction="column">
+      <Stack
+        direction="column"
+        sx={{
+          maxWidth: "calc(100% - 64px)",
+        }}
+      >
         <Typography
           fontWeight="bold"
           variant="subtitle1"
