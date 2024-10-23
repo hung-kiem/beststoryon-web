@@ -32,9 +32,9 @@ export function TagPage() {
               display: "flex",
               alignItems: "center",
               justifyContent: { xs: "start", sm: "center" },
-              overflowX: "auto", // Kích hoạt cuộn ngang khi cần
-              whiteSpace: "nowrap", // Đảm bảo các phần tử nằm trên một dòng
-              width: "100%", // Đặt chiều rộng đầy đủ
+              overflowX: "auto",
+              whiteSpace: "nowrap",
+              width: "100%",
               padding: "0 10px",
             }}
           >
@@ -75,7 +75,7 @@ export function TagPage() {
                     textAlign: "center",
                   }}
                 >
-                  <Link href={`/tag/${tag.storyTagId}`}>
+                  <Link href={`/tag/${tag.storyTagCode}`}>
                     <Typography variant="body2" alignSelf="center">
                       {tag.storyTagName}
                     </Typography>

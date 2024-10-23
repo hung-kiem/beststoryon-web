@@ -1,13 +1,11 @@
-import React from "react";
+import { Seo } from "@/components/common";
 import { MainLayout } from "@/components/layout";
+import { TagDetail } from "@/components/tags/TagDetail";
 import { NextPageWithLayout } from "@/models";
 import { Box } from "@mui/material";
-import { Seo } from "@/components/common";
-import { CategoryPage } from "@/components/category";
-import useSWR from "swr";
+import * as React from "react";
 
-const MILLISECOND_PER_HOUR = 1000 * 60 * 60;
-const Category: NextPageWithLayout = () => {
+const Tag: NextPageWithLayout = () => {
   return (
     <Box>
       <Seo
@@ -19,11 +17,11 @@ const Category: NextPageWithLayout = () => {
           thumbnailUrl: "https://beststoryon.com/thumbnail.png",
         }}
       />
-      <CategoryPage />
+      <TagDetail />
     </Box>
   );
 };
 
-Category.Layout = MainLayout;
+Tag.Layout = MainLayout;
 
-export default Category;
+export default Tag;

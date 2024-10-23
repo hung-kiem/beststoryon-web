@@ -1,37 +1,31 @@
-import { Box, Container, Stack, Typography, Button } from "@mui/material";
-import React, { useState } from "react";
+import { Box, Container, Stack, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import { NovelCard } from "./NovelCard";
 import Pagination from "@mui/material/Pagination";
-import { CategoryButton } from "./CategoryButton";
+import { categoryApi, tagApi } from "@/api-client";
+import React, { useState } from "react";
 import useSWR from "swr";
-import { categoryApi, storyApi } from "@/api-client";
+import { CategoryButton } from "./CategoryButton";
 import Link from "next/link";
+import { NovelCard } from "./NovelCard";
+import { useRouter } from "next/router";
 
 const MILLISECOND_PER_HOUR = 1000 * 60 * 60;
 const statusArr = ["All", "Ongoing", "Completed"];
 const sortByArr = ["Popular", "New", "Update"];
-
-export function UpdatePage() {
-  const [catCode, setCatCode] = useState("All");
+export function TagDetail() {
   const [status, setStatus] = useState("All");
   const [sortCondition, setSortCondition] = useState("Popular");
   const [pageIndex, setPageIndex] = useState(1);
-  const { data: categories } = useSWR(
-    `/category/getList`,
-    categoryApi.getList,
-    {
-      revalidateOnFocus: false,
-      dedupingInterval: MILLISECOND_PER_HOUR,
-    }
-  );
-  const { data: stories, error } = useSWR(
-    [`/updates`, catCode, status, sortCondition, pageIndex],
+  const router = useRouter();
+  const { tagCode } = router.query;
 
-    ([url, catCode, status, sortCondition, pageIndex]) =>
-      storyApi.getUpdateList({
-        catCode,
-        storyStatus: status,
+  const { data: stories, error } = useSWR(
+    [`/story/getNewReleaseList`, tagCode, status, sortCondition, pageIndex],
+
+    ([url, tagCode, status, sortCondition, pageIndex]) =>
+      tagApi.getStoryByTagCode({
+        keyword: Array.isArray(tagCode) ? tagCode[0] : tagCode || "",
+        status,
         sortCondition,
         pageIndex,
         pageSize: 2,
@@ -48,38 +42,10 @@ export function UpdatePage() {
   ) => {
     setPageIndex(value);
   };
-
   return (
     <Box>
       <Container>
         <Stack direction="column" my={2} spacing={2}>
-          <Stack direction="column" spacing={1}>
-            <Typography variant="h4" fontWeight="bold">
-              Genre / Category
-            </Typography>
-            <Stack direction="row" spacing={1}>
-              <Grid container spacing={1}>
-                <Grid>
-                  <CategoryButton
-                    title="All"
-                    code="All"
-                    isActive={catCode === "All"}
-                    onClick={setCatCode}
-                  />
-                </Grid>
-                {categories?.map((cat) => (
-                  <Grid key={cat.catCode}>
-                    <CategoryButton
-                      title={cat.catName}
-                      code={cat.catCode}
-                      isActive={cat.catCode === catCode}
-                      onClick={setCatCode}
-                    />
-                  </Grid>
-                ))}
-              </Grid>
-            </Stack>
-          </Stack>
           <Stack direction="column" spacing={1}>
             <Typography variant="h4" fontWeight="bold">
               Status

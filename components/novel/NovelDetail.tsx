@@ -69,6 +69,18 @@ export function NovelDetail() {
     setPageIndex(value);
   };
 
+  const handleReadFirstChapter = () => {
+    router.push(`/story/${storyDetail?.story?.storyId}/chapter/1`);
+  };
+
+  const handleReadLastChapter = () => {
+    router.push(
+      `/story/${storyDetail?.story?.storyId}/chapter/${
+        storyDetail?.story?.chapterNumber || 1
+      }`
+    );
+  };
+
   return (
     <Box>
       <Container>
@@ -109,17 +121,6 @@ export function NovelDetail() {
                       fontWeight="bold"
                     >
                       2.42M Views
-                    </Typography>
-                  </Stack>
-                  <Stack direction="row" spacing={1} alignItems="center">
-                    <ThumbUpIcon />
-                    <Typography
-                      variant="body2"
-                      color="text.secondary"
-                      fontSize="small"
-                      fontWeight="bold"
-                    >
-                      2.412 Likes
                     </Typography>
                   </Stack>
                   <Stack direction="row" spacing={1} alignItems="center">
@@ -226,6 +227,7 @@ export function NovelDetail() {
                       color: "secondary.contrastText",
                       mt: 2,
                     }}
+                    onClick={handleReadFirstChapter}
                   >
                     Start Reading
                   </Button>
@@ -239,6 +241,7 @@ export function NovelDetail() {
                       color: "background.paper",
                       mt: 2,
                     }}
+                    onClick={handleReadLastChapter}
                   >
                     Latest Chapter
                   </Button>

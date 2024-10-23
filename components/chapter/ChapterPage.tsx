@@ -134,6 +134,7 @@ export const ChapterPage = () => {
                 height: "56px",
                 width: "56px",
               }}
+              onClick={() => router.push("/")}
             >
               <HomeIcon />
             </Button>

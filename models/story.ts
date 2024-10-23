@@ -1,6 +1,6 @@
 export interface GetStoryByCategoryPayload {
   catCode: string;
-  status: string; // all / completed / on_going
+  storyStatus: string; // all / completed / on_going
   sortCondition: string; // popular / new / update
   pageIndex: number;
   pageSize: number;

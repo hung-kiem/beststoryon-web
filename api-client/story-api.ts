@@ -13,7 +13,7 @@ export const storyApi = {
     payload: GetStoryByCategoryPayload
   ): Promise<GetStoryByCategoryResponse> {
     return axiosClient
-      .post<GetStoryByCategoryResponse>("/story/getListByCatId", payload)
+      .post<GetStoryByCategoryResponse>("/category/getStoryByCatCode", payload)
       .then((response) => response.data);
   },
   getDetail(payload: GetStoryDetailPayload): Promise<GetStoryDetailResponse> {
@@ -47,6 +47,13 @@ export const storyApi = {
   ): Promise<GetStoryByCategoryResponse> {
     return axiosClient
       .post<GetStoryByCategoryResponse>("/story/getHotList", payload)
+      .then((response) => response.data);
+  },
+  getUpdateList(
+    payload: GetStoryByCategoryPayload
+  ): Promise<GetStoryByCategoryResponse> {
+    return axiosClient
+      .post<GetStoryByCategoryResponse>("/updates", payload)
       .then((response) => response.data);
   },
 };

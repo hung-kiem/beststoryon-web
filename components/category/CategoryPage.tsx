@@ -10,12 +10,12 @@ import { storyApi } from "@/api-client/story-api";
 import { url } from "inspector";
 
 const MILLISECOND_PER_HOUR = 1000 * 60 * 60;
-const statusArr = ["All", "Ongoing", "Completed"];
+const statusArr = ["ALL", "Ongoing", "Completed"];
 const sortByArr = ["Popular", "New", "Update"];
 
 export function CategoryPage() {
-  const [catCode, setCatCode] = useState("All");
-  const [status, setStatus] = useState("All");
+  const [catCode, setCatCode] = useState("ALL");
+  const [status, setStatus] = useState("ALL");
   const [sortCondition, setSortCondition] = useState("Popular");
   const [pageIndex, setPageIndex] = useState(1);
   const { data: categories } = useSWR(
@@ -27,12 +27,12 @@ export function CategoryPage() {
     }
   );
   const { data: stories, error } = useSWR(
-    [`/story/getListByCatId`, catCode, status, sortCondition, pageIndex],
+    [`/category/getListByCatCode`, catCode, status, sortCondition, pageIndex],
 
     ([url, catCode, status, sortCondition, pageIndex]) =>
       storyApi.getListByCatId({
         catCode,
-        status,
+        storyStatus: status,
         sortCondition,
         pageIndex,
         pageSize: 2,
@@ -62,9 +62,9 @@ export function CategoryPage() {
               <Grid container spacing={1}>
                 <Grid>
                   <CategoryButton
-                    title="All"
-                    code="All"
-                    isActive={catCode === "All"}
+                    title="ALL"
+                    code="ALL"
+                    isActive={catCode === "ALL"}
                     onClick={setCatCode}
                   />
                 </Grid>
@@ -113,6 +113,15 @@ export function CategoryPage() {
               ))}
             </Stack>
           </Stack>
+          {stories?.data?.length === 0 && (
+            <Typography
+              variant="body1"
+              color="text.secondary"
+              alignSelf="center"
+            >
+              No stories found
+            </Typography>
+          )}
           <Box sx={{ flexGrow: 1 }}>
             <Grid container spacing={2}>
               {stories?.data?.map((story) => (

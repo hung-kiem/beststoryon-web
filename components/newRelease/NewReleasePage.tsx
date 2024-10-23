@@ -1,4 +1,4 @@
-import { Box, Container, Stack, Typography, Button } from "@mui/material";
+import { Box, Container, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
 import Grid from "@mui/material/Grid2";
 import { NovelCard } from "./NovelCard";
@@ -31,7 +31,7 @@ export function NewReleasePage() {
     ([url, catCode, status, sortCondition, pageIndex]) =>
       storyApi.getNewReleaseList({
         catCode,
-        status,
+        storyStatus: status,
         sortCondition,
         pageIndex,
         pageSize: 2,
@@ -112,39 +112,58 @@ export function NewReleasePage() {
               ))}
             </Stack>
           </Stack>
-          <Typography variant="h4" fontWeight="bold" alignSelf="center">
+          <Typography
+            variant="h4"
+            fontWeight="bold"
+            alignSelf="center"
+            sx={{
+              pt: 2,
+            }}
+          >
             New Release
           </Typography>
-          <Box sx={{ flexGrow: 1 }}>
-            <Grid container spacing={2}>
-              {stories?.data?.map((story) => (
-                <Grid key={story.storyId} size={{ xs: 6, sm: 3, md: 2 }}>
-                  <Link href={`/story/${story.storyId}`}>
-                    <NovelCard
-                      storyName={story.storyName}
-                      rating={story.likeCount}
-                      status={story.status}
-                      chapterNumber={story.chapterNumber}
-                    />
-                  </Link>
+          {stories?.data?.length === 0 ? (
+            <Typography
+              variant="body1"
+              color="text.secondary"
+              alignSelf="center"
+            >
+              No stories found
+            </Typography>
+          ) : (
+            <>
+              <Box sx={{ flexGrow: 1 }}>
+                <Grid container spacing={2}>
+                  {stories?.data?.map((story) => (
+                    <Grid key={story.storyId} size={{ xs: 6, sm: 3, md: 2 }}>
+                      <Link href={`/story/${story.storyId}`}>
+                        <NovelCard
+                          storyName={story.storyName}
+                          rating={story.likeCount}
+                          status={story.status}
+                          chapterNumber={story.chapterNumber}
+                        />
+                      </Link>
+                    </Grid>
+                  ))}
                 </Grid>
-              ))}
-            </Grid>
-          </Box>
-          {stories?.totalPage && (
-            <Pagination
-              count={stories.totalPage}
-              variant="outlined"
-              shape="rounded"
-              boundaryCount={1}
-              siblingCount={1}
-              sx={{
-                alignSelf: "center",
-                mt: 2,
-              }}
-              page={pageIndex}
-              onChange={handleChangePageIndex}
-            />
+              </Box>
+              {stories?.totalPage && (
+                <Pagination
+                  count={stories.totalPage}
+                  variant="outlined"
+                  shape="rounded"
+                  boundaryCount={1}
+                  siblingCount={1}
+                  sx={{
+                    alignSelf: "center",
+                    mt: 2,
+                  }}
+                  page={pageIndex}
+                  onChange={handleChangePageIndex}
+                />
+              )}
+            </>
           )}
         </Stack>
       </Container>

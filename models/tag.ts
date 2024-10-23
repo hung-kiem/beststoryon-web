@@ -7,3 +7,11 @@ export interface Tag {
 export interface TagListResponse {
   data: Tag[];
 }
+
+export interface GetStoryByTagCodePayload {
+  keyword: string;
+  status: string; // all / completed / onGoing
+  sortCondition: string; // popular / new / update
+  pageIndex: number;
+  pageSize: number;
+}
