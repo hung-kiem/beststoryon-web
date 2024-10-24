@@ -44,7 +44,10 @@ export function HotNovel() {
           <Grid container spacing={2}>
             {hotList?.data?.map((story, index) => (
               <Grid key={index} size={{ xs: 6, sm: 3, md: 2 }}>
-                <Link passHref href={`/story/${story.storyId}`}>
+                <Link
+                  passHref
+                  href={`/story/${story.storyNameAlias}-${story.storyId}.html`}
+                >
                   <NovelCard key={index} story={story} />
                 </Link>
               </Grid>

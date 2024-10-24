@@ -53,6 +53,11 @@ const fetchChapterByIndex = (
 export const ChapterPage = () => {
   const router = useRouter();
   const { storyId, index = [1] } = router.query;
+  const idParts = storyId
+    ? (Array.isArray(storyId) ? storyId[0] : storyId).split("-")
+    : [];
+  const id = idParts.pop();
+  console.log(id);
   const theme = useTheme();
   const [open, setOpen] = useState(false);
   const { mode, toggleTheme } = useThemeContext();
@@ -68,7 +73,7 @@ export const ChapterPage = () => {
 
   const payload: GetChapterByIndexPayload | null = storyId
     ? {
-        storyId: Array.isArray(storyId) ? storyId[0] : (storyId as string),
+        storyId: id || "",
         chapterIndex: chapterIndex,
       }
     : null;
@@ -79,7 +84,7 @@ export const ChapterPage = () => {
   );
 
   const storyPayload: GetStoryDetailPayload = {
-    storyId: Array.isArray(storyId) ? storyId[0] : (storyId as string),
+    storyId: id || "",
     pageIndex: 1,
     pageSize: 5000,
   };

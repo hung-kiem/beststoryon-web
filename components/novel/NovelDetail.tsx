@@ -37,15 +37,20 @@ const fetcherRefer = (url: string, payload: GetStoryListReferPayload) => {
 export function NovelDetail() {
   const router = useRouter();
   const { storyId } = router.query;
+  const idParts = storyId
+    ? (Array.isArray(storyId) ? storyId[0] : storyId).split("-")
+    : [];
+  const id = idParts.pop();
+  console.log(id);
   const [showFullDescription, setShowFullDescription] = useState(false);
   const [pageIndex, setPageIndex] = useState(1);
   const payload: GetStoryDetailPayload = {
-    storyId: Array.isArray(storyId) ? (storyId[0] as string) : "",
+    storyId: id || "",
     pageIndex: pageIndex,
     pageSize: 10,
   };
   const payloadRefer: GetStoryListReferPayload = {
-    storyId: Array.isArray(storyId) ? (storyId[0] as string) : "",
+    storyId: id || "",
   };
 
   const { data: storyDetail } = useSWR(
@@ -70,14 +75,16 @@ export function NovelDetail() {
   };
 
   const handleReadFirstChapter = () => {
-    router.push(`/story/${storyDetail?.story?.storyId}/chapter/1`);
+    router.push(
+      `/story/${storyDetail?.story?.storyNameAlias}-${storyDetail?.story?.storyId}/chapter/1`
+    );
   };
 
   const handleReadLastChapter = () => {
     router.push(
-      `/story/${storyDetail?.story?.storyId}/chapter/${
-        storyDetail?.story?.chapterNumber || 1
-      }`
+      `/story/${storyDetail?.story?.storyNameAlias}-${
+        storyDetail?.story?.storyId
+      }/chapter/${storyDetail?.story?.chapterNumber || 1}`
     );
   };
 
@@ -288,7 +295,7 @@ export function NovelDetail() {
                 (storyDetail.pageIndex - 1) * storyDetail.pageSize + index + 1;
               return (
                 <Link
-                  href={`/story/${storyDetail.story.storyId}/chapter/${chapterIndex}`}
+                  href={`/story/${storyDetail.story.storyNameAlias}-${storyDetail.story.storyId}/chapter/${chapterIndex}.html`}
                   passHref
                   key={index}
                 >
@@ -344,7 +351,10 @@ export function NovelDetail() {
             <Grid container spacing={2}>
               {storyRefer?.data?.map((story, index) => (
                 <Grid key={index} size={{ xs: 6, sm: 3, md: 2 }}>
-                  <Link href={`/story/${story.storyId}`} passHref>
+                  <Link
+                    href={`/story/${story.storyNameAlias}-${story.storyId}.html`}
+                    passHref
+                  >
                     <NovelCard
                       storyName={story.storyName}
                       status={story.status}

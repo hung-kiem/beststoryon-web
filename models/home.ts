@@ -37,4 +37,5 @@ export interface StoryHome {
   author: string;
   catList: string[];
   tagList: string[];
+  storyNameAlias: string | null;
 }

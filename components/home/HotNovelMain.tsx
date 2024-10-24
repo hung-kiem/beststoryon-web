@@ -246,7 +246,10 @@ export function HotNovelMain() {
                       </Stack>
 
                       <Stack direction="row">
-                        <Link href={`/story/${firstStory.storyId}`} passHref>
+                        <Link
+                          href={`/story/${firstStory.storyNameAlias}-${firstStory.storyId}.html`}
+                          passHref
+                        >
                           <Button
                             variant="text"
                             endIcon={<ArrowRightIcon />}

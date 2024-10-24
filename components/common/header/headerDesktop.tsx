@@ -57,7 +57,9 @@ export function HeaderDesktop() {
         (story) => story.storyName === value
       );
       if (selectedStory) {
-        router.push(`/story/${selectedStory.storyId}`);
+        router.push(
+          `/story/${selectedStory.storyNameAlias}-${selectedStory.storyId}.html`
+        );
       }
     }
   };

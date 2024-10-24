@@ -126,7 +126,9 @@ export function UpdatePage() {
                 <Grid container spacing={2}>
                   {stories?.data?.map((story) => (
                     <Grid key={story.storyId} size={{ xs: 6, sm: 3, md: 2 }}>
-                      <Link href={`/story/${story.storyId}`}>
+                      <Link
+                        href={`/story/${story.storyNameAlias}-${story.storyId}.html`}
+                      >
                         <NovelCard
                           storyName={story.storyName}
                           rating={story.likeCount}

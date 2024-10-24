@@ -58,7 +58,10 @@ export function NewRelease() {
           >
             {newReleaseList?.data?.map((story, index) => (
               <Grid key={index} size={{ xs: 12, sm: 6 }}>
-                <Link passHref href={`/story/${story.storyId}`}>
+                <Link
+                  passHref
+                  href={`/story/${story.storyNameAlias}-${story.storyId}.html`}
+                >
                   <ChapterRelease key={index} story={story} />
                 </Link>
               </Grid>

@@ -41,6 +41,7 @@ export interface Story {
   likeCount: number;
   isHot: string;
   isTopFocus: string;
+  storyNameAlias: string | null;
 }
 
 export interface GetStoryDetailPayload {
@@ -71,6 +72,7 @@ export interface StoryDetail {
   author: string;
   catList: string[];
   tagList: string[];
+  storyNameAlias: string | null;
 }
 
 export interface Chapter {

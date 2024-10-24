@@ -1,5 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  async rewrites() {
+    return [
+      {
+        source: "/story/:alias-:storyId.html",
+        destination: "/story/:alias-:storyId",
+      },
+    ];
+  },
   reactStrictMode: true,
   images: {
     remotePatterns: [
