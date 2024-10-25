@@ -9,12 +9,12 @@ import {
   Divider,
   Pagination,
   Link as MuiLink,
+  Rating,
 } from "@mui/material";
 import Link from "next/link";
 import React, { useState } from "react";
 import Grid from "@mui/material/Grid2";
 import VisibilityIcon from "@mui/icons-material/Visibility";
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ImportContactsIcon from "@mui/icons-material/ImportContacts";
 import { ChapterTitle } from "./ChapterTitle";
 import { NovelCard } from "./NovelCard";
@@ -25,6 +25,7 @@ import {
   GetStoryDetailPayload,
   GetStoryListReferPayload,
 } from "@/models/story";
+import StoryRating from "./StoryRating";
 
 const fetcher = (url: string, payload: GetStoryDetailPayload) => {
   return storyApi.getDetail(payload);
@@ -130,6 +131,7 @@ export function NovelDetail() {
                       2.42M Views
                     </Typography>
                   </Stack>
+
                   <Stack direction="row" spacing={1} alignItems="center">
                     <ImportContactsIcon />
                     <Typography
@@ -142,6 +144,7 @@ export function NovelDetail() {
                     </Typography>
                   </Stack>
                 </Stack>
+                <StoryRating storyId={storyDetail?.story?.storyId || ""} />
                 <Stack direction="row" spacing={1}>
                   <Typography
                     variant="body2"
@@ -344,13 +347,24 @@ export function NovelDetail() {
             sx={{
               flexGrow: 1,
               display: "flex",
-              justifyContent: "center",
+              justifyContent: "start",
               alignItems: "center",
             }}
           >
             <Grid container spacing={2}>
               {storyRefer?.data?.map((story, index) => (
-                <Grid key={index} size={{ xs: 6, sm: 3, md: 2 }}>
+                <Grid
+                  key={index}
+                  size={
+                    storyRefer?.data?.length === 1
+                      ? 12
+                      : { xs: 6, sm: 3, md: 2 }
+                  }
+                  display="flex"
+                  justifyContent={
+                    storyRefer?.data?.length === 1 ? "center" : "flex-start"
+                  }
+                >
                   <Link
                     href={`/story/${story.storyNameAlias}-${story.storyId}.html`}
                     passHref

@@ -91,3 +91,8 @@ export interface GetStoryListReferPayload {
 export interface GetStoryListReferResponse {
   data: StoryDetail[];
 }
+
+export interface RatingPayload {
+  storyId: string;
+  ratingNumber: number;
+}

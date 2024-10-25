@@ -6,6 +6,7 @@ import {
   GetStoryDetailResponse,
   GetStoryListReferPayload,
   GetStoryListReferResponse,
+  RatingPayload,
 } from "@/models/story";
 
 export const storyApi = {
@@ -54,6 +55,11 @@ export const storyApi = {
   ): Promise<GetStoryByCategoryResponse> {
     return axiosClient
       .post<GetStoryByCategoryResponse>("/updates", payload)
+      .then((response) => response.data);
+  },
+  ratingStory(payload: RatingPayload): Promise<any> {
+    return axiosClient
+      .post<any>("/rating/voteStory", payload)
       .then((response) => response.data);
   },
 };
