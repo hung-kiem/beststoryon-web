@@ -4,11 +4,10 @@ import {
   Stack,
   Typography,
   Link as MuiLink,
+  Grid,
 } from "@mui/material";
-import * as React from "react";
+import React from "react";
 import Link from "next/link";
-import { NovelCard } from "./NovelCard";
-import Grid from "@mui/material/Grid2";
 import VerifiedIcon from "@mui/icons-material/Verified";
 import { ChapterRelease } from "./ChapterRelease";
 import { homeApi } from "@/api-client/home-api";
@@ -53,16 +52,16 @@ export function NewRelease() {
             container
             spacing={2}
             sx={{
-              width: "600px",
+              width: { xs: "600px", md: "1000px" },
             }}
           >
             {newReleaseList?.data?.map((story, index) => (
-              <Grid key={index} size={{ xs: 12, sm: 6 }}>
+              <Grid item key={index} xs={12} sm={6} md={4} spacing={2}>
                 <Link
                   passHref
                   href={`/story/${story.storyNameAlias}-${story.storyId}.html`}
                 >
-                  <ChapterRelease key={index} story={story} />
+                  <ChapterRelease story={story} />
                 </Link>
               </Grid>
             ))}

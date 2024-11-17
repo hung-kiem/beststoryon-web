@@ -9,14 +9,22 @@ interface ChapterReleaseProps {
 
 export function ChapterRelease({ story }: ChapterReleaseProps) {
   return (
-    <Stack direction="row" spacing={2} mt={2}>
+    <Stack
+      direction="row"
+      spacing={2}
+      mt={2}
+      sx={{
+        flexDirection: { xs: "row", md: "row" }, // Đảm bảo vẫn là hàng ngang
+        maxWidth: { xs: "100%", md: "100%" }, // Tăng độ rộng khi màn hình lớn
+      }}
+    >
       <Card
         sx={{
           borderRadius: 2,
           my: 1,
           height: "88px",
-          width: "72px",
-          minWidth: "72px",
+          width: { xs: "72px", md: "100px" }, // Tăng độ rộng khi màn hình lớn
+          minWidth: { xs: "72px", md: "100px" }, // Tăng minWidth khi màn hình lớn
         }}
       >
         <CardMedia
@@ -30,7 +38,7 @@ export function ChapterRelease({ story }: ChapterReleaseProps) {
       <Stack
         direction="column"
         sx={{
-          maxWidth: "calc(100% - 72px)",
+          maxWidth: { xs: "calc(100% - 72px)", md: "none" },
         }}
       >
         <Typography
