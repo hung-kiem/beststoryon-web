@@ -7,6 +7,7 @@ import useSWR from "swr";
 import { categoryApi, storyApi } from "@/api-client";
 import { CategoryButton } from "./CategoryButton";
 import Link from "next/link";
+import { LoadingOverlay } from "../loading/LoadingOverlay";
 
 const MILLISECOND_PER_HOUR = 1000 * 60 * 60;
 const statusArr = ["All", "Ongoing", "Completed"];
@@ -25,7 +26,7 @@ export function HotPage() {
       dedupingInterval: MILLISECOND_PER_HOUR,
     }
   );
-  const { data: stories, error } = useSWR(
+  const { data: stories, isValidating } = useSWR(
     [`/story/getHotList`, catCode, status, sortCondition, pageIndex],
 
     ([url, catCode, status, sortCondition, pageIndex]) =>
@@ -51,6 +52,7 @@ export function HotPage() {
 
   return (
     <Box>
+      <LoadingOverlay isLoading={isValidating} />
       <Container>
         <Stack direction="column" my={2} spacing={2}>
           <Stack direction="column" spacing={1}>

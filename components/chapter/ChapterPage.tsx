@@ -27,6 +27,7 @@ import { chapterApi, storyApi } from "@/api-client";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import { GetStoryDetailPayload } from "@/models/story";
+import { LoadingOverlay } from "../loading/LoadingOverlay";
 
 const style = {
   position: "absolute" as "absolute",
@@ -39,16 +40,11 @@ const style = {
   p: 4,
 };
 
-const fetcherStory = (url: string, payload: GetStoryDetailPayload) => {
-  return storyApi.getDetail(payload);
-};
+const fetchChapterDetail = (url: string, payload: GetChapterByIndexPayload) =>
+  chapterApi.getByIndex(payload);
 
-const fetchChapterByIndex = (
-  url: string,
-  payload: GetChapterByIndexPayload
-) => {
-  return chapterApi.getByIndex(payload);
-};
+const fetchStoryDetail = (url: string, payload: GetStoryDetailPayload) =>
+  storyApi.getDetail(payload);
 
 export const ChapterPage = () => {
   const router = useRouter();
@@ -71,17 +67,12 @@ export const ChapterPage = () => {
     }
   }, [index]);
 
-  const payload: GetChapterByIndexPayload | null = storyId
+  const chapterPayload: GetChapterByIndexPayload | null = storyId
     ? {
         storyId: id || "",
         chapterIndex: chapterIndex,
       }
     : null;
-
-  const { data: chapterDetail, error } = useSWR(
-    payload ? ["/chapter/getQuickByIndex", payload] : null,
-    ([url, payload]) => fetchChapterByIndex(url, payload)
-  );
 
   const storyPayload: GetStoryDetailPayload = {
     storyId: id || "",
@@ -89,10 +80,18 @@ export const ChapterPage = () => {
     pageSize: 5000,
   };
 
-  const { data: storyDetail } = useSWR(
-    storyPayload ? ["/story/getDetail", storyPayload] : null,
-    ([url, payload]) => fetcherStory(url, payload)
+  const { data: chapterDetail, isValidating: loadingChapterDetail } = useSWR(
+    chapterPayload ? ["/chapter/getQuickByIndex", chapterPayload] : null,
+    ([, payload]) => fetchChapterDetail("", payload)
   );
+
+  const { data: storyDetail, isValidating: loadingStoryDetail } = useSWR(
+    storyPayload ? ["/story/getDetail", storyPayload] : null,
+    ([, payload]) => fetchStoryDetail("", payload)
+  );
+
+  // Kết hợp trạng thái loading
+  const isLoading = loadingChapterDetail || loadingStoryDetail;
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -118,6 +117,7 @@ export const ChapterPage = () => {
 
   return (
     <Box>
+      <LoadingOverlay isLoading={isLoading} />
       <Container>
         <Stack direction="column" spacing={2} alignItems="center" mb={4}>
           <Typography variant="h4" fontWeight="bold">

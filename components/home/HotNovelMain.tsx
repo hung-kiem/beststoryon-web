@@ -12,10 +12,9 @@ import Grid from "@mui/material/Grid2";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import ImportContactsIcon from "@mui/icons-material/ImportContacts";
 import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
-import useSWR from "swr";
 import DOMPurify from "dompurify";
-import { homeApi } from "@/api-client/home-api";
 import Link from "next/link";
+import { StoryHome } from "@/models";
 
 function sanitizeHTML(content: string) {
   return {
@@ -105,14 +104,12 @@ function ChapterHot({ storyName, numberOfChapter }: ChapterHotProps) {
   );
 }
 
-const fetcher = () =>
-  homeApi.getHotTopList({
-    requestId: "1",
-  });
+interface HotTopListProps {
+  data: StoryHome[];
+}
 
-export function HotNovelMain() {
-  const { data: hotTopList } = useSWR("/home/getHotTopList", fetcher);
-  const firstStory = hotTopList?.data?.[0];
+export function HotNovelMain({ data }: HotTopListProps) {
+  const firstStory = data?.[0];
 
   return (
     <Box component="section" pt={2} pb={4}>
@@ -285,7 +282,7 @@ export function HotNovelMain() {
                   overflowY: "auto",
                 }}
               >
-                {hotTopList?.data?.slice(1).map((story, id) => (
+                {data?.slice(1).map((story, id) => (
                   <Link key={id} href={`/story/${story.storyId}`} passHref>
                     <ChapterHot
                       key={id}

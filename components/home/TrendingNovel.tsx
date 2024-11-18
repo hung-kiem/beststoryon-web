@@ -10,21 +10,17 @@ import Link from "next/link";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import { NovelCard } from "./NovelCard";
 import Grid from "@mui/material/Grid2";
-import { homeApi } from "@/api-client/home-api";
-import useSWR from "swr";
+import { StoryHome } from "@/models";
 
-const fetcher = () =>
-  homeApi.getTrendingList({
-    requestId: "1",
-  });
+interface TrendingProps {
+  data: StoryHome[];
+}
 
-export function TrendingNovel() {
-  const { data: trendingList } = useSWR("/home/getTrendingList", fetcher);
-
+export function TrendingNovel({ data }: TrendingProps) {
   return (
     <Box component="section" bgcolor={"background.default"} py={4}>
       <Container>
-        {trendingList?.data?.length !== 0 && (
+        {data?.length !== 0 && (
           <>
             <Stack
               direction="row"
@@ -44,7 +40,7 @@ export function TrendingNovel() {
             </Stack>
             <Box sx={{ flexGrow: 1 }}>
               <Grid container spacing={2}>
-                {trendingList?.data?.map((story, index) => (
+                {data?.map((story, index) => (
                   <Grid key={index} size={{ xs: 6, sm: 3, md: 2 }}>
                     <Link
                       passHref

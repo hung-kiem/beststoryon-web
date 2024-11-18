@@ -4,6 +4,7 @@ import { Grid } from "@mui/material";
 import Link from "next/link";
 import useSWR from "swr";
 import { tagApi } from "@/api-client";
+import { LoadingOverlay } from "../loading/LoadingOverlay";
 
 const fetcher = (firstLetter: string) =>
   tagApi.getTagByFirstLetter(firstLetter);
@@ -15,7 +16,7 @@ export function TagPage() {
     String.fromCharCode(65 + i)
   );
 
-  const { data: tags, error } = useSWR(selectedLetter, fetcher);
+  const { data: tags, isValidating } = useSWR(selectedLetter, fetcher);
 
   const handleLetterClick = (letter: string) => {
     setSelectedLetter(letter);
@@ -23,6 +24,7 @@ export function TagPage() {
 
   return (
     <Box>
+      <LoadingOverlay isLoading={isValidating} />
       <Container>
         <Stack direction="column" my={2} spacing={2}>
           <Stack

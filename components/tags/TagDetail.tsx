@@ -8,10 +8,12 @@ import { CategoryButton } from "./CategoryButton";
 import Link from "next/link";
 import { NovelCard } from "./NovelCard";
 import { useRouter } from "next/router";
+import { LoadingOverlay } from "../loading/LoadingOverlay";
 
 const MILLISECOND_PER_HOUR = 1000 * 60 * 60;
 const statusArr = ["All", "Ongoing", "Completed"];
 const sortByArr = ["Popular", "New", "Update"];
+
 export function TagDetail() {
   const [status, setStatus] = useState("All");
   const [sortCondition, setSortCondition] = useState("Popular");
@@ -19,7 +21,7 @@ export function TagDetail() {
   const router = useRouter();
   const { tagCode } = router.query;
 
-  const { data: stories, error } = useSWR(
+  const { data: stories, isValidating } = useSWR(
     [`/story/getNewReleaseList`, tagCode, status, sortCondition, pageIndex],
 
     ([url, tagCode, status, sortCondition, pageIndex]) =>
@@ -44,6 +46,7 @@ export function TagDetail() {
   };
   return (
     <Box>
+      <LoadingOverlay isLoading={isValidating} />
       <Container>
         <Stack direction="column" my={2} spacing={2}>
           <Stack direction="column" spacing={1}>

@@ -7,6 +7,7 @@ import useSWR from "swr";
 import { categoryApi, storyApi } from "@/api-client";
 import { CategoryButton } from "./CategoryButton";
 import Link from "next/link";
+import { LoadingOverlay } from "../loading/LoadingOverlay";
 
 const MILLISECOND_PER_HOUR = 1000 * 60 * 60;
 const statusArr = ["All", "Ongoing", "Completed"];
@@ -17,7 +18,7 @@ export function TrendingPage() {
   const [status, setStatus] = useState("All");
   const [sortCondition, setSortCondition] = useState("Popular");
   const [pageIndex, setPageIndex] = useState(1);
-  const { data: categories } = useSWR(
+  const { data: categories, isValidating: loadingCategory } = useSWR(
     `/category/getList`,
     categoryApi.getList,
     {
@@ -25,7 +26,7 @@ export function TrendingPage() {
       dedupingInterval: MILLISECOND_PER_HOUR,
     }
   );
-  const { data: stories, error } = useSWR(
+  const { data: stories, isValidating: loadingTrending } = useSWR(
     [`/story/getTrendingList`, catCode, status, sortCondition, pageIndex],
 
     ([url, catCode, status, sortCondition, pageIndex]) =>
@@ -42,6 +43,8 @@ export function TrendingPage() {
     }
   );
 
+  const isLoading = loadingCategory || loadingTrending;
+
   const handleChangePageIndex = (
     event: React.ChangeEvent<unknown>,
     value: number
@@ -51,6 +54,7 @@ export function TrendingPage() {
 
   return (
     <Box>
+      <LoadingOverlay isLoading={isLoading} />
       <Container>
         <Stack direction="column" my={2} spacing={2}>
           <Stack direction="column" spacing={1}>

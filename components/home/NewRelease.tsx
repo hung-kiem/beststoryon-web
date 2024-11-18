@@ -10,17 +10,13 @@ import React from "react";
 import Link from "next/link";
 import VerifiedIcon from "@mui/icons-material/Verified";
 import { ChapterRelease } from "./ChapterRelease";
-import { homeApi } from "@/api-client/home-api";
-import useSWR from "swr";
+import { StoryHome } from "@/models";
 
-const fetcher = () =>
-  homeApi.getNewReleaseList({
-    requestId: "1",
-  });
+interface NewReleaseProps {
+  data: StoryHome[];
+}
 
-export function NewRelease() {
-  const { data: newReleaseList } = useSWR("/home/getNewReleaseList", fetcher);
-
+export function NewRelease({ data }: NewReleaseProps) {
   return (
     <Box component="section" bgcolor={"background.default"} py={4}>
       <Container>
@@ -55,7 +51,7 @@ export function NewRelease() {
               width: { xs: "600px", md: "1000px" },
             }}
           >
-            {newReleaseList?.data?.map((story, index) => (
+            {data?.map((story, index) => (
               <Grid item key={index} xs={12} sm={6} md={4} spacing={2}>
                 <Link
                   passHref

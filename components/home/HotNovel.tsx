@@ -10,17 +10,13 @@ import Link from "next/link";
 import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 import { NovelCard } from "./NovelCard";
 import Grid from "@mui/material/Grid2";
-import { homeApi } from "@/api-client/home-api";
-import useSWR from "swr";
+import { StoryHome } from "@/models";
 
-const fetcher = () =>
-  homeApi.getHotList({
-    requestId: "1",
-  });
+interface HotProps {
+  data: StoryHome[];
+}
 
-export function HotNovel() {
-  const { data: hotList } = useSWR("/home/getHotList", fetcher);
-
+export function HotNovel({ data }: HotProps) {
   return (
     <Box component="section" bgcolor={"background.default"} py={4}>
       <Container>
@@ -42,7 +38,7 @@ export function HotNovel() {
         </Stack>
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={2}>
-            {hotList?.data?.map((story, index) => (
+            {data?.map((story, index) => (
               <Grid key={index} size={{ xs: 6, sm: 3, md: 2 }}>
                 <Link
                   passHref

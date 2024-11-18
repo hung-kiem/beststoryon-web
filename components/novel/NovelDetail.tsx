@@ -26,6 +26,7 @@ import {
   GetStoryListReferPayload,
 } from "@/models/story";
 import StoryRating from "./StoryRating";
+import { LoadingOverlay } from "../loading/LoadingOverlay";
 
 const fetcher = (url: string, payload: GetStoryDetailPayload) => {
   return storyApi.getDetail(payload);
@@ -54,15 +55,19 @@ export function NovelDetail() {
     storyId: id || "",
   };
 
-  const { data: storyDetail } = useSWR(
+  const { data: storyDetail, isValidating: loadingStoryDetail } = useSWR(
     ["/story/getDetail", payload],
     ([url, payload]) => fetcher(url, payload)
   );
 
-  const { data: storyRefer } = useSWR(
+  // Fetch dữ liệu danh sách truyện gợi ý
+  const { data: storyRefer, isValidating: loadingStoryRefer } = useSWR(
     ["/story/getListRefer", payloadRefer],
     ([url, payload]) => fetcherRefer(url, payload)
   );
+
+  // Kết hợp trạng thái loading
+  const isLoading = loadingStoryDetail || loadingStoryRefer;
 
   const toggleDescription = () => {
     setShowFullDescription(!showFullDescription);
@@ -91,6 +96,7 @@ export function NovelDetail() {
 
   return (
     <Box>
+      <LoadingOverlay isLoading={isLoading} />
       <Container>
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={2}>
