@@ -1,120 +1,113 @@
-import { Container, Stack, Typography } from "@mui/material";
+import { Container, Stack, Typography, Grid } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
-import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
-import EmailIcon from "@mui/icons-material/Email";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
+import Link from "next/link";
+import useSWR from "swr";
+import { categoryApi } from "@/api-client";
+
+const MILLISECOND_PER_HOUR = 1000 * 60 * 60;
 
 export function Footer() {
+  const { data: categories, isValidating: loadingList } = useSWR(
+    `/category/getList`,
+    categoryApi.getList,
+    {
+      revalidateOnFocus: false,
+      dedupingInterval: MILLISECOND_PER_HOUR,
+    }
+  );
+
   return (
     <Box
       component="footer"
       py={5}
-      textAlign="center"
       sx={{
         backgroundColor: "background.paper",
+        color: "#FFFFFF",
       }}
     >
       <Container>
-        <Stack
-          direction={["column", "row"]}
-          sx={{
-            color: "#FFFFFF",
-          }}
-          display="flex"
+        {/* Tiêu đề NovelsNook */}
+        <Typography
+          variant="h4"
+          fontWeight="bold"
+          textAlign={{ xs: "center", md: "left" }}
         >
-          <Stack
-            direction="column"
-            spacing={1}
-            flex={1}
-            alignItems="flex-start"
-          >
-            <Typography variant="h4" fontWeight="bold">
-              BestStoryOn
-            </Typography>
-            <Stack direction="row" spacing={1}>
-              <LocalPhoneIcon />
-              <Typography fontSize="small">0123456789</Typography>
-            </Stack>
-            <Stack direction="row" spacing={1}>
-              <EmailIcon />
-              <Typography fontSize="small">example@gmail.com</Typography>
-            </Stack>
-            <Stack direction="row" spacing={1}>
-              <LocationOnIcon />
-              <Typography fontSize="small">
-                1234 Đường 567 phường 789 quận 12
-              </Typography>
-            </Stack>
-          </Stack>
-          <Stack
-            direction={{ sx: "column", md: "row" }}
-            flex={1}
-            mt={{ xs: 4, sm: 0, md: 2 }}
-            spacing={4}
-          >
-            <Stack
-              direction="row"
-              spacing={4}
-              justifyContent={["space-between", "flex-start"]}
-            >
-              <Stack
-                direction="column"
-                textAlign="start"
-                spacing={1}
-                width={112}
-              >
-                <Typography fontWeight="bold" variant="body1">
-                  BestStoryOn
+          NovelsNook
+        </Typography>
+
+        <Stack
+          mt={4}
+          direction="row"
+          spacing={4}
+          justifyContent="space-between"
+          alignItems="flex-start"
+          flexWrap="wrap" // Cho phép bọc cột khi không đủ không gian
+        >
+          {/* Menu Footer và Category Gộp Lại trong Grid */}
+          <Grid container spacing={2} sx={{ flex: 1, minWidth: "200px" }}>
+            {/* Menu Footer */}
+            <Grid item xs={6} md={4}>
+              <Link href="/" passHref>
+                <Typography variant="caption" component="a" color="inherit">
+                  Home
                 </Typography>
-                <Typography variant="caption">Privacy Policy</Typography>
-                <Typography variant="caption">Terms of Service</Typography>
-                <Typography variant="caption">DMCA Notices</Typography>
-              </Stack>
-              <Stack
-                direction="column"
-                textAlign="start"
-                width={88}
-                spacing={1}
-              >
-                <Typography fontWeight="bold" variant="body1">
+              </Link>
+            </Grid>
+            <Grid item xs={6} md={4}>
+              <Link href="/" passHref>
+                <Typography variant="caption" component="a" color="inherit">
                   Contact Us
                 </Typography>
-                <Typography variant="caption">Facebook</Typography>
-                <Typography variant="caption">Instagram</Typography>
-                <Typography variant="caption">Linkedin</Typography>
-              </Stack>
-            </Stack>
-            <Stack
-              direction="column"
-              textAlign="start"
-              width={{ sm: "100%", md: 280 }}
-              spacing={1}
-              mt={{ xs: 4, md: 0 }}
-            >
-              <Typography fontWeight="bold" variant="body1">
-                Tags
-              </Typography>
-              <Stack direction="row" spacing={1} justifyContent="space-between">
-                <Stack direction="column" spacing={1}>
-                  <Typography variant="caption">Novel Ranking</Typography>
-                  <Typography variant="caption">Latest Chapters</Typography>
-                  <Typography variant="caption">Latest Novels</Typography>
-                </Stack>
-                <Stack direction="column" spacing={1}>
-                  <Typography variant="caption">Romance</Typography>
-                  <Typography variant="caption">Fantasy</Typography>
-                  <Typography variant="caption">Sci-fi</Typography>
-                </Stack>
-                <Stack direction="column" spacing={1}>
-                  <Typography variant="caption">Slice of Life</Typography>
-                  <Typography variant="caption">Supernatural</Typography>
-                  <Typography variant="caption">Video Games</Typography>
-                </Stack>
-              </Stack>
-            </Stack>
-          </Stack>
+              </Link>
+            </Grid>
+            <Grid item xs={6} md={4}>
+              <Link href="/" passHref>
+                <Typography variant="caption" component="a" color="inherit">
+                  Term Of Use
+                </Typography>
+              </Link>
+            </Grid>
+            <Grid item xs={6} md={4}>
+              <Link href="/" passHref>
+                <Typography variant="caption" component="a" color="inherit">
+                  Cookie Policy
+                </Typography>
+              </Link>
+            </Grid>
+            <Grid item xs={6} md={4}>
+              <Link href="/" passHref>
+                <Typography variant="caption" component="a" color="inherit">
+                  DCMA
+                </Typography>
+              </Link>
+            </Grid>
+
+            {/* Danh sách Category */}
+            {!loadingList && categories && (
+              <>
+                {categories.map((category, index) => (
+                  <Grid item xs={6} md={4} key={index}>
+                    <Link href="/" passHref>
+                      <Typography
+                        variant="caption"
+                        component="a"
+                        color="inherit"
+                      >
+                        {category.catName}
+                      </Typography>
+                    </Link>
+                  </Grid>
+                ))}
+              </>
+            )}
+          </Grid>
         </Stack>
+
+        {/* Phần Bản quyền */}
+        <Typography variant="body2" color="inherit" mt={4} textAlign="center">
+          © Copyright NovelsNook.Com. All Rights Reserved.
+        </Typography>
       </Container>
     </Box>
   );

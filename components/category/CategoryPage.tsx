@@ -7,7 +7,6 @@ import useSWR from "swr";
 import { categoryApi } from "@/api-client/category-api";
 import { CategoryButton } from "./CategoryButton";
 import { storyApi } from "@/api-client/story-api";
-import { url } from "inspector";
 import { LoadingOverlay } from "../loading/LoadingOverlay";
 
 const MILLISECOND_PER_HOUR = 1000 * 60 * 60;
