@@ -7,6 +7,7 @@ import {
   TextField,
   Autocomplete,
   AutocompleteInputChangeReason,
+  IconButton,
 } from "@mui/material";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import { ROUTE_LIST } from "./routes";
@@ -20,6 +21,11 @@ import { useDebounce } from "use-debounce";
 import { SearchPayload } from "@/models";
 import { searchApi } from "@/api-client";
 import useSWR from "swr";
+import CloseIcon from "@mui/icons-material/Close";
+import HomeIcon from "@mui/icons-material/Home";
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
+import NewReleasesIcon from "@mui/icons-material/NewReleases";
 
 const fetcherSearch = (url: string, payload: SearchPayload) => {
   return searchApi.search(payload);
@@ -72,6 +78,11 @@ export function HeaderMobile() {
     setOpen(!open);
   };
 
+  const handleMenuClick = (path: string) => {
+    router.push(path);
+    setOpen(false); // Đóng menu
+  };
+
   return (
     <Box
       display={{
@@ -122,7 +133,16 @@ export function HeaderMobile() {
                       borderColor: "#1565c0",
                     },
                     borderRadius: "6px",
-                    width: "100%",
+                    height: "40px", // Giảm chiều cao của ô tìm kiếm
+                    fontSize: "14px", // Giảm kích thước font cho phù hợp
+                    padding: "0 12px", // Thêm padding ngang
+                    "& .MuiInputBase-input": {
+                      padding: "10px 0", // Căn chỉnh padding dọc để chữ được căn giữa
+                    },
+                  },
+                  "& .MuiInputLabel-root": {
+                    top: "-4px", // Điều chỉnh vị trí của label để căn giữa tốt hơn
+                    fontSize: "14px",
                   },
                 }}
               />
@@ -158,25 +178,59 @@ export function HeaderMobile() {
             onOpen={toggleDrawer()}
             PaperProps={{
               style: {
+                width: "40vw", // Tăng chiều rộng của menu
+                maxWidth: "400px", // Đặt chiều rộng tối đa cho menu
                 backgroundColor:
                   theme.palette.mode === "light" ? "#EDF7FA" : "#0F172A",
               },
             }}
           >
-            {ROUTE_LIST.map((route) => (
-              <Link key={route.path} href={route.path} passHref legacyBehavior>
-                <MuiLink
-                  sx={{ ml: 2, mr: 2, mt: 2 }}
-                  underline="none"
-                  className={clsx({
-                    active: route.path === router.pathname,
-                  })}
-                  color="text.primary"
-                >
-                  {route.label}
-                </MuiLink>
-              </Link>
-            ))}
+            <Box sx={{ p: 2 }}>
+              {/* Nút X để đóng menu */}
+              <IconButton
+                onClick={toggleDrawer()}
+                sx={{
+                  position: "absolute",
+                  top: 10,
+                  right: 10,
+                }}
+                aria-label="close"
+              >
+                <CloseIcon />
+              </IconButton>
+
+              {/* Danh sách các mục menu, mỗi mục có một icon */}
+              <Box mt={5}>
+                {ROUTE_LIST.map((route, index) => (
+                  <Link
+                    key={route.path}
+                    href={route.path}
+                    passHref
+                    legacyBehavior
+                  >
+                    <MuiLink
+                      sx={{ display: "flex", alignItems: "center", mb: 2 }}
+                      underline="none"
+                      className={clsx({
+                        active: route.path === router.pathname,
+                      })}
+                      color="text.primary"
+                      onClick={() => handleMenuClick(route.path)}
+                    >
+                      {/* Thêm icon trước nhãn menu */}
+                      <Icon sx={{ mr: 1 }}>
+                        {index === 0 && <HomeIcon />}
+                        {index === 1 && <FormatListBulletedIcon />}
+                        {index === 2 && <LocalOfferIcon />}
+                        {index === 3 && <NewReleasesIcon />}
+                        {/* Thay đổi icon theo ý muốn */}
+                      </Icon>
+                      {route.label}
+                    </MuiLink>
+                  </Link>
+                ))}
+              </Box>
+            </Box>
           </SwipeableDrawer>
         </Stack>
       </Container>
