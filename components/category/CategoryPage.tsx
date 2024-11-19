@@ -9,6 +9,7 @@ import { CategoryButton } from "./CategoryButton";
 import { storyApi } from "@/api-client/story-api";
 import { LoadingOverlay } from "../loading/LoadingOverlay";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 const MILLISECOND_PER_HOUR = 1000 * 60 * 60;
 const statusArr = ["ALL", "Ongoing", "Completed"];
@@ -141,12 +142,17 @@ export function CategoryPage() {
             <Grid container spacing={2}>
               {stories?.data?.map((story) => (
                 <Grid key={story.storyId} size={{ xs: 6, sm: 3, md: 2 }}>
-                  <NovelCard
-                    storyName={story.storyName}
-                    rating={story.likeCount}
-                    status={story.status}
-                    chapterNumber={story.chapterNumber}
-                  />
+                  <Link
+                    passHref
+                    href={`/story/${story.storyNameAlias}-${story.storyId}.html`}
+                  >
+                    <NovelCard
+                      storyName={story.storyName}
+                      rating={story.likeCount}
+                      status={story.status}
+                      chapterNumber={story.chapterNumber}
+                    />
+                  </Link>
                 </Grid>
               ))}
             </Grid>
