@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import useSWR from "swr";
 import { categoryApi } from "@/api-client";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight"; // Icon mũi tên trỏ phải không có đuôi
 
 const MILLISECOND_PER_HOUR = 1000 * 60 * 60;
 
@@ -42,65 +43,65 @@ export function Footer() {
           spacing={4}
           justifyContent="space-between"
           alignItems="flex-start"
-          flexWrap="wrap" // Cho phép bọc cột khi không đủ không gian
+          flexWrap="wrap"
         >
-          {/* Menu Footer và Category Gộp Lại trong Grid */}
-          <Grid container spacing={2} sx={{ flex: 1, minWidth: "200px" }}>
+          {/* Menu Footer và Categories */}
+          <Grid container spacing={2}>
             {/* Menu Footer */}
-            <Grid item xs={6} md={4}>
-              <Link href="/" passHref>
-                <Typography variant="caption" component="a" color="inherit">
-                  Home
-                </Typography>
-              </Link>
-            </Grid>
-            <Grid item xs={6} md={4}>
-              <Link href="/" passHref>
-                <Typography variant="caption" component="a" color="inherit">
-                  Contact Us
-                </Typography>
-              </Link>
-            </Grid>
-            <Grid item xs={6} md={4}>
-              <Link href="/" passHref>
-                <Typography variant="caption" component="a" color="inherit">
-                  Term Of Use
-                </Typography>
-              </Link>
-            </Grid>
-            <Grid item xs={6} md={4}>
-              <Link href="/" passHref>
-                <Typography variant="caption" component="a" color="inherit">
-                  Cookie Policy
-                </Typography>
-              </Link>
-            </Grid>
-            <Grid item xs={6} md={4}>
-              <Link href="/" passHref>
-                <Typography variant="caption" component="a" color="inherit">
-                  DCMA
-                </Typography>
-              </Link>
-            </Grid>
-
-            {/* Danh sách Category */}
-            {!loadingList && categories && (
-              <>
-                {categories.map((category, index) => (
-                  <Grid item xs={6} md={4} key={index}>
-                    <Link href="/" passHref>
-                      <Typography
-                        variant="caption"
-                        component="a"
-                        color="inherit"
-                      >
-                        {category.catName}
-                      </Typography>
-                    </Link>
-                  </Grid>
-                ))}
-              </>
+            {["Home", "Contact Us", "Term Of Use", "Cookie Policy", "DCMA"].map(
+              (item, index) => (
+                <Grid item xs={6} md={4} key={index}>
+                  <Link href="/" passHref>
+                    <Typography
+                      variant="caption"
+                      color="inherit"
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        textDecoration: "underline", // Gạch chân
+                        // color: "#0047AB", // Màu chữ xanh đậm
+                        "&:hover": {
+                          color: "#002B5C", // Màu xanh đậm hơn khi hover
+                        },
+                      }}
+                    >
+                      <ChevronRightIcon fontSize="small" sx={{ mr: 1 }} />{" "}
+                      {/* Thêm icon */}
+                      {item}
+                    </Typography>
+                  </Link>
+                </Grid>
+              )
             )}
+
+            {/* Categories từ API */}
+            {categories &&
+              categories.map((category, index) => (
+                <Grid item xs={6} md={4} key={index}>
+                  <Link
+                    href={`/categories?catCode=${category.catCode}`}
+                    passHref
+                  >
+                    <Typography
+                      variant="caption"
+                      color="inherit"
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        textDecoration: "underline", // Gạch chân
+                        // color: "#0047AB", // Màu chữ xanh đậm
+                        "&:hover": {
+                          color: "#002B5C", // Màu xanh đậm hơn khi hover
+                        },
+                      }}
+                    >
+                      <ChevronRightIcon fontSize="small" sx={{ mr: 1 }} />{" "}
+                      {/* Thêm icon */}
+                      {category.catName}
+                    </Typography>
+                  </Link>
+                </Grid>
+              ))}
           </Grid>
         </Stack>
 

@@ -1,5 +1,5 @@
 import { Box, Container, Stack, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Grid from "@mui/material/Grid2";
 import { NovelCard } from "./NovelCard";
 import Pagination from "@mui/material/Pagination";
@@ -8,16 +8,28 @@ import { categoryApi } from "@/api-client/category-api";
 import { CategoryButton } from "./CategoryButton";
 import { storyApi } from "@/api-client/story-api";
 import { LoadingOverlay } from "../loading/LoadingOverlay";
+import { useRouter } from "next/router";
 
 const MILLISECOND_PER_HOUR = 1000 * 60 * 60;
 const statusArr = ["ALL", "Ongoing", "Completed"];
 const sortByArr = ["Popular", "New", "Update"];
 
 export function CategoryPage() {
+  const router = useRouter();
   const [catCode, setCatCode] = useState("ALL");
   const [status, setStatus] = useState("ALL");
   const [sortCondition, setSortCondition] = useState("Popular");
   const [pageIndex, setPageIndex] = useState(1);
+
+  // Kiểm tra query param và cập nhật catCode
+  useEffect(() => {
+    if (router.query.catCode) {
+      const code = router.query.catCode as string;
+      setCatCode(code);
+    }
+    router.replace(router.pathname, undefined, { shallow: true });
+  }, [router.query.catCode]);
+
   const { data: categories, isValidating: loadingList } = useSWR(
     `/category/getList`,
     categoryApi.getList,
@@ -26,9 +38,9 @@ export function CategoryPage() {
       dedupingInterval: MILLISECOND_PER_HOUR,
     }
   );
+
   const { data: stories, isValidating: loadingDetail } = useSWR(
     [`/category/getListByCatCode`, catCode, status, sortCondition, pageIndex],
-
     ([url, catCode, status, sortCondition, pageIndex]) =>
       storyApi.getListByCatId({
         catCode,
@@ -42,6 +54,7 @@ export function CategoryPage() {
       dedupingInterval: MILLISECOND_PER_HOUR,
     }
   );
+
   const isLoading = loadingList || loadingDetail;
 
   const handleChangePageIndex = (
