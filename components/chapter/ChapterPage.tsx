@@ -10,7 +10,7 @@ import {
   Stack,
   Typography,
   MenuItem,
-  Icon,
+  Link as MuiLink,
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import HomeIcon from "@mui/icons-material/Home";
@@ -21,6 +21,8 @@ import TextIncreaseIcon from "@mui/icons-material/TextIncrease";
 import TextDecreaseIcon from "@mui/icons-material/TextDecrease";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useTheme } from "@mui/material/styles";
 import { useRouter } from "next/router";
 import useSWR from "swr";
@@ -28,7 +30,13 @@ import { useThemeContext } from "@context/theme-context";
 import { chapterApi, storyApi } from "@/api-client";
 import { LoadingOverlay } from "../loading/LoadingOverlay";
 import { GetChapterByIndexPayload } from "@/models/chapter";
-import { GetStoryDetailPayload } from "@/models/story";
+import {
+  GetStoryDetailPayload,
+  GetStoryListReferPayload,
+} from "@/models/story";
+import Link from "next/link";
+import Grid from "@mui/material/Grid2";
+import { NovelCard } from "./NovelCard";
 
 const style = {
   position: "absolute" as "absolute",
@@ -47,6 +55,10 @@ const fetchChapterDetail = (url: string, payload: GetChapterByIndexPayload) =>
 const fetchStoryDetail = (url: string, payload: GetStoryDetailPayload) =>
   storyApi.getDetail(payload);
 
+const fetcherRefer = (url: string, payload: GetStoryListReferPayload) => {
+  return storyApi.getListRefer(payload);
+};
+
 export const ChapterPage = () => {
   const router = useRouter();
   const { storyId, index = [1] } = router.query;
@@ -55,23 +67,46 @@ export const ChapterPage = () => {
     : [];
   const id = idParts.pop();
   const theme = useTheme();
-  const { mode, toggleTheme } = useThemeContext();
-
+  const { mode, setTheme } = useThemeContext();
   const [open, setOpen] = useState(false);
-  const [chapterIndex, setChapterIndex] = useState(Number(index[0]) || 1);
-  const [fontSize, setFontSize] = useState(16);
-  const [fontFamily, setFontFamily] = useState("Default");
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  const [chapterIndex, setChapterIndex] = useState(() => {
+    if (typeof window !== "undefined") {
+      const storedChapterIndex = localStorage.getItem("chapterIndex");
+      return storedChapterIndex ? Number(storedChapterIndex) : 1;
+    }
+    return 1;
+  });
+
+  const [fontSize, setFontSize] = useState(() => {
+    if (typeof window !== "undefined") {
+      const storedFontSize = localStorage.getItem("fontSize");
+      return storedFontSize ? Number(storedFontSize) : 16;
+    }
+    return 16;
+  });
+
+  const [fontFamily, setFontFamily] = useState(() => {
+    if (typeof window !== "undefined") {
+      const storedFontFamily = localStorage.getItem("fontFamily");
+      return storedFontFamily || "Default";
+    }
+    return "Default";
+  });
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const storedFontSize = localStorage.getItem("fontSize");
       const storedFontFamily = localStorage.getItem("fontFamily");
-      if (storedFontSize) {
-        setFontSize(Number(storedFontSize));
+      const storedMode = localStorage.getItem("themeMode");
+
+      if (storedFontSize) setFontSize(Number(storedFontSize));
+      if (storedFontFamily) setFontFamily(storedFontFamily);
+      if (storedMode === "light" || storedMode === "dark") {
+        setTheme(storedMode as "light" | "dark");
       }
-      if (storedFontFamily) {
-        setFontFamily(storedFontFamily);
-      }
+      setIsInitialized(true);
     }
   }, []);
 
@@ -79,8 +114,9 @@ export const ChapterPage = () => {
     if (typeof window !== "undefined") {
       localStorage.setItem("fontSize", fontSize.toString());
       localStorage.setItem("fontFamily", fontFamily);
+      localStorage.setItem("theme", mode);
     }
-  }, [fontSize, fontFamily]);
+  }, [fontSize, fontFamily, mode]);
 
   useEffect(() => {
     if (index && Array.isArray(index)) {
@@ -108,6 +144,14 @@ export const ChapterPage = () => {
     ([, payload]) => fetchStoryDetail("", payload)
   );
 
+  const payloadRefer: GetStoryListReferPayload = {
+    storyId: id || "",
+  };
+  const { data: storyRefer, isValidating: loadingStoryRefer } = useSWR(
+    ["/story/getListRefer", payloadRefer],
+    ([url, payload]) => fetcherRefer(url, payload)
+  );
+
   const isLoading = loadingChapterDetail || loadingStoryDetail;
 
   const handleOpen = () => setOpen(true);
@@ -116,18 +160,31 @@ export const ChapterPage = () => {
   const handleChange = (event: SelectChangeEvent) => {
     const newIndex = Number(event.target.value);
     setChapterIndex(newIndex);
+    updatePathParam(newIndex);
   };
 
   const handleNextChapter = () => {
     if (chapterIndex < (storyDetail?.totalRecord || 1)) {
       setChapterIndex((prevIndex) => prevIndex + 1);
+      updatePathParam(chapterIndex + 1);
     }
   };
 
   const handlePrevChapter = () => {
     if (chapterIndex > 1) {
       setChapterIndex((prevIndex) => prevIndex - 1);
+      updatePathParam(chapterIndex - 1);
     }
+  };
+
+  const updatePathParam = (newIndex: number) => {
+    router.push(
+      {
+        pathname: `/story/${storyId}/chapter/${newIndex}.html`,
+      },
+      undefined,
+      { shallow: true }
+    );
   };
 
   const increaseFontSize = () => setFontSize((prevSize) => prevSize + 2);
@@ -141,9 +198,18 @@ export const ChapterPage = () => {
     <Box>
       <LoadingOverlay isLoading={isLoading} />
       <Container>
-        <Stack direction="column" spacing={2} alignItems="center" mb={4}>
-          <Typography variant="h4" fontWeight="bold">
+        <Stack
+          direction="column"
+          spacing={2}
+          alignItems="center"
+          mb={4}
+          textAlign="left"
+        >
+          <Typography variant="h4" fontWeight="bold" width="100%">
             {chapterDetail?.data?.storyName}
+          </Typography>
+          <Typography variant="h4" fontWeight="bold" width="100%">
+            {chapterDetail?.data.chapterName}
           </Typography>
           <Stack
             direction="row"
@@ -164,16 +230,9 @@ export const ChapterPage = () => {
                 justifyContent: "center", // Căn giữa theo chiều ngang
                 alignItems: "center", // Căn giữa theo chiều dọc
               }}
-              onClick={() => router.push("/")}
+              onClick={() => router.push(`/story/${storyId}`)}
             >
-              <Icon
-                sx={{
-                  fontSize: "24px",
-                  alignItems: "center",
-                }}
-              >
-                <HomeIcon />
-              </Icon>
+              <HomeIcon sx={{ fontSize: "24px" }} />
             </Button>
             <Button
               onClick={handleOpen}
@@ -183,18 +242,10 @@ export const ChapterPage = () => {
                 color: "secondary.contrastText",
                 backgroundColor: "background.paper",
                 height: "40px", // Giảm chiều cao
-                // padding: "0 12px", // Thêm padding
                 borderRadius: "8px", // Bo góc
               }}
             >
-              <Icon
-                sx={{
-                  fontSize: "24px",
-                  alignItems: "center",
-                }}
-              >
-                <SettingsIcon />
-              </Icon>
+              <SettingsIcon sx={{ fontSize: "24px" }} />
             </Button>
           </Stack>
           <Stack
@@ -214,19 +265,11 @@ export const ChapterPage = () => {
                 borderRadius: "8px", // Bo góc
                 justifyContent: "center", // Căn giữa theo chiều ngang
                 alignItems: "center", // Căn giữa theo chiều dọc
-
                 display: { xs: "none", sm: "block" },
               }}
-              onClick={() => router.push("/")}
+              onClick={() => router.push(`/story/${storyId}`)}
             >
-              <Icon
-                sx={{
-                  fontSize: "24px",
-                  alignItems: "center",
-                }}
-              >
-                <HomeIcon />
-              </Icon>
+              <HomeIcon sx={{ fontSize: "24px", height: "100%" }} />
             </Button>
             <Button
               variant="outlined"
@@ -250,56 +293,69 @@ export const ChapterPage = () => {
                   height: "40px", // Căn chỉnh chiều cao của input
                   borderRadius: "8px", // Bo góc để phù hợp với button
                   padding: "0 12px", // Thêm padding cho hợp lý
+                  "& .MuiInputBase-input": {
+                    // color: theme.palette.text.primary, // Màu chữ trong select
+                  },
+                  "& .MuiSvgIcon-root": {
+                    color: theme.palette.text.primary, // Màu của icon dropdown
+                  },
                 },
               }}
             >
               <InputLabel
                 id="chapter-select-label"
                 sx={{
-                  top: "-6px", // Điều chỉnh vị trí của label
+                  top: "-6px",
                 }}
               >
                 Chapter
               </InputLabel>
-              <Select
-                labelId="chapter-select-label"
-                id="chapter-select"
-                value={chapterIndex.toString()}
-                label="Chapter"
-                onChange={handleChange}
-                color="primary"
-                sx={{
-                  height: "40px", // Giảm chiều cao của select
-                  borderRadius: "8px", // Bo góc cho select
-                }}
-                MenuProps={{
-                  PaperProps: {
-                    sx: {
-                      "& .MuiMenuItem-root": {
-                        backgroundColor: theme.palette.background.default,
-                        "&:hover": {
-                          backgroundColor: theme.palette.action.hover,
+              {isInitialized && (
+                <Select
+                  labelId="chapter-select-label"
+                  id="chapter-select"
+                  value={chapterIndex.toString()}
+                  label="Chapter"
+                  onChange={handleChange}
+                  color="primary"
+                  sx={{
+                    height: "40px", // Giảm chiều cao của select
+                    borderRadius: "8px", // Bo góc cho select
+                    "& .MuiSelect-select": {
+                      // color: theme.palette.text.primary, // Màu chữ khi chọn
+                    },
+                    color: mode === "light" ? "#0F172A" : "#FFFFFF",
+                  }}
+                  MenuProps={{
+                    PaperProps: {
+                      sx: {
+                        "& .MuiMenuItem-root": {
+                          backgroundColor: theme.palette.background.default,
+                          color: theme.palette.text.primary,
+                          "&:hover": {
+                            backgroundColor: theme.palette.action.hover,
+                          },
                         },
                       },
                     },
-                  },
-                  MenuListProps: {
-                    sx: {
-                      py: 0,
+                    MenuListProps: {
+                      sx: {
+                        py: 0,
+                      },
                     },
-                  },
-                }}
-              >
-                {storyDetail?.totalRecord &&
-                  Array.from(
-                    { length: storyDetail.totalRecord },
-                    (_, index) => (
-                      <MenuItem key={index + 1} value={index + 1}>
-                        Chapter {index + 1}
-                      </MenuItem>
-                    )
-                  )}
-              </Select>
+                  }}
+                >
+                  {storyDetail?.totalRecord &&
+                    Array.from(
+                      { length: storyDetail.totalRecord },
+                      (_, index) => (
+                        <MenuItem key={index + 1} value={index + 1}>
+                          Chapter {index + 1}
+                        </MenuItem>
+                      )
+                    )}
+                </Select>
+              )}
             </FormControl>
             <Button
               variant="outlined"
@@ -323,122 +379,313 @@ export const ChapterPage = () => {
                 color: "secondary.contrastText",
                 backgroundColor: "background.paper",
                 height: "40px", // Giảm chiều cao
-                // padding: "0 12px", // Thêm padding
                 borderRadius: "8px", // Bo góc
+                alignItems: "center", // Căn giữa theo chiều dọc
                 display: { xs: "none", sm: "block" },
               }}
             >
-              <Icon
-                sx={{
-                  fontSize: "24px",
-                  alignItems: "center",
-                }}
-              >
-                <SettingsIcon />
-              </Icon>
+              <SettingsIcon sx={{ fontSize: "24px", height: "100%" }} />
             </Button>
           </Stack>
-          <Typography
-            variant="body2"
-            textAlign="left"
-            sx={{
-              fontSize: `${fontSize}px`,
-              fontFamily: fontFamily === "Default" ? "inherit" : fontFamily,
-            }}
-            dangerouslySetInnerHTML={{
-              __html: chapterDetail?.data.content || "",
-            }}
-          ></Typography>
-        </Stack>
-        <Modal open={open} onClose={handleClose}>
-          <Stack direction="column" sx={style} spacing={2}>
-            <Button
-              variant="outlined"
-              onClick={decreaseFontSize}
+          {isInitialized && (
+            <Content
+              content={chapterDetail?.data?.content || ""}
+              fontSize={fontSize}
+              fontFamily={fontFamily}
+            />
+          )}
+          <div style={{ marginTop: "32px" }}>
+            <Stack
+              direction="row"
+              spacing={1}
               sx={{
-                backgroundColor: "background.paper",
-                color: "secondary.contrastText",
-                height: "36px", // Giảm chiều cao
-                padding: "0 8px", // Thêm padding
-                borderRadius: "6px", // Bo góc
+                height: "56px",
               }}
             >
-              <TextDecreaseIcon />
-            </Button>
-            <Button
-              variant="outlined"
-              onClick={increaseFontSize}
-              sx={{
-                backgroundColor: "background.paper",
-                color: "secondary.contrastText",
-                height: "36px", // Giảm chiều cao
-                padding: "0 8px", // Thêm padding
-                borderRadius: "6px", // Bo góc
-              }}
-            >
-              <TextIncreaseIcon />
-            </Button>
-            <FormControl>
-              <InputLabel id="font-family-select-label">Font</InputLabel>
-              <Select
-                labelId="font-family-select-label"
-                value={fontFamily}
-                onChange={handleFontFamilyChange}
-                label="Font"
-                color="primary"
+              <Button
+                variant="outlined"
+                onClick={handlePrevChapter}
+                startIcon={<ArrowLeftIcon />}
                 sx={{
-                  backgroundColor: "#ffffff",
-                  borderRadius: "4px",
+                  color: "secondary.contrastText",
+                  backgroundColor: "background.paper",
+                  height: "40px", // Giảm chiều cao
+                  padding: "0 12px", // Thêm padding
+                  borderRadius: "8px", // Bo góc
+                  marginTop: "auto",
                 }}
-                MenuProps={{
-                  PaperProps: {
-                    sx: {
-                      "& .MuiMenuItem-root": {
-                        backgroundColor: theme.palette.background.default,
-                        "&:hover": {
-                          backgroundColor: theme.palette.action.hover,
+              >
+                Prev
+              </Button>
+              <FormControl
+                sx={{
+                  width: 160,
+                  height: "40px", // Giảm chiều cao để bằng với button
+                  "& .MuiInputBase-root": {
+                    height: "40px", // Căn chỉnh chiều cao của input
+                    borderRadius: "8px", // Bo góc để phù hợp với button
+                    padding: "0 12px", // Thêm padding cho hợp lý
+                  },
+                }}
+              >
+                <InputLabel
+                  id="chapter-select-label"
+                  sx={{
+                    top: "-6px", // Điều chỉnh vị trí của label
+                  }}
+                >
+                  Chapter
+                </InputLabel>
+                <Select
+                  labelId="chapter-select-label"
+                  id="chapter-select"
+                  value={chapterIndex.toString()}
+                  label="Chapter"
+                  onChange={handleChange}
+                  color="primary"
+                  sx={{
+                    height: "40px", // Giảm chiều cao của select
+                    borderRadius: "8px", // Bo góc cho select
+                  }}
+                  MenuProps={{
+                    PaperProps: {
+                      sx: {
+                        "& .MuiMenuItem-root": {
+                          backgroundColor: theme.palette.background.default,
+                          "&:hover": {
+                            backgroundColor: theme.palette.action.hover,
+                          },
                         },
                       },
                     },
-                  },
-                  MenuListProps: {
-                    sx: {
-                      py: 0,
+                    MenuListProps: {
+                      sx: {
+                        py: 0,
+                      },
                     },
-                  },
+                  }}
+                >
+                  {storyDetail?.totalRecord &&
+                    Array.from(
+                      { length: storyDetail.totalRecord },
+                      (_, index) => (
+                        <MenuItem key={index + 1} value={index + 1}>
+                          Chapter {index + 1}
+                        </MenuItem>
+                      )
+                    )}
+                </Select>
+              </FormControl>
+              <Button
+                variant="outlined"
+                startIcon={<ArrowRightIcon />}
+                onClick={handleNextChapter}
+                sx={{
+                  color: "secondary.contrastText",
+                  backgroundColor: "background.paper",
+                  height: "40px", // Giảm chiều cao
+                  padding: "0 12px", // Thêm padding
+                  borderRadius: "8px", // Bo góc
                 }}
               >
-                <MenuItem value="Default" sx={{ backgroundColor: "#ffffff" }}>
-                  Default
-                </MenuItem>
-                <MenuItem value="Roboto" sx={{ backgroundColor: "#ffffff" }}>
-                  Roboto
-                </MenuItem>
-                <MenuItem value="Lora" sx={{ backgroundColor: "#ffffff" }}>
-                  Lora
-                </MenuItem>
-              </Select>
-            </FormControl>
-            <Button
-              variant="outlined"
-              onClick={toggleTheme}
+                Next
+              </Button>
+            </Stack>
+          </div>
+        </Stack>
+        {isInitialized && (
+          <Modal open={open} onClose={handleClose}>
+            <Stack
+              direction="column"
+              spacing={2}
               sx={{
-                backgroundColor: "background.paper",
-                color: "secondary.contrastText",
-                height: "36px", // Giảm chiều cao
-                padding: "0 8px", // Thêm padding
-                borderRadius: "6px", // Bo góc
+                ...style,
+                width: "100%", // Đảm bảo modal phù hợp với màn hình nhỏ
+                maxWidth: "400px", // Giới hạn chiều rộng
               }}
             >
-              {mode === "light" ? (
-                <DarkModeIcon fontSize="medium" />
-              ) : (
-                <LightModeIcon fontSize="medium" />
-              )}
-            </Button>
+              <Stack
+                direction="row"
+                spacing={2}
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <Button
+                  variant="outlined"
+                  onClick={decreaseFontSize}
+                  sx={{
+                    minWidth: "50px", // Đảm bảo kích thước nút nhỏ gọn
+                    height: "50px",
+                  }}
+                >
+                  <TextDecreaseIcon />
+                </Button>
+                <Button
+                  variant="outlined"
+                  onClick={increaseFontSize}
+                  sx={{
+                    minWidth: "50px",
+                    height: "50px",
+                  }}
+                >
+                  <TextIncreaseIcon />
+                </Button>
+                <Button
+                  variant="outlined"
+                  onClick={() => setTheme(mode === "light" ? "dark" : "light")}
+                  sx={{
+                    minWidth: "50px",
+                    height: "50px",
+                  }}
+                >
+                  {mode === "light" ? (
+                    <DarkModeIcon fontSize="medium" />
+                  ) : (
+                    <LightModeIcon fontSize="medium" />
+                  )}
+                </Button>
+                <Button
+                  variant="outlined"
+                  onClick={() => {
+                    const defaultFontSize = 16;
+                    const defaultFontFamily = "Default";
+                    const defaultTheme = "light";
+
+                    setFontSize(defaultFontSize);
+                    setFontFamily(defaultFontFamily);
+                    setTheme("light");
+
+                    localStorage.setItem(
+                      "fontSize",
+                      defaultFontSize.toString()
+                    );
+                    localStorage.setItem("fontFamily", defaultFontFamily);
+                    localStorage.setItem("theme", defaultTheme);
+                  }}
+                  color="error"
+                  sx={{
+                    minWidth: "50px",
+                    height: "50px",
+                  }}
+                >
+                  <RestartAltIcon />
+                </Button>
+              </Stack>
+              <FormControl fullWidth>
+                <InputLabel id="font-family-select-label">Font</InputLabel>
+                <Select
+                  labelId="font-family-select-label"
+                  value={fontFamily}
+                  onChange={handleFontFamilyChange}
+                  label="Font"
+                  color="primary"
+                  sx={{
+                    height: "40px", // Giảm chiều cao của select
+                    borderRadius: "8px", // Bo góc cho select
+                  }}
+                  MenuProps={{
+                    PaperProps: {
+                      sx: {
+                        "& .MuiMenuItem-root": {
+                          backgroundColor: theme.palette.background.default,
+                          "&:hover": {
+                            backgroundColor: theme.palette.action.hover,
+                          },
+                        },
+                      },
+                    },
+                    MenuListProps: {
+                      sx: {
+                        py: 0,
+                      },
+                    },
+                  }}
+                >
+                  <MenuItem value="Default">Default</MenuItem>
+                  <MenuItem value="Roboto">Roboto</MenuItem>
+                  <MenuItem value="Lora">Lora</MenuItem>
+                </Select>
+              </FormControl>
+            </Stack>
+          </Modal>
+        )}
+
+        <Stack direction="column" spacing={2} my={4}>
+          <Stack
+            direction="row"
+            mb={2}
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Stack direction="row" spacing={1} alignItems="center">
+              <VisibilityIcon />
+              <Typography variant="h4" fontWeight="bold">
+                You'll Also Like
+              </Typography>
+            </Stack>
           </Stack>
-        </Modal>
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: "flex",
+              justifyContent: "start",
+              alignItems: "center",
+            }}
+          >
+            <Grid container spacing={2}>
+              {storyRefer?.data?.map((story, index) => (
+                <Grid
+                  key={index}
+                  size={
+                    storyRefer?.data?.length === 1
+                      ? 12
+                      : { xs: 6, sm: 3, md: 2 }
+                  }
+                  display="flex"
+                  justifyContent={
+                    storyRefer?.data?.length === 1 ? "center" : "flex-start"
+                  }
+                >
+                  <Link
+                    href={`/story/${story.storyNameAlias}-${story.storyId}.html`}
+                    passHref
+                  >
+                    <NovelCard
+                      storyName={story.storyName}
+                      status={story.status}
+                      numberChapter={story.chapterNumber}
+                    />
+                  </Link>
+                </Grid>
+              ))}
+            </Grid>
+          </Box>
+        </Stack>
       </Container>
     </Box>
+  );
+};
+
+const Content = ({
+  content,
+  fontSize,
+  fontFamily,
+}: {
+  content: string;
+  fontSize: number;
+  fontFamily: string;
+}) => {
+  return (
+    <Typography
+      variant="body2"
+      textAlign="left"
+      sx={{
+        fontSize: `${fontSize}px`,
+        fontFamily: fontFamily === "Default" ? "inherit" : fontFamily,
+      }}
+      dangerouslySetInnerHTML={{
+        __html: content || "",
+      }}
+    />
   );
 };

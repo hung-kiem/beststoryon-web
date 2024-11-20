@@ -3,17 +3,15 @@ import * as React from "react";
 import ImportContactsIcon from "@mui/icons-material/ImportContacts";
 import StarIcon from "@mui/icons-material/Star";
 
-export type NovelCardProps = {
+export interface NovelCardProps {
   storyName: string;
-  rating: number;
-  chapterNumber: number;
+  numberChapter: number;
   status: string;
-};
+}
 
 export function NovelCard({
   storyName,
-  rating,
-  chapterNumber,
+  numberChapter,
   status,
 }: NovelCardProps) {
   return (
@@ -83,7 +81,18 @@ export function NovelCard({
           </Typography>
         </Stack>
       </Card>
-      <Typography variant="body2" fontWeight="bold" fontSize="medium">
+      <Typography
+        variant="body2"
+        fontWeight="bold"
+        fontSize="medium"
+        sx={{
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          display: "-webkit-box",
+          WebkitLineClamp: 2,
+          WebkitBoxOrient: "vertical",
+        }}
+      >
         {storyName}
       </Typography>
       <Stack direction="row" spacing={1} alignItems="center">
@@ -93,7 +102,7 @@ export function NovelCard({
           }}
         />
         <Typography variant="body2" color="text.secondary" fontSize="small">
-          {chapterNumber} Chapter
+          {numberChapter} chapter
         </Typography>
       </Stack>
     </Stack>

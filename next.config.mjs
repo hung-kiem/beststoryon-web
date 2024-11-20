@@ -6,6 +6,10 @@ const nextConfig = {
         source: "/story/:alias-:storyId.html",
         destination: "/story/:alias-:storyId",
       },
+      {
+        source: "/story/:storyId/chapter/:index.html",
+        destination: "/story/:storyId/chapter/:index",
+      },
     ];
   },
   reactStrictMode: true,

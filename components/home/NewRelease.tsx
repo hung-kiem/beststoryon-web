@@ -52,7 +52,7 @@ export function NewRelease({ data }: NewReleaseProps) {
             }}
           >
             {data?.map((story, index) => (
-              <Grid item key={index} xs={12} sm={6} md={4} spacing={2}>
+              <Grid item key={index} xs={12} sm={6} md={4}>
                 <Link
                   passHref
                   href={`/story/${story.storyNameAlias}-${story.storyId}.html`}

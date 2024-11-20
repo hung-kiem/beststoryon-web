@@ -201,9 +201,9 @@ export function NovelDetail() {
                       color="secondary.contrastText"
                       fontWeight="regular"
                       sx={{
-                        backgroundColor: "background.paper",
+                        backgroundColor: "text.secondary",
                         borderRadius: 2,
-                        p: 1,
+                        p: 0.5,
                       }}
                     >
                       {cat}
@@ -308,6 +308,7 @@ export function NovelDetail() {
                   passHref
                   key={index}
                 >
+                  {/* <Divider /> */}
                   <ChapterTitle
                     chapterNumber={chapterIndex.toString()}
                     title={chapter.chapterName}
