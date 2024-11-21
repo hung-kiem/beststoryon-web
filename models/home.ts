@@ -20,10 +20,6 @@ export interface GetHotListResponse {
   data: StoryHome[];
 }
 
-export interface GetBannerListResponse {
-  data: Banner[];
-}
-
 export interface StoryHome {
   storyId: string;
   storyName: string;

@@ -4,6 +4,6 @@ export * from "./FeaturedWork";
 export * from "./TrendingNovel";
 export * from "./HotNovel";
 export * from "./NewRelease";
-export * from "./Banner";
+export * from "./BannerPage";
 export * from "./RecommendForYou";
 export * from "./HotNovelMain";

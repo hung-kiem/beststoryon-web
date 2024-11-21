@@ -23,51 +23,30 @@ import { storyApi } from "@/api-client/story-api";
 import useSWR from "swr";
 import {
   GetStoryDetailPayload,
+  GetStoryDetailResponse,
   GetStoryListReferPayload,
+  StoryDetail,
 } from "@/models/story";
 import StoryRating from "./StoryRating";
 import { LoadingOverlay } from "../loading/LoadingOverlay";
 
-const fetcher = (url: string, payload: GetStoryDetailPayload) => {
-  return storyApi.getDetail(payload);
-};
+interface NovelDetailProps {
+  storyDetail?: GetStoryDetailResponse;
+  storyRefer?: StoryDetail[];
+  onChangePageIndex: (pageIndex: number) => void;
+  pageIndex: number;
+  isLoading: boolean;
+}
 
-const fetcherRefer = (url: string, payload: GetStoryListReferPayload) => {
-  return storyApi.getListRefer(payload);
-};
-
-export function NovelDetail() {
+export function NovelDetail({
+  storyDetail,
+  storyRefer,
+  isLoading,
+  pageIndex,
+  onChangePageIndex,
+}: NovelDetailProps) {
   const router = useRouter();
-  const { storyId } = router.query;
-  const idParts = storyId
-    ? (Array.isArray(storyId) ? storyId[0] : storyId).split("-")
-    : [];
-  const id = idParts.pop();
-  console.log(id);
   const [showFullDescription, setShowFullDescription] = useState(false);
-  const [pageIndex, setPageIndex] = useState(1);
-  const payload: GetStoryDetailPayload = {
-    storyId: id || "",
-    pageIndex: pageIndex,
-    pageSize: 10,
-  };
-  const payloadRefer: GetStoryListReferPayload = {
-    storyId: id || "",
-  };
-
-  const { data: storyDetail, isValidating: loadingStoryDetail } = useSWR(
-    ["/story/getDetail", payload],
-    ([url, payload]) => fetcher(url, payload)
-  );
-
-  // Fetch dữ liệu danh sách truyện gợi ý
-  const { data: storyRefer, isValidating: loadingStoryRefer } = useSWR(
-    ["/story/getListRefer", payloadRefer],
-    ([url, payload]) => fetcherRefer(url, payload)
-  );
-
-  // Kết hợp trạng thái loading
-  const isLoading = loadingStoryDetail || loadingStoryRefer;
 
   const toggleDescription = () => {
     setShowFullDescription(!showFullDescription);
@@ -77,7 +56,7 @@ export function NovelDetail() {
     event: React.ChangeEvent<unknown>,
     value: number
   ) => {
-    setPageIndex(value);
+    onChangePageIndex(value);
   };
 
   const handleReadFirstChapter = () => {
@@ -359,17 +338,13 @@ export function NovelDetail() {
             }}
           >
             <Grid container spacing={2}>
-              {storyRefer?.data?.map((story, index) => (
+              {storyRefer?.map((story, index) => (
                 <Grid
                   key={index}
-                  size={
-                    storyRefer?.data?.length === 1
-                      ? 12
-                      : { xs: 6, sm: 3, md: 2 }
-                  }
+                  size={storyRefer?.length === 1 ? 12 : { xs: 6, sm: 3, md: 2 }}
                   display="flex"
                   justifyContent={
-                    storyRefer?.data?.length === 1 ? "center" : "flex-start"
+                    storyRefer?.length === 1 ? "center" : "flex-start"
                   }
                 >
                   <Link

@@ -1,10 +1,8 @@
 import { homeApi } from "@/api-client";
-import { Seo } from "@/components/common";
 import {
   NewRelease,
   HotNovel,
   TrendingNovel,
-  Banner,
   HotNovelMain,
 } from "@/components/home";
 import { MainLayout } from "@/components/layout";
@@ -13,6 +11,7 @@ import { Box } from "@mui/material";
 import useSWR from "swr";
 import React from "react";
 import { LoadingOverlay } from "@/components/loading/LoadingOverlay";
+import BannerPage from "@/components/home/BannerPage";
 
 const Home: NextPageWithLayout = () => {
   const { data: hotTopList, isValidating: loadingHotTopList } = useSWR(
@@ -35,21 +34,25 @@ const Home: NextPageWithLayout = () => {
     () => homeApi.getHotList({ requestId: "1" })
   );
 
+  const { data: bannerList, isValidating: loadingBanner } = useSWR(
+    "/home/getBannerList",
+    () =>
+      homeApi.getBannerList({
+        requestId: "1",
+        bannerOfPage: "HOME",
+      })
+  );
+
   // Kết hợp tất cả trạng thái loading
   const isLoading =
-    loadingHotTopList || loadingTrending || loadingNewRelease || loadingHot;
+    loadingHotTopList ||
+    loadingTrending ||
+    loadingNewRelease ||
+    loadingHot ||
+    loadingBanner;
 
   return (
     <Box>
-      <Seo
-        data={{
-          url: "https://beststoryon.com/",
-          title: "BestStoryOn",
-          description:
-            "BestStoryOn is a blog website that provides quality content on various topics.",
-          thumbnailUrl: "https://beststoryon.com/thumbnail.png",
-        }}
-      />
       <LoadingOverlay isLoading={isLoading} />
       {hotTopList?.data && hotTopList?.data.length > 0 && (
         <HotNovelMain data={hotTopList?.data || []} />
@@ -57,15 +60,18 @@ const Home: NextPageWithLayout = () => {
       {trendingList?.data && trendingList?.data.length > 0 && (
         <TrendingNovel data={trendingList?.data || []} />
       )}
-      <Banner />
+      {bannerList?.data && bannerList?.data.length > 0 && (
+        <BannerPage data={bannerList?.data || []} />
+      )}
       {newReleaseList?.data && newReleaseList?.data.length > 0 && (
         <NewRelease data={newReleaseList?.data || []} />
       )}
       {hotList?.data && hotList?.data.length > 0 && (
         <HotNovel data={hotList?.data || []} />
       )}
-      <Banner />
-      {/* <RecommendForYou /> */}
+      {bannerList?.data && bannerList?.data.length > 0 && (
+        <BannerPage data={bannerList?.data || []} />
+      )}
     </Box>
   );
 };

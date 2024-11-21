@@ -1,5 +1,4 @@
 import {
-  GetBannerListResponse,
   GetHotListResponse,
   GetHotTopListRequest,
   GetHotTopListResponse,
@@ -7,6 +6,7 @@ import {
   GetTrendingListResponse,
 } from "@/models/home";
 import axiosClient from "./axios-client";
+import { GetBannerListRequest, GetBannerListResponse } from "@/models/banner";
 
 export const homeApi = {
   getHotTopList(
@@ -27,9 +27,9 @@ export const homeApi = {
       })
       .then((response) => response.data);
   },
-  getBannerList(): Promise<GetBannerListResponse> {
+  getBannerList(payload: GetBannerListRequest): Promise<GetBannerListResponse> {
     return axiosClient
-      .get<GetBannerListResponse>("/home/getBannerList")
+      .post<GetBannerListResponse>("/home/getBannerList", payload)
       .then((response) => response.data);
   },
   getNewReleaseList(
