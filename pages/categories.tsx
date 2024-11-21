@@ -4,19 +4,17 @@ import { NextPageWithLayout } from "@/models";
 import { Box } from "@mui/material";
 import { Seo } from "@/components/common";
 import { CategoryPage } from "@/components/category";
-import useSWR from "swr";
 
-const MILLISECOND_PER_HOUR = 1000 * 60 * 60;
 const Category: NextPageWithLayout = () => {
   return (
     <Box>
       <Seo
         data={{
-          url: "https://beststoryon.com/",
-          title: "BestStoryOn",
+          url: "https://novelsnook.com/",
+          title: "NovelsNook",
           description:
-            "BestStoryOn is a blog website that provides quality content on various topics.",
-          thumbnailUrl: "https://beststoryon.com/thumbnail.png",
+            "NovelsNook - Dive into a world of captivating novels with thousands of stories, fast updates, and a seamless reading experience.",
+          thumbnailUrl: "https://novelsnook.com/",
         }}
       />
       <CategoryPage />

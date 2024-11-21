@@ -10,11 +10,11 @@ const Trending: NextPageWithLayout = () => {
     <Box>
       <Seo
         data={{
-          url: "https://beststoryon.com/",
-          title: "BestStoryOn",
+          url: "https://novelsnook.com/",
+          title: "NovelsNook",
           description:
-            "BestStoryOn is a blog website that provides quality content on various topics.",
-          thumbnailUrl: "https://beststoryon.com/thumbnail.png",
+            "NovelsNook - Dive into a world of captivating novels with thousands of stories, fast updates, and a seamless reading experience.",
+          thumbnailUrl: "https://novelsnook.com/",
         }}
       />
       <TrendingPage />
