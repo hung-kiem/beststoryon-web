@@ -1,6 +1,6 @@
 import { Seo } from "@/components/common";
 import { MainLayout } from "@/components/layout";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   Box,
   Button,
@@ -198,16 +198,22 @@ const Chapter = () => {
   const handleFontFamilyChange = (event: SelectChangeEvent) => {
     setFontFamily(event.target.value);
   };
+  const titleSeo = useMemo(() => {
+    if (chapterDetail?.data.chapterName && chapterDetail?.data.storyName) {
+      return (
+        chapterDetail.data.storyName + " - " + chapterDetail?.data?.chapterName
+      );
+    } else {
+      return "Novelsnook";
+    }
+  }, [chapterDetail]);
 
   return (
     <Box>
       <Seo
         data={{
           url: "https://novelsnook.com/",
-          title:
-            chapterDetail?.data.storyName +
-              " " +
-              chapterDetail?.data?.chapterName || "Novelsnook",
+          title: titleSeo,
           description:
             "Novelsnook is a blog website that provides quality content on various topics.",
           thumbnailUrl: "https://novelsnook.com/",
