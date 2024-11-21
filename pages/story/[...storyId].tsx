@@ -61,7 +61,7 @@ const Novel: NextPageWithLayout = () => {
       <Seo
         data={{
           url: "https://novelsnook.com/",
-          title: storyDetail?.story.storyName || "Novelsnook",
+          title: storyDetail?.story?.storyName || "Novelsnook",
           description:
             "Novelsnook is a blog website that provides quality content on various topics.",
           thumbnailUrl: "https://novelsnook.com/",

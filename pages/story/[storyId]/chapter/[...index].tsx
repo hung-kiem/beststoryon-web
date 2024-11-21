@@ -204,7 +204,7 @@ const Chapter = () => {
       <Seo
         data={{
           url: "https://novelsnook.com/",
-          title: chapterDetail?.data.chapterName || "Novelsnook",
+          title: chapterDetail?.data?.chapterName || "Novelsnook",
           description:
             "Novelsnook is a blog website that provides quality content on various topics.",
           thumbnailUrl: "https://novelsnook.com/",
