@@ -145,7 +145,17 @@ export function HeaderDesktop() {
                         borderColor: "#1565c0",
                       },
                       borderRadius: "6px",
-                      width: "200px",
+                      height: "40px", // Giảm chiều cao của ô tìm kiếm
+                      fontSize: "14px", // Giảm kích thước font cho phù hợp
+                      padding: "0 12px", // Thêm padding ngang
+                      "& .MuiInputBase-input": {
+                        padding: "10px 0", // Căn chỉnh padding dọc để chữ được căn giữa
+                      },
+                      width: "300px", // Điều chỉnh chiều rộng của ô tìm kiếm
+                    },
+                    "& .MuiInputLabel-root": {
+                      top: "-4px", // Điều chỉnh vị trí của label để căn giữa tốt hơn
+                      fontSize: "14px",
                     },
                   }}
                 />

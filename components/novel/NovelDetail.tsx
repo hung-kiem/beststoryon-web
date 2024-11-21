@@ -51,8 +51,10 @@ export function NovelDetail({
   const [imageSrc, setImageSrc] = useState(storyDetail?.story?.urlAvatar);
 
   const handleImageError = () => {
+    console.log("handleImageError");
     setImageSrc(process.env.NEXT_PUBLIC_DEFAULT_IMAGE || "");
   };
+  console.log("imageSrc", imageSrc);
 
   const toggleDescription = () => {
     setShowFullDescription(!showFullDescription);

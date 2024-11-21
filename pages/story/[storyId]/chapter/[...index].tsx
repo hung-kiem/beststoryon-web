@@ -220,10 +220,20 @@ const Chapter = () => {
             mb={4}
             textAlign="left"
           >
-            <Typography variant="h2" fontWeight="bold" width="100%">
+            <Typography
+              variant="h2"
+              fontSize={{ xs: "20px", sm: "28px", md: "32px" }}
+              fontWeight="bold"
+              width="100%"
+            >
               {chapterDetail?.data?.storyName}
             </Typography>
-            <Typography variant="h3" fontWeight="bold" width="100%">
+            <Typography
+              variant="h3"
+              fontSize={{ xs: "18px", sm: "22px", md: "24px" }}
+              fontWeight="bold"
+              width="100%"
+            >
               {chapterDetail?.data.chapterName}
             </Typography>
             <Stack
