@@ -7,7 +7,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid2";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import ImportContactsIcon from "@mui/icons-material/ImportContacts";
@@ -37,6 +37,12 @@ function ChapterHot({
   numberOfChapter,
   urlAvatar,
 }: ChapterHotProps) {
+  const [imageSrc, setImageSrc] = useState(urlAvatar);
+
+  const handleImageError = () => {
+    setImageSrc(process.env.NEXT_PUBLIC_DEFAULT_IMAGE || "");
+  };
+
   return (
     <Stack
       direction="row"
@@ -58,7 +64,7 @@ function ChapterHot({
       >
         <CardMedia
           component="img"
-          image={urlAvatar || ""}
+          image={imageSrc}
           alt="Novel image"
           sx={{
             height: "100%",
@@ -66,6 +72,7 @@ function ChapterHot({
             objectFit: "cover", // Đảm bảo hình ảnh được cắt để lấp đầy khung hình mà không bị biến dạng
             objectPosition: "center", // Căn giữa hình ảnh
           }}
+          onError={handleImageError}
         />
       </Card>
       <Stack
@@ -115,6 +122,11 @@ interface HotTopListProps {
 
 export function HotNovelMain({ data }: HotTopListProps) {
   const firstStory = data?.[0];
+  const [imageSrc, setImageSrc] = useState(firstStory?.urlAvatar);
+
+  const handleImageError = () => {
+    setImageSrc(process.env.NEXT_PUBLIC_DEFAULT_IMAGE || "");
+  };
 
   return (
     <Box component="section" pt={2} pb={4}>
@@ -137,8 +149,9 @@ export function HotNovelMain({ data }: HotTopListProps) {
                     component="img"
                     height="100%"
                     width="100%"
-                    image={firstStory?.urlAvatar || ""}
+                    image={imageSrc}
                     alt="Novel image"
+                    onError={handleImageError}
                   />
                   <Stack
                     direction="row"

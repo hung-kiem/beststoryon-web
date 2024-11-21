@@ -35,7 +35,7 @@ export function NewReleasePage() {
         storyStatus: status,
         sortCondition,
         pageIndex,
-        pageSize: 2,
+        pageSize: 12,
       }),
     {
       revalidateOnFocus: false,
@@ -146,7 +146,10 @@ export function NewReleasePage() {
                           rating={story.likeCount}
                           status={story.status}
                           chapterNumber={story.chapterNumber}
-                          avatarUrl={story.urlAvatar}
+                          avatarUrl={
+                            story.urlAvatar ||
+                            "https://plus.unsplash.com/premium_photo-1682125773446-259ce64f9dd7?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                          }
                         />
                       </Link>
                     </Grid>

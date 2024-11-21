@@ -1,5 +1,5 @@
 import { Stack, Typography, Card, CardMedia } from "@mui/material";
-import * as React from "react";
+import React, { useState } from "react";
 import ImportContactsIcon from "@mui/icons-material/ImportContacts";
 import StarIcon from "@mui/icons-material/Star";
 
@@ -8,6 +8,7 @@ export type NovelCardProps = {
   rating: number;
   chapterNumber: number;
   status: string;
+  urlAvatar: string;
 };
 
 export function NovelCard({
@@ -15,7 +16,14 @@ export function NovelCard({
   rating,
   chapterNumber,
   status,
+  urlAvatar,
 }: NovelCardProps) {
+  const [imageSrc, setImageSrc] = useState(urlAvatar);
+
+  const handleImageError = () => {
+    setImageSrc(process.env.NEXT_PUBLIC_DEFAULT_IMAGE || "");
+  };
+
   return (
     <Stack spacing={1} direction="column" mt={2}>
       <Card
@@ -31,8 +39,9 @@ export function NovelCard({
           component="img"
           height="270"
           width="230"
-          image="https://plus.unsplash.com/premium_photo-1682125773446-259ce64f9dd7?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          image={imageSrc}
           alt="Novel image"
+          onError={handleImageError}
         />
         <Stack
           direction="row"

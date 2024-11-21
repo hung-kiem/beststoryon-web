@@ -48,6 +48,12 @@ export function NovelDetail({
   const router = useRouter();
   const [showFullDescription, setShowFullDescription] = useState(false);
 
+  const [imageSrc, setImageSrc] = useState(storyDetail?.story?.urlAvatar);
+
+  const handleImageError = () => {
+    setImageSrc(process.env.NEXT_PUBLIC_DEFAULT_IMAGE || "");
+  };
+
   const toggleDescription = () => {
     setShowFullDescription(!showFullDescription);
   };
@@ -94,8 +100,9 @@ export function NovelDetail({
                   component="img"
                   height="100%"
                   width="100%"
-                  image={storyDetail?.story?.urlAvatar || ""}
+                  image={imageSrc}
                   alt="Novel image"
+                  onError={handleImageError}
                 />
               </Card>
             </Grid>

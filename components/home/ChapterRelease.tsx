@@ -1,5 +1,5 @@
-import { Box, Stack, Typography, Card, CardMedia } from "@mui/material";
-import * as React from "react";
+import { Stack, Typography, Card, CardMedia } from "@mui/material";
+import React, { useState } from "react";
 import ImportContactsIcon from "@mui/icons-material/ImportContacts";
 import { StoryHome } from "@/models";
 
@@ -8,6 +8,12 @@ interface ChapterReleaseProps {
 }
 
 export function ChapterRelease({ story }: ChapterReleaseProps) {
+  const [imageSrc, setImageSrc] = useState(story.urlAvatar);
+
+  const handleImageError = () => {
+    setImageSrc(process.env.NEXT_PUBLIC_DEFAULT_IMAGE || "");
+  };
+
   return (
     <Stack
       direction="row"
@@ -31,8 +37,9 @@ export function ChapterRelease({ story }: ChapterReleaseProps) {
           component="img"
           height="88px"
           width="72px"
-          image={story?.urlAvatar || ""}
+          image={imageSrc}
           alt="Novel image"
+          onError={handleImageError}
         />
       </Card>
       <Stack

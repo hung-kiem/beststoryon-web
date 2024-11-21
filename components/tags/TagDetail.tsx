@@ -30,7 +30,7 @@ export function TagDetail() {
         status,
         sortCondition,
         pageIndex,
-        pageSize: 2,
+        pageSize: 12,
       }),
     {
       revalidateOnFocus: false,
@@ -103,6 +103,7 @@ export function TagDetail() {
                           rating={story.likeCount}
                           status={story.status}
                           chapterNumber={story.chapterNumber}
+                          urlAvatar={story.urlAvatar}
                         />
                       </Link>
                     </Grid>

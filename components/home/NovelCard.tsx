@@ -1,5 +1,5 @@
 import { Stack, Typography, Card, CardMedia } from "@mui/material";
-import * as React from "react";
+import React, { useState } from "react";
 import ImportContactsIcon from "@mui/icons-material/ImportContacts";
 import StarIcon from "@mui/icons-material/Star";
 import { StoryHome } from "@/models";
@@ -9,6 +9,12 @@ interface NovelCardProps {
 }
 
 export function NovelCard({ story }: NovelCardProps) {
+  const [imageSrc, setImageSrc] = useState(story.urlAvatar);
+
+  const handleImageError = () => {
+    setImageSrc(process.env.NEXT_PUBLIC_DEFAULT_IMAGE || "");
+  };
+
   return (
     <Stack spacing={1} direction="column" mt={2}>
       <Card
@@ -24,8 +30,9 @@ export function NovelCard({ story }: NovelCardProps) {
           component="img"
           height="270"
           width="230"
-          image={story?.urlAvatar || ""}
+          image={imageSrc}
           alt="Novel image"
+          onError={handleImageError}
         />
         <Stack
           direction="row"
