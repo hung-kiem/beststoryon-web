@@ -28,6 +28,7 @@ const nextConfig = {
       "images.unsplash.com",
       "images.remotePatterns",
       "plus.unsplash.com",
+      "images.novelsnook.com",
     ],
   },
 };

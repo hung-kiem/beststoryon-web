@@ -146,6 +146,7 @@ export function NewReleasePage() {
                           rating={story.likeCount}
                           status={story.status}
                           chapterNumber={story.chapterNumber}
+                          avatarUrl={story.urlAvatar}
                         />
                       </Link>
                     </Grid>

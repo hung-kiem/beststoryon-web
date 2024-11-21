@@ -22,7 +22,6 @@ export function CategoryPage() {
   const [sortCondition, setSortCondition] = useState("Popular");
   const [pageIndex, setPageIndex] = useState(1);
 
-  // Kiểm tra query param và cập nhật catCode
   useEffect(() => {
     if (router.query.catCode) {
       const code = router.query.catCode as string;
@@ -151,6 +150,7 @@ export function CategoryPage() {
                       rating={story.likeCount}
                       status={story.status}
                       chapterNumber={story.chapterNumber}
+                      urlAvatar={story.urlAvatar}
                     />
                   </Link>
                 </Grid>

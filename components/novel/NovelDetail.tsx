@@ -355,6 +355,7 @@ export function NovelDetail({
                       storyName={story.storyName}
                       status={story.status}
                       numberChapter={story.chapterNumber}
+                      urlAvatar={story.urlAvatar}
                     />
                   </Link>
                 </Grid>

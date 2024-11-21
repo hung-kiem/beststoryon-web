@@ -147,6 +147,7 @@ export function HotPage() {
                             rating={story.likeCount}
                             status={story.status}
                             chapterNumber={story.chapterNumber}
+                            urlAvatar={story.urlAvatar}
                           />
                         </Link>
                       </Grid>
