@@ -709,6 +709,9 @@ const Content = ({
       sx={{
         fontSize: `${fontSize}px`,
         fontFamily: fontFamily === "Default" ? "inherit" : fontFamily,
+        "& p, & div, & li": {
+          marginBottom: "20px",
+        },
       }}
       dangerouslySetInnerHTML={{
         __html: content || "",

@@ -101,7 +101,7 @@ export function NovelDetail({
                   component="img"
                   height="100%"
                   width="100%"
-                  src={imageSrc}
+                  image={imageSrc}
                   alt="Novel image"
                   onError={handleImageError}
                 />
