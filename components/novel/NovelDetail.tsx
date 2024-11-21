@@ -54,7 +54,6 @@ export function NovelDetail({
     console.log("handleImageError");
     setImageSrc(process.env.NEXT_PUBLIC_DEFAULT_IMAGE || "");
   };
-  console.log("imageSrc", imageSrc);
 
   const toggleDescription = () => {
     setShowFullDescription(!showFullDescription);
@@ -102,7 +101,7 @@ export function NovelDetail({
                   component="img"
                   height="100%"
                   width="100%"
-                  image={imageSrc}
+                  src={imageSrc}
                   alt="Novel image"
                   onError={handleImageError}
                 />
@@ -110,7 +109,11 @@ export function NovelDetail({
             </Grid>
             <Grid size={{ xs: 12, sm: 12, lg: 8 }}>
               <Stack direction="column" spacing={1}>
-                <Typography fontWeight="bold" variant="h4">
+                <Typography
+                  fontWeight="bold"
+                  variant="h2"
+                  fontSize={{ xs: "20px", sm: "28px", md: "32px" }}
+                >
                   {storyDetail?.story?.storyName}
                 </Typography>
                 <Stack direction="row" spacing={2}>
