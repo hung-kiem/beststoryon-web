@@ -67,7 +67,7 @@ export function ChapterRelease({ story }: ChapterReleaseProps) {
             lineClamp: 2,
           }}
         >
-          Chap 42: Sự khởi đầu của huyền thoại
+          {story?.lastAddNewChapterLabel || "Chapter " + story.chapterNumber}
         </Typography>
         <Stack direction="row" justifyContent="space-between">
           <Stack direction="row" alignItems="center" spacing={1}>
@@ -89,7 +89,7 @@ export function ChapterRelease({ story }: ChapterReleaseProps) {
             color="text.secondary"
             fontWeight="regular"
           >
-            5 Minutes Ago
+            {story?.lastAddNewChapter || ""}
           </Typography>
         </Stack>
       </Stack>
