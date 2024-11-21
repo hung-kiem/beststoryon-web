@@ -124,6 +124,10 @@ export const ChapterPage = () => {
     }
   }, [index]);
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [chapterIndex]);
+
   const chapterPayload: GetChapterByIndexPayload | null = storyId
     ? { storyId: id || "", chapterIndex }
     : null;
