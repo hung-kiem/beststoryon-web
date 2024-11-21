@@ -12,7 +12,7 @@ import {
   Rating,
 } from "@mui/material";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid2";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import ImportContactsIcon from "@mui/icons-material/ImportContacts";
@@ -49,6 +49,9 @@ export function NovelDetail({
   const [showFullDescription, setShowFullDescription] = useState(false);
 
   const [imageSrc, setImageSrc] = useState(storyDetail?.story?.urlAvatar);
+  useEffect(() => {
+    setImageSrc(storyDetail?.story?.urlAvatar);
+  }, [storyDetail]);
 
   const handleImageError = () => {
     console.log("handleImageError");
