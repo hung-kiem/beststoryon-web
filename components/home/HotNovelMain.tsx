@@ -274,7 +274,6 @@ export function HotNovelMain({ data }: HotTopListProps) {
                               borderRadius: 2,
                               backgroundColor: "background.paper",
                               color: "secondary.contrastText",
-                              // mt: 2,
                             }}
                           >
                             Read
@@ -294,13 +293,13 @@ export function HotNovelMain({ data }: HotTopListProps) {
                   borderRadius: 2,
                   height: "100%",
                   width: "100%",
-                  backgroundColor: "background.paper",
-                  maxHeight: { xs: "400px", sm: "300px", lg: "400px" },
+                  backgroundColor: "#0F172A",
+                  maxHeight: "400px",
                   p: 2,
                   overflowY: "auto",
                 }}
               >
-                {data?.slice(1).map((story, id) => (
+                {data?.slice(1, 5).map((story, id) => (
                   <Link key={id} href={`/story/${story.storyId}`} passHref>
                     <ChapterHot
                       key={id}

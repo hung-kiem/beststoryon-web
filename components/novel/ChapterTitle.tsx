@@ -16,14 +16,14 @@ export function ChapterTitle({
 }: ChapterTitleProps) {
   return (
     <>
-      <Divider sx={{ my: 1 }} />
+      <Divider sx={{ my: 2 }} />
       <Stack
         direction="row"
         justifyContent="space-between"
         alignItems="center"
         sx={{
           width: "100%",
-          mt: 1,
+          mt: 2,
           cursor: onClick ? "pointer" : "default",
           "&:hover": onClick
             ? {
@@ -71,7 +71,7 @@ export function ChapterTitle({
             textOverflow: "ellipsis", // Thêm dấu "..."
           }}
         >
-          {date}
+          {date.replace("update", "")}
         </Typography>
       </Stack>
     </>

@@ -215,7 +215,7 @@ export function NovelDetail({
                     onClick={toggleDescription}
                     sx={{ color: "background.paper" }}
                   >
-                    {showFullDescription ? "Show Less" : "Watch More"}
+                    {showFullDescription ? "Show Less" : "Show More"}
                   </Button>
                 </Stack>
                 <Stack direction="row" spacing={2} justifyContent="center">
@@ -282,7 +282,7 @@ export function NovelDetail({
                 Chapter
               </Typography>
               <Typography variant="body2" fontWeight="bold">
-                Date
+                Update
               </Typography>
             </Stack>
             {storyDetail?.data?.map((chapter, index) => {
@@ -294,7 +294,6 @@ export function NovelDetail({
                   passHref
                   key={index}
                 >
-                  {/* <Divider /> */}
                   <ChapterTitle
                     chapterNumber={chapterIndex.toString()}
                     title={chapter.chapterName}

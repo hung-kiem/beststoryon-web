@@ -29,8 +29,8 @@ export function ChapterRelease({ story }: ChapterReleaseProps) {
           borderRadius: 2,
           my: 1,
           height: "88px",
-          width: { xs: "72px", md: "100px" }, // Tăng độ rộng khi màn hình lớn
-          minWidth: { xs: "72px", md: "100px" }, // Tăng minWidth khi màn hình lớn
+          width: "72px", // Tăng độ rộng khi màn hình lớn
+          minWidth: "72px",
         }}
       >
         <CardMedia

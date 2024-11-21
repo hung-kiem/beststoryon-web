@@ -209,16 +209,23 @@ export function HeaderMobile() {
                     legacyBehavior
                   >
                     <MuiLink
-                      sx={{ display: "flex", alignItems: "center", mb: 2 }}
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        mb: 2,
+                      }}
                       underline="none"
                       className={clsx({
                         active: route.path === router.pathname,
                       })}
                       color="text.primary"
                       onClick={() => handleMenuClick(route.path)}
+                      fontWeight="bold"
                     >
                       {/* Thêm icon trước nhãn menu */}
-                      <Icon sx={{ mr: 1 }}>
+                      <Icon
+                        sx={{ mr: 1, display: "flex", alignItems: "center" }}
+                      >
                         {index === 0 && <HomeIcon />}
                         {index === 1 && <FormatListBulletedIcon />}
                         {index === 2 && <LocalOfferIcon />}

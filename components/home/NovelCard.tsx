@@ -28,7 +28,7 @@ export function NovelCard({ story }: NovelCardProps) {
       >
         <CardMedia
           component="img"
-          height="270"
+          height="250"
           width="230"
           image={imageSrc}
           alt="Novel image"
