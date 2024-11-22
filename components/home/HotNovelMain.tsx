@@ -65,7 +65,8 @@ function ChapterHot({
         <CardMedia
           component="img"
           image={imageSrc}
-          alt="Novel image"
+          alt={storyName}
+          title={storyName}
           sx={{
             height: "100%",
             width: "100%",
@@ -150,7 +151,8 @@ export function HotNovelMain({ data }: HotTopListProps) {
                     height="100%"
                     width="100%"
                     image={imageSrc}
-                    alt="Novel image"
+                    title={firstStory.storyName}
+                    alt={firstStory.storyName}
                     onError={handleImageError}
                   />
                   <Stack
@@ -251,7 +253,10 @@ export function HotNovelMain({ data }: HotTopListProps) {
                           sx={{
                             height: "fit-content",
                             width: "fit-content",
-                            backgroundColor: "background.paper",
+                            backgroundColor:
+                              firstStory.status === "Ongoing"
+                                ? "#c14646"
+                                : "#377f49",
                             borderRadius: 2,
                             p: 1,
                           }}

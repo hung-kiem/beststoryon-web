@@ -76,21 +76,26 @@ export function HeaderDesktop() {
           justifyContent="space-between"
           alignItems="center"
         >
-          <Link href="/" passHref>
-            <Icon
-              sx={{
-                fontSize: 70,
-                alignItems: "center",
-              }}
-            >
-              <AutoStoriesIcon
+          <h1 style={{ display: "flex", alignItems: "center", margin: 0 }}>
+            <Link href="/" passHref>
+              <Icon
                 sx={{
-                  fontSize: 50,
-                  height: "100%",
+                  fontSize: 70,
+                  alignItems: "center",
                 }}
-              />
-            </Icon>
-          </Link>
+              >
+                <AutoStoriesIcon
+                  sx={{
+                    fontSize: 50,
+                    height: "100%",
+                  }}
+                />
+              </Icon>
+            </Link>
+            <span style={{ visibility: "hidden", position: "absolute" }}>
+              NovelsNook - Explore Fan-Fiction Novels Online Free !
+            </span>
+          </h1>
           <Stack direction="row" justifyContent="flex-start" spacing={4}>
             {ROUTE_LIST.map((route, index) => (
               <Link key={route.path} href={route.path} passHref legacyBehavior>

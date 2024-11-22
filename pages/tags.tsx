@@ -11,9 +11,9 @@ const Tag: NextPageWithLayout = () => {
       <Seo
         data={{
           url: "https://novelsnook.com/",
-          title: "NovelsNook",
+          title: "Explore Novels by Tags: Find Your Perfect Read",
           description:
-            "NovelsNook - Dive into a world of captivating novels with thousands of stories, fast updates, and a seamless reading experience.",
+            "Browse novels by popular tags and uncover stories tailored to your interests. From action-packed adventures to heartfelt romances, discover the perfect light novel for you!",
           thumbnailUrl: "https://novelsnook.com/",
         }}
       />

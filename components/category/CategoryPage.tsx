@@ -1,4 +1,11 @@
-import { Box, Container, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Container,
+  Stack,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 import React, { useState, useEffect } from "react";
 import Grid from "@mui/material/Grid2";
 import { NovelCard } from "./NovelCard";
@@ -21,13 +28,14 @@ export function CategoryPage() {
   const [status, setStatus] = useState("ALL");
   const [sortCondition, setSortCondition] = useState("Popular");
   const [pageIndex, setPageIndex] = useState(1);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   useEffect(() => {
     if (router.query.catCode) {
       const code = router.query.catCode as string;
       setCatCode(code);
     }
-    router.replace(router.pathname, undefined, { shallow: true });
   }, [router.query.catCode]);
 
   const { data: categories, isValidating: loadingList } = useSWR(
@@ -64,6 +72,18 @@ export function CategoryPage() {
     setPageIndex(value);
   };
 
+  const handleCategoryClick = (code: string) => {
+    setCatCode(code);
+    router.push(
+      {
+        pathname: router.pathname,
+        query: { ...router.query, catCode: code },
+      },
+      undefined,
+      { shallow: true }
+    );
+  };
+
   return (
     <Box>
       <LoadingOverlay isLoading={isLoading} />
@@ -80,7 +100,7 @@ export function CategoryPage() {
                     title="ALL"
                     code="ALL"
                     isActive={catCode === "ALL"}
-                    onClick={setCatCode}
+                    onClick={handleCategoryClick}
                   />
                 </Grid>
                 {categories?.map((cat) => (
@@ -89,45 +109,84 @@ export function CategoryPage() {
                       title={cat.catName}
                       code={cat.catCode}
                       isActive={cat.catCode === catCode}
-                      onClick={setCatCode}
+                      onClick={handleCategoryClick}
                     />
                   </Grid>
                 ))}
               </Grid>
             </Stack>
           </Stack>
-          <Stack direction="column" spacing={1}>
-            <Typography variant="h4" fontWeight="bold">
-              Status
-            </Typography>
-            <Stack direction="row" spacing={1}>
-              {statusArr.map((s) => (
-                <CategoryButton
-                  key={s}
-                  title={s}
-                  code={s}
-                  isActive={s === status}
-                  onClick={setStatus}
-                />
-              ))}
+          {isMobile ? (
+            <>
+              <Stack direction="column" spacing={1}>
+                <Typography variant="h4" fontWeight="bold">
+                  Status
+                </Typography>
+                <Stack direction="row" spacing={1}>
+                  {statusArr.map((s) => (
+                    <CategoryButton
+                      key={s}
+                      title={s}
+                      code={s}
+                      isActive={s === status}
+                      onClick={setStatus}
+                    />
+                  ))}
+                </Stack>
+              </Stack>
+              <Stack direction="column" spacing={1}>
+                <Typography variant="h4" fontWeight="bold">
+                  Sort By
+                </Typography>
+                <Stack direction="row" spacing={1}>
+                  {sortByArr.map((s) => (
+                    <CategoryButton
+                      key={s}
+                      title={s}
+                      code={s}
+                      isActive={s === sortCondition}
+                      onClick={setSortCondition}
+                    />
+                  ))}
+                </Stack>
+              </Stack>
+            </>
+          ) : (
+            <Stack direction="row" spacing={4}>
+              <Stack direction="column" spacing={1}>
+                <Typography variant="h4" fontWeight="bold">
+                  Status
+                </Typography>
+                <Stack direction="row" spacing={1}>
+                  {statusArr.map((s) => (
+                    <CategoryButton
+                      key={s}
+                      title={s}
+                      code={s}
+                      isActive={s === status}
+                      onClick={setStatus}
+                    />
+                  ))}
+                </Stack>
+              </Stack>
+              <Stack direction="column" spacing={1}>
+                <Typography variant="h4" fontWeight="bold">
+                  Sort By
+                </Typography>
+                <Stack direction="row" spacing={1}>
+                  {sortByArr.map((s) => (
+                    <CategoryButton
+                      key={s}
+                      title={s}
+                      code={s}
+                      isActive={s === sortCondition}
+                      onClick={setSortCondition}
+                    />
+                  ))}
+                </Stack>
+              </Stack>
             </Stack>
-          </Stack>
-          <Stack direction="column" spacing={1}>
-            <Typography variant="h4" fontWeight="bold">
-              Sort By
-            </Typography>
-            <Stack direction="row" spacing={1}>
-              {sortByArr.map((s) => (
-                <CategoryButton
-                  key={s}
-                  title={s}
-                  code={s}
-                  isActive={s === sortCondition}
-                  onClick={setSortCondition}
-                />
-              ))}
-            </Stack>
-          </Stack>
+          )}
           {stories?.data?.length === 0 && (
             <Typography
               variant="body1"

@@ -12,6 +12,7 @@ import useSWR from "swr";
 import React from "react";
 import { LoadingOverlay } from "@/components/loading/LoadingOverlay";
 import BannerPage from "@/components/home/BannerPage";
+import { Seo } from "@/components/common";
 
 const Home: NextPageWithLayout = () => {
   const { data: hotTopList, isValidating: loadingHotTopList } = useSWR(
@@ -53,6 +54,16 @@ const Home: NextPageWithLayout = () => {
 
   return (
     <Box>
+      <Seo
+        data={{
+          url: "https://novelsnook.com/",
+          title:
+            "NovelsNook - Explore Fan-Fiction Novels Online – Completely Free!",
+          description:
+            "Dive into a world of free online novels! Discover daily-updated stories, including light novel, web novels, and a wide range of captivating genres.",
+          thumbnailUrl: "https://novelsnook.com/",
+        }}
+      />
       <LoadingOverlay isLoading={isLoading} />
       {hotTopList?.data && hotTopList?.data.length > 0 && (
         <HotNovelMain data={hotTopList?.data || []} />

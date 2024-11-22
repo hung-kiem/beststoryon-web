@@ -38,7 +38,8 @@ export function ChapterRelease({ story }: ChapterReleaseProps) {
           height="88px"
           width="72px"
           image={imageSrc}
-          alt="Novel image"
+          title={story?.storyName}
+          alt={story?.storyName || "Novel image"}
           onError={handleImageError}
         />
       </Card>
@@ -87,17 +88,17 @@ export function ChapterRelease({ story }: ChapterReleaseProps) {
               variant="subtitle2"
               color="text.secondary"
               fontWeight="bold"
+              sx={{
+                overflow: "hidden",
+                display: "-webkit-box",
+                WebkitBoxOrient: "vertical",
+                WebkitLineClamp: 1,
+                lineClamp: 1,
+              }}
             >
-              {story?.chapterNumber} chapter
+              {story?.lastAddNewChapterName}
             </Typography>
           </Stack>
-          <Typography
-            variant="subtitle2"
-            color="text.secondary"
-            fontWeight="regular"
-          >
-            {story?.lastAddNewChapter || ""}
-          </Typography>
         </Stack>
       </Stack>
     </Stack>

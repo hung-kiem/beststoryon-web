@@ -11,9 +11,9 @@ const Category: NextPageWithLayout = () => {
       <Seo
         data={{
           url: "https://novelsnook.com/",
-          title: "NovelsNook",
+          title: "Discover Hot, New Release, and Trending Novels Online",
           description:
-            "NovelsNook - Dive into a world of captivating novels with thousands of stories, fast updates, and a seamless reading experience.",
+            "Explore the latest and most popular novels with daily updates. From hot releases to trending stories, find your next great read across all genres!",
           thumbnailUrl: "https://novelsnook.com/",
         }}
       />

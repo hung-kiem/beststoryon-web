@@ -11,9 +11,9 @@ const Hot: NextPageWithLayout = () => {
       <Seo
         data={{
           url: "https://novelsnook.com/",
-          title: "NovelsNook",
+          title: "Must-Read Hot Novels: Today’s Most Popular Stories",
           description:
-            "NovelsNook - Dive into a world of captivating novels with thousands of stories, fast updates, and a seamless reading experience.",
+            "Uncover the hottest novels readers can’t stop talking about. From captivating dramas to thrilling adventures, these trending hits are waiting for you!",
           thumbnailUrl: "https://novelsnook.com/",
         }}
       />

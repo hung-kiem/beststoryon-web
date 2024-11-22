@@ -105,7 +105,8 @@ export function NovelDetail({
                   height="100%"
                   width="100%"
                   image={imageSrc}
-                  alt="Novel image"
+                  title={storyDetail?.story?.storyName}
+                  alt={storyDetail?.story?.storyName}
                   onError={handleImageError}
                 />
               </Card>

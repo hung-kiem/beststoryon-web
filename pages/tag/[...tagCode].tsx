@@ -11,7 +11,8 @@ const Tag: NextPageWithLayout = () => {
       <Seo
         data={{
           url: "https://novelsnook.com/",
-          title: "NovelsNook",
+          title:
+            "NovelsNook - Explore Fan-Fiction Novels Online – Completely Free!",
           description:
             "NovelsNook - Dive into a world of captivating novels with thousands of stories, fast updates, and a seamless reading experience.",
           thumbnailUrl: "https://novelsnook.com/",

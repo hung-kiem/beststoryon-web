@@ -22,6 +22,7 @@ export function CategoryButton({
         color: isActive ? "secondary.contrastText" : "background.paper",
         borderColor: "background.paper",
       }}
+      title={`NovelsNook - List of Novels - ${title}`}
       onClick={() => onClick(code)}
     >
       {title}

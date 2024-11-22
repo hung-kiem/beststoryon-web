@@ -31,7 +31,8 @@ export function NovelCard({ story }: NovelCardProps) {
           height="250"
           width="230"
           image={imageSrc}
-          alt="Novel image"
+          title={story?.storyName}
+          alt={story?.storyName || "Novel image"}
           onError={handleImageError}
         />
         <Stack
@@ -43,7 +44,7 @@ export function NovelCard({ story }: NovelCardProps) {
           height="fit-content"
           p="4px"
           sx={{
-            backgroundColor: "background.paper",
+            backgroundColor: "#000",
             borderRadius: 2,
             position: "absolute",
             left: 10,
@@ -71,7 +72,8 @@ export function NovelCard({ story }: NovelCardProps) {
           height="fit-content"
           p="4px"
           sx={{
-            backgroundColor: "background.paper",
+            backgroundColor:
+              story?.status === "Ongoing" ? "#c14646" : "#377f49",
             borderRadius: 2,
             position: "absolute",
             right: 0,

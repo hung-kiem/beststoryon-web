@@ -34,4 +34,5 @@ export interface StoryHome {
   catList: string[];
   tagList: string[];
   storyNameAlias: string | null;
+  lastAddNewChapterName: string;
 }

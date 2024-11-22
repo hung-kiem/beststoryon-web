@@ -97,21 +97,23 @@ export function HeaderMobile() {
           alignItems="center"
           spacing={2}
         >
-          <Link href="/" passHref>
-            <Icon
-              sx={{
-                fontSize: 70,
-                alignItems: "center",
-              }}
-            >
-              <AutoStoriesIcon
+          <h1 style={{ display: "flex", alignItems: "center", margin: 0 }}>
+            <Link href="/" passHref>
+              <Icon
                 sx={{
-                  fontSize: 50,
-                  height: "100%",
+                  fontSize: 70,
+                  alignItems: "center",
                 }}
-              />
-            </Icon>
-          </Link>
+              >
+                <AutoStoriesIcon
+                  sx={{
+                    fontSize: 50,
+                    height: "100%",
+                  }}
+                />
+              </Icon>
+            </Link>
+          </h1>
           <Autocomplete
             id="free-solo-demo"
             freeSolo
