@@ -13,6 +13,6 @@ export const ROUTE_LIST = [
   },
   {
     label: "Update",
-    path: "/update",
+    path: "/update/ALL",
   },
 ];

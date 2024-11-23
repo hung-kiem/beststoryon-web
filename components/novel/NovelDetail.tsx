@@ -331,7 +331,7 @@ export function NovelDetail({
                 Recommend
               </Typography>
             </Stack>
-            <Link passHref href="/newRelease" legacyBehavior>
+            <Link passHref href="/newRelease/ALL" legacyBehavior>
               <MuiLink color="background.paper">View all</MuiLink>
             </Link>
           </Stack>

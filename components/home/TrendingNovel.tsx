@@ -34,7 +34,7 @@ export function TrendingNovel({ data }: TrendingProps) {
                   Trending
                 </Typography>
               </Stack>
-              <Link passHref href="/trending" legacyBehavior>
+              <Link passHref href="/trending/ALL" legacyBehavior>
                 <MuiLink color="background.paper">View all</MuiLink>
               </Link>
             </Stack>
