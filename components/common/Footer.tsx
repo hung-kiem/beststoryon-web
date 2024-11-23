@@ -47,7 +47,7 @@ export function Footer() {
           <Grid container spacing={2} mb={4}>
             {categories &&
               categories.map((category, index) => (
-                <Grid item xs={6} md={4} key={index}>
+                <Grid item xs={6} md={3} key={index}>
                   <Link href={`/categories/${category.catCode}`} passHref>
                     <Typography
                       variant="caption"
@@ -69,87 +69,59 @@ export function Footer() {
               ))}
           </Grid>
         </Stack>
-
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: { xs: "center", md: "flex-start" },
-            mt: 4,
-          }}
-        >
-          <Typography
-            variant="h6"
-            fontWeight="bold"
-            textAlign={{ xs: "center", md: "left" }}
-          >
-            NovelsNook
-          </Typography>
-          <Typography
-            variant="body1"
-            mt={1}
-            textAlign="left"
-            sx={{ float: "left" }}
-          >
-            Dive into a world of free online novels! Discover daily-updated
-            stories, light novel, web novels, and a wide range of captivating
-            genres. From Chinese, Japanese, Korean, and English novels.
-          </Typography>
-        </Box>
-
-        {/* Menu Footer */}
-        <Stack
-          mt={6}
-          direction="row"
-          spacing={4}
-          justifyContent="space-between"
-          alignItems="flex-start"
-          textAlign={{ xs: "center", md: "left" }}
-          flexWrap="wrap"
-        >
-          <Typography
-            variant="h6"
-            fontWeight="bold"
-            textAlign={{ xs: "center", md: "left" }}
-            width={{ xs: "100%", md: "auto" }}
-            mb={2}
-          >
-            Policies
-          </Typography>
-          <Grid container spacing={2}>
-            {["Home", "Contact", "TOS", "Privacy Policy", "DCMA"].map(
-              (item, index) => (
-                <Grid item xs={6} md={4} key={index}>
-                  <Link
-                    href={
-                      item === "Home"
-                        ? "/"
-                        : item === "Contact"
-                        ? "/contact-us.html"
-                        : item === "TOS"
-                        ? "/terms-of-service.html"
-                        : item === "Privacy Policy"
-                        ? "/privacy-policy.html"
-                        : "/dcma.html"
-                    }
-                    passHref
+        <Stack direction="row" mt={4}>
+          <Grid item xs={12} md={6} flex={1}>
+            <Typography
+              variant="h6"
+              fontWeight="bold"
+              textAlign={{ xs: "center", md: "left" }}
+            >
+              NovelsNook
+            </Typography>
+            <Typography
+              variant="body1"
+              mt={1}
+              textAlign={{ xs: "justify", md: "left" }}
+              sx={{
+                float: { xs: "none", md: "left" },
+                textJustify: "inter-word",
+              }}
+            >
+              Dive into a world of free online novels! Discover daily-updated
+              stories, light novel, web novels, and a wide range of captivating
+              genres. From Chinese, Japanese, Korean, and English novels.
+            </Typography>
+          </Grid>
+          <Grid container spacing={0} mt={5} flex={1} sx={{ paddingLeft: 8 }}>
+            {["Contact", "TOS", "Privacy Policy", "DCMA"].map((item, index) => (
+              <Grid item xs={12} md={6} key={index}>
+                <Link
+                  href={
+                    item === "Contact"
+                      ? "/contact-us.html"
+                      : item === "TOS"
+                      ? "/terms-of-service.html"
+                      : item === "Privacy Policy"
+                      ? "/privacy-policy.html"
+                      : "/dcma.html"
+                  }
+                  passHref
+                >
+                  <Typography
+                    variant="caption"
+                    color="inherit"
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      textDecoration: "underline",
+                    }}
                   >
-                    <Typography
-                      variant="caption"
-                      color="inherit"
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        textDecoration: "underline",
-                      }}
-                    >
-                      <ChevronRightIcon fontSize="small" sx={{ mr: 1 }} />
-                      {item}
-                    </Typography>
-                  </Link>
-                </Grid>
-              )
-            )}
+                    <ChevronRightIcon fontSize="small" sx={{ mr: 1 }} />
+                    {item}
+                  </Typography>
+                </Link>
+              </Grid>
+            ))}
           </Grid>
         </Stack>
 
