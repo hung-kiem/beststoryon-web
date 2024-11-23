@@ -5,7 +5,7 @@ import {
   Typography,
   Link as MuiLink,
 } from "@mui/material";
-import * as React from "react";
+import React from "react";
 import Link from "next/link";
 import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 import { NovelCard } from "./NovelCard";

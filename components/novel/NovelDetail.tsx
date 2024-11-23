@@ -9,7 +9,6 @@ import {
   Divider,
   Pagination,
   Link as MuiLink,
-  Rating,
 } from "@mui/material";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -19,14 +18,7 @@ import ImportContactsIcon from "@mui/icons-material/ImportContacts";
 import { ChapterTitle } from "./ChapterTitle";
 import { NovelCard } from "./NovelCard";
 import { useRouter } from "next/router";
-import { storyApi } from "@/api-client/story-api";
-import useSWR from "swr";
-import {
-  GetStoryDetailPayload,
-  GetStoryDetailResponse,
-  GetStoryListReferPayload,
-  StoryDetail,
-} from "@/models/story";
+import { GetStoryDetailResponse, StoryDetail } from "@/models/story";
 import StoryRating from "./StoryRating";
 import { LoadingOverlay } from "../loading/LoadingOverlay";
 
@@ -190,19 +182,21 @@ export function NovelDetail({
                     Genre:
                   </Typography>
                   {storyDetail?.story?.catList?.map((cat, index) => (
-                    <Typography
-                      key={index}
-                      variant="body2"
-                      color="secondary.contrastText"
-                      fontWeight="regular"
-                      sx={{
-                        backgroundColor: "text.secondary",
-                        borderRadius: 2,
-                        p: 0.5,
-                      }}
-                    >
-                      {cat}
-                    </Typography>
+                    <Link href={`/categories/${cat}`}>
+                      <Typography
+                        key={index}
+                        variant="body2"
+                        color="secondary.contrastText"
+                        fontWeight="regular"
+                        sx={{
+                          backgroundColor: "text.secondary",
+                          borderRadius: 2,
+                          p: 0.5,
+                        }}
+                      >
+                        {cat}
+                      </Typography>
+                    </Link>
                   ))}
                 </Stack>
                 <Stack direction="column" spacing={1}>
@@ -273,9 +267,6 @@ export function NovelDetail({
           <Stack direction="column" spacing={0}>
             <Typography variant="body1" fontWeight="bold">
               {storyDetail?.story?.chapterNumber} Chapter
-            </Typography>
-            <Typography variant="body2" fontWeight="regular">
-              {storyDetail?.story?.lastAddNewChapterLabel}
             </Typography>
           </Stack>
           <Stack

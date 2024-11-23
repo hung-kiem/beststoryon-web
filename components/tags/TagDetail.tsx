@@ -1,7 +1,7 @@
 import { Box, Container, Stack, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import Pagination from "@mui/material/Pagination";
-import { categoryApi, tagApi } from "@/api-client";
+import { tagApi } from "@/api-client";
 import React, { useState } from "react";
 import useSWR from "swr";
 import { CategoryButton } from "./CategoryButton";

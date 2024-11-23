@@ -1,5 +1,5 @@
 import { Stack, Typography, Card, CardMedia } from "@mui/material";
-import * as React from "react";
+import React from "react";
 import ImportContactsIcon from "@mui/icons-material/ImportContacts";
 import StarIcon from "@mui/icons-material/Star";
 

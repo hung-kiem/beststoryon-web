@@ -48,10 +48,7 @@ export function Footer() {
             {categories &&
               categories.map((category, index) => (
                 <Grid item xs={6} md={4} key={index}>
-                  <Link
-                    href={`/categories?catCode=${category.catCode}`}
-                    passHref
-                  >
+                  <Link href={`/categories/${category.catCode}`} passHref>
                     <Typography
                       variant="caption"
                       color="inherit"

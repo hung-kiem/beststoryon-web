@@ -27,48 +27,45 @@ export function ChapterTitle({
           cursor: onClick ? "pointer" : "default",
           "&:hover": onClick
             ? {
-                backgroundColor: "action.hover", // Hiệu ứng hover nếu có onClick
+                backgroundColor: "action.hover",
               }
             : undefined,
         }}
         onClick={onClick}
       >
-        {/* Phần tên chương */}
         <Stack
-          direction="column"
+          direction="row"
           sx={{
-            flex: 1, // Phần này chiếm tối đa chiều rộng
-            maxWidth: "calc(100% - 120px)", // Trừ khoảng cho ngày cập nhật
-            overflow: "hidden", // Ẩn nội dung vượt quá
+            flex: 1,
+            maxWidth: "calc(100% - 120px)",
+            overflow: "hidden",
           }}
         >
-          <Typography variant="caption">Chapter {chapterNumber}</Typography>
           <Typography
             variant="body1"
             fontWeight="bold"
             sx={{
-              display: "-webkit-box", // Để hỗ trợ clamp
-              WebkitBoxOrient: "vertical", // Định hướng dọc
-              WebkitLineClamp: 3, // Hiển thị tối đa 3 dòng
-              overflow: "hidden", // Ẩn phần nội dung vượt quá
-              textOverflow: "ellipsis", // Thêm dấu "..." nếu bị ẩn
-              whiteSpace: "normal", // Cho phép xuống dòng nếu cần
+              display: "-webkit-box",
+              WebkitBoxOrient: "vertical",
+              WebkitLineClamp: 3,
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "normal",
             }}
           >
-            {title}
+            {chapterNumber} - {title}
           </Typography>
         </Stack>
 
-        {/* Phần ngày cập nhật */}
         <Typography
           variant="caption"
           fontWeight="regular"
           sx={{
-            width: "120px", // Độ rộng cố định cho ngày cập nhật
-            textAlign: "right", // Căn phải
-            whiteSpace: "nowrap", // Không xuống dòng
-            overflow: "hidden", // Ẩn nội dung nếu quá dài
-            textOverflow: "ellipsis", // Thêm dấu "..."
+            width: "120px",
+            textAlign: "right",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
           }}
         >
           {date.replace("update", "")}
