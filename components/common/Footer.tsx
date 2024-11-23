@@ -55,10 +55,7 @@ export function Footer() {
                       sx={{
                         display: "flex",
                         alignItems: "center",
-                        textDecoration: "underline", // Gạch chân
-                        "&:hover": {
-                          color: "#002B5C", // Màu xanh đậm hơn khi hover
-                        },
+                        textDecoration: "underline",
                       }}
                     >
                       <ChevronRightIcon fontSize="small" sx={{ mr: 1 }} />
