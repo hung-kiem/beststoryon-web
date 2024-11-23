@@ -29,35 +29,49 @@ export function Footer() {
     >
       <Container>
         {/* Categories từ API */}
-        <Stack direction="row" spacing={4} mt={4} mb={2}>
-          <Typography variant="h6" fontWeight="bold" textAlign="left">
+        <Stack
+          direction="row"
+          spacing={4}
+          justifyContent="space-between"
+          alignItems="flex-start"
+          flexWrap="wrap"
+        >
+          <Typography
+            variant="h6"
+            fontWeight="bold"
+            textAlign={{ xs: "center", md: "left" }}
+            width={{ xs: "100%", md: "auto" }}
+          >
             Categories
           </Typography>
-        </Stack>
-        <Grid container spacing={2} mb={4}>
-          {categories &&
-            categories.map((category, index) => (
-              <Grid item xs={6} md={4} key={index}>
-                <Link href={`/categories?catCode=${category.catCode}`} passHref>
-                  <Typography
-                    variant="caption"
-                    color="inherit"
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      textDecoration: "underline", // Gạch chân
-                      "&:hover": {
-                        color: "#002B5C", // Màu xanh đậm hơn khi hover
-                      },
-                    }}
+          <Grid container spacing={2} mb={4}>
+            {categories &&
+              categories.map((category, index) => (
+                <Grid item xs={6} md={4} key={index}>
+                  <Link
+                    href={`/categories?catCode=${category.catCode}`}
+                    passHref
                   >
-                    <ChevronRightIcon fontSize="small" sx={{ mr: 1 }} />
-                    {category.catName}
-                  </Typography>
-                </Link>
-              </Grid>
-            ))}
-        </Grid>
+                    <Typography
+                      variant="caption"
+                      color="inherit"
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        textDecoration: "underline", // Gạch chân
+                        "&:hover": {
+                          color: "#002B5C", // Màu xanh đậm hơn khi hover
+                        },
+                      }}
+                    >
+                      <ChevronRightIcon fontSize="small" sx={{ mr: 1 }} />
+                      {category.catName}
+                    </Typography>
+                  </Link>
+                </Grid>
+              ))}
+          </Grid>
+        </Stack>
 
         <Box
           sx={{
@@ -93,9 +107,16 @@ export function Footer() {
           spacing={4}
           justifyContent="space-between"
           alignItems="flex-start"
+          textAlign={{ xs: "center", md: "left" }}
           flexWrap="wrap"
         >
-          <Typography variant="h6" fontWeight="bold" textAlign="left" mb={2}>
+          <Typography
+            variant="h6"
+            fontWeight="bold"
+            textAlign={{ xs: "center", md: "left" }}
+            width={{ xs: "100%", md: "auto" }}
+            mb={2}
+          >
             Policies
           </Typography>
           <Grid container spacing={2}>
