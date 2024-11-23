@@ -91,7 +91,15 @@ export function Footer() {
           </Grid>
           <Grid container spacing={0} mt={5} flex={1} sx={{ paddingLeft: 8 }}>
             {["Contact", "TOS", "Privacy Policy", "DCMA"].map((item, index) => (
-              <Grid item xs={12} md={6} key={index}>
+              <Grid
+                item
+                xs={12}
+                md={6}
+                key={index}
+                sx={{
+                  paddingLeft: { xs: 0, md: index % 2 === 0 ? 0 : 1 },
+                }}
+              >
                 <Link
                   href={
                     item === "Contact"
