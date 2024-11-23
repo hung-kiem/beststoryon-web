@@ -2,14 +2,14 @@ import { Button } from "@mui/material";
 import * as React from "react";
 
 export interface ICategoryButtonProps {
-  title: string;
+  name: string;
   code: string;
   isActive: boolean;
   onClick: (code: string) => void;
 }
 
 export function CategoryButton({
-  title,
+  name,
   code,
   isActive,
   onClick,
@@ -22,10 +22,10 @@ export function CategoryButton({
         color: isActive ? "secondary.contrastText" : "background.paper",
         borderColor: "background.paper",
       }}
-      title={`NovelsNook - List of Novels - ${title}`}
+      title={`NovelsNook - List of Novels - ${name}`}
       onClick={() => onClick(code)}
     >
-      {title}
+      {name}
     </Button>
   );
 }
