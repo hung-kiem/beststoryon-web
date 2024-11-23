@@ -10,7 +10,7 @@ const MILLISECOND_PER_HOUR = 1000 * 60 * 60;
 
 export function Footer() {
   const { data: categories, isValidating: loadingList } = useSWR(
-    `/category/getList`,
+    "/category/getList",
     categoryApi.getList,
     {
       revalidateOnFocus: false,
@@ -23,63 +23,97 @@ export function Footer() {
       component="footer"
       py={5}
       sx={{
-        backgroundColor: "background.paper",
+        backgroundColor: "#0F172A",
         color: "#FFFFFF",
       }}
     >
       <Container>
-        {/* Tiêu đề NovelsNook */}
-        <Typography
-          variant="h4"
-          fontWeight="bold"
-          textAlign={{ xs: "center", md: "left" }}
-        >
-          NovelsNook
-        </Typography>
+        {/* Categories từ API */}
+        <Stack direction="row" spacing={4} mt={4} mb={2}>
+          <Typography variant="h6" fontWeight="bold" textAlign="left">
+            Categories
+          </Typography>
+        </Stack>
+        <Grid container spacing={2} mb={4}>
+          {categories &&
+            categories.map((category, index) => (
+              <Grid item xs={6} md={4} key={index}>
+                <Link href={`/categories?catCode=${category.catCode}`} passHref>
+                  <Typography
+                    variant="caption"
+                    color="inherit"
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      textDecoration: "underline", // Gạch chân
+                      "&:hover": {
+                        color: "#002B5C", // Màu xanh đậm hơn khi hover
+                      },
+                    }}
+                  >
+                    <ChevronRightIcon fontSize="small" sx={{ mr: 1 }} />
+                    {category.catName}
+                  </Typography>
+                </Link>
+              </Grid>
+            ))}
+        </Grid>
 
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: { xs: "center", md: "flex-start" },
+            mt: 4,
+          }}
+        >
+          <Typography
+            variant="h6"
+            fontWeight="bold"
+            textAlign={{ xs: "center", md: "left" }}
+          >
+            NovelsNook
+          </Typography>
+          <Typography
+            variant="body1"
+            mt={1}
+            textAlign="left"
+            sx={{ float: "left" }}
+          >
+            Dive into a world of free online novels! Discover daily-updated
+            stories, light novel, web novels, and a wide range of captivating
+            genres. From Chinese, Japanese, Korean, and English novels.
+          </Typography>
+        </Box>
+
+        {/* Menu Footer */}
         <Stack
-          mt={4}
+          mt={6}
           direction="row"
           spacing={4}
           justifyContent="space-between"
           alignItems="flex-start"
           flexWrap="wrap"
         >
-          {/* Menu Footer và Categories */}
+          <Typography variant="h6" fontWeight="bold" textAlign="left" mb={2}>
+            Policies
+          </Typography>
           <Grid container spacing={2}>
-            {/* Menu Footer */}
-            {["Home", "Contact Us", "Term Of Use", "Cookie Policy", "DCMA"].map(
+            {["Home", "Contact", "TOS", "Privacy Policy", "DCMA"].map(
               (item, index) => (
                 <Grid item xs={6} md={4} key={index}>
-                  <Link href="/" passHref>
-                    <Typography
-                      variant="caption"
-                      color="inherit"
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        textDecoration: "underline", // Gạch chân
-                        // color: "#0047AB", // Màu chữ xanh đậm
-                        "&:hover": {
-                          color: "#002B5C", // Màu xanh đậm hơn khi hover
-                        },
-                      }}
-                    >
-                      <ChevronRightIcon fontSize="small" sx={{ mr: 1 }} />{" "}
-                      {/* Thêm icon */}
-                      {item}
-                    </Typography>
-                  </Link>
-                </Grid>
-              )
-            )}
-
-            {/* Categories từ API */}
-            {categories &&
-              categories.map((category, index) => (
-                <Grid item xs={6} md={4} key={index}>
                   <Link
-                    href={`/categories?catCode=${category.catCode}`}
+                    href={
+                      item === "Home"
+                        ? "/"
+                        : item === "Contact"
+                        ? "/contact-us.html"
+                        : item === "TOS"
+                        ? "/terms-of-service.html"
+                        : item === "Privacy Policy"
+                        ? "/privacy-policy.html"
+                        : "/dcma.html"
+                    }
                     passHref
                   >
                     <Typography
@@ -88,26 +122,32 @@ export function Footer() {
                       sx={{
                         display: "flex",
                         alignItems: "center",
-                        textDecoration: "underline", // Gạch chân
-                        // color: "#0047AB", // Màu chữ xanh đậm
-                        "&:hover": {
-                          color: "#002B5C", // Màu xanh đậm hơn khi hover
-                        },
+                        textDecoration: "underline",
                       }}
                     >
-                      <ChevronRightIcon fontSize="small" sx={{ mr: 1 }} />{" "}
-                      {/* Thêm icon */}
-                      {category.catName}
+                      <ChevronRightIcon fontSize="small" sx={{ mr: 1 }} />
+                      {item}
                     </Typography>
                   </Link>
                 </Grid>
-              ))}
+              )
+            )}
           </Grid>
         </Stack>
 
         {/* Phần Bản quyền */}
         <Typography variant="body2" color="inherit" mt={4} textAlign="center">
-          © Copyright NovelsNook.Com. All Rights Reserved.
+          © Copyright{" "}
+          <Link href="https://novelsnook.com/" passHref>
+            <Typography
+              variant="body2"
+              component="span"
+              sx={{ textDecoration: "underline", color: "inherit" }}
+            >
+              NovelsNook.Com
+            </Typography>
+          </Link>
+          . All Rights Reserved.
         </Typography>
       </Container>
     </Box>

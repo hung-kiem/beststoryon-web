@@ -10,6 +10,22 @@ const nextConfig = {
         source: "/story/:storyId/chapter/:index.html",
         destination: "/story/:storyId/chapter/:index",
       },
+      {
+        source: "/contact-us.html",
+        destination: "/contact-us",
+      },
+      {
+        source: "/terms-of-service.html",
+        destination: "/terms-of-service",
+      },
+      {
+        source: "/privacy-policy.html",
+        destination: "/privacy-policy",
+      },
+      {
+        source: "/dcma.html",
+        destination: "/dcma",
+      },
     ];
   },
   reactStrictMode: true,
