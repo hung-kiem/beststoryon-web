@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import useSWR from "swr";
 import { categoryApi } from "@/api-client";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight"; // Icon mũi tên trỏ phải không có đuôi
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
 const MILLISECOND_PER_HOUR = 1000 * 60 * 60;
 
@@ -17,6 +17,13 @@ export function Footer() {
       dedupingInterval: MILLISECOND_PER_HOUR,
     }
   );
+
+  const links = [
+    { label: "Contact", url: "/contact-us.html" },
+    { label: "TOS", url: "/terms-of-service.html" },
+    { label: "Privacy Policy", url: "/privacy-policy.html" },
+    { label: "DCMA", url: "/dcma.html" },
+  ];
 
   return (
     <Box
@@ -44,74 +51,10 @@ export function Footer() {
           >
             Categories
           </Typography>
-          <Grid container spacing={2} mb={4}>
-            {categories &&
-              categories.map((category, index) => (
-                <Grid item xs={6} md={3} key={index}>
-                  <Link href={`/categories/${category.catCode}`} passHref>
-                    <Typography
-                      variant="caption"
-                      color="inherit"
-                      sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        textDecoration: "underline",
-                      }}
-                    >
-                      <ChevronRightIcon fontSize="small" sx={{ mr: 1 }} />
-                      {category.catName}
-                    </Typography>
-                  </Link>
-                </Grid>
-              ))}
-          </Grid>
-        </Stack>
-        <Stack direction="row" mt={4}>
-          <Grid item xs={12} md={6} flex={1}>
-            <Typography
-              variant="h6"
-              fontWeight="bold"
-              textAlign={{ xs: "center", md: "left" }}
-            >
-              NovelsNook
-            </Typography>
-            <Typography
-              variant="body1"
-              mt={1}
-              textAlign={{ xs: "justify", md: "left" }}
-              sx={{
-                float: { xs: "none", md: "left" },
-                textJustify: "inter-word",
-              }}
-            >
-              Dive into a world of free online novels! Discover daily-updated
-              stories, light novel, web novels, and a wide range of captivating
-              genres. From Chinese, Japanese, Korean, and English novels.
-            </Typography>
-          </Grid>
-          <Grid container spacing={0} mt={5} flex={1} sx={{ paddingLeft: 8 }}>
-            {["Contact", "TOS", "Privacy Policy", "DCMA"].map((item, index) => (
-              <Grid
-                item
-                xs={12}
-                md={6}
-                key={index}
-                sx={{
-                  paddingLeft: { xs: 0, md: index % 2 === 0 ? 0 : 1 },
-                }}
-              >
-                <Link
-                  href={
-                    item === "Contact"
-                      ? "/contact-us.html"
-                      : item === "TOS"
-                      ? "/terms-of-service.html"
-                      : item === "Privacy Policy"
-                      ? "/privacy-policy.html"
-                      : "/dcma.html"
-                  }
-                  passHref
-                >
+          <Grid container spacing={2} mb={4} columns={{ xs: 2, md: 4 }}>
+            {categories?.map((category, index) => (
+              <Grid item xs={1} md={1} key={index}>
+                <Link href={`/categories/${category.catCode}`} passHref>
                   <Typography
                     variant="caption"
                     color="inherit"
@@ -122,7 +65,60 @@ export function Footer() {
                     }}
                   >
                     <ChevronRightIcon fontSize="small" sx={{ mr: 1 }} />
-                    {item}
+                    {category.catName}
+                  </Typography>
+                </Link>
+              </Grid>
+            ))}
+          </Grid>
+        </Stack>
+
+        <Stack direction={{ xs: "column", md: "row" }} mt={4} spacing={4}>
+          <Grid container spacing={2} columns={{ xs: 2, md: 4 }}>
+            {/* Tên trang web */}
+            <Grid item xs={2} md={2}>
+              <Typography
+                variant="h6"
+                fontWeight="bold"
+                textAlign={{ xs: "center", md: "left" }}
+              >
+                NovelsNook
+              </Typography>
+            </Grid>
+            {/* Mô tả bên trái */}
+            <Grid item xs={2} md={2}>
+              <Typography
+                variant="body1"
+                mt={1}
+                textAlign={{ xs: "justify", md: "left" }}
+                sx={{
+                  textJustify: "inter-word",
+                }}
+              >
+                Dive into a world of free online novels! Discover daily-updated
+                stories, light novel, web novels, and a wide range of
+                captivating genres. From Chinese, Japanese, Korean, and English
+                novels.
+              </Typography>
+            </Grid>
+          </Grid>
+
+          {/* Các liên kết bên phải */}
+          <Grid container spacing={2} columns={{ xs: 2, md: 2 }}>
+            {links.map((link, index) => (
+              <Grid item xs={1} md={1} key={index}>
+                <Link href={link.url} passHref>
+                  <Typography
+                    variant="caption"
+                    color="inherit"
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      textDecoration: "underline",
+                    }}
+                  >
+                    <ChevronRightIcon fontSize="small" sx={{ mr: 1 }} />
+                    {link.label}
                   </Typography>
                 </Link>
               </Grid>
