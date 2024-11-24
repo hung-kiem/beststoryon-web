@@ -9,6 +9,7 @@ import {
   Stack,
   Box,
   TextField,
+  Divider,
 } from "@mui/material";
 import { ROUTE_LIST } from "./routes";
 import Link from "next/link";
@@ -118,12 +119,17 @@ export function HeaderDesktop() {
               getOptionLabel={(option) =>
                 typeof option === "string" ? option : option?.storyName || ""
               }
-              renderOption={(props, option) => (
-                <SearchItem
-                  story={option}
-                  onSelected={handleOptionSelect}
-                  {...props}
-                />
+              renderOption={(props, option, { index }) => (
+                <>
+                  <SearchItem
+                    story={option}
+                    onSelected={handleOptionSelect}
+                    {...props}
+                  />
+                  {index < (searchResults?.data?.length || 0) - 1 && (
+                    <Divider sx={{ backgroundColor: "#BDBDBD" }} />
+                  )}
+                </>
               )}
               renderInput={(params) => (
                 <TextField

@@ -8,6 +8,7 @@ import {
   Autocomplete,
   AutocompleteInputChangeReason,
   IconButton,
+  Divider,
 } from "@mui/material";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import { ROUTE_LIST } from "./routes";
@@ -121,12 +122,17 @@ export function HeaderMobile() {
             getOptionLabel={(option) =>
               typeof option === "string" ? option : option?.storyName || ""
             }
-            renderOption={(props, option) => (
-              <SearchItemMobile
-                story={option}
-                onSelected={handleOptionSelect}
-                {...props}
-              />
+            renderOption={(props, option, { index }) => (
+              <>
+                <SearchItem
+                  story={option}
+                  onSelected={handleOptionSelect}
+                  {...props}
+                />
+                {index < (searchResults?.data?.length || 0) - 1 && (
+                  <Divider sx={{ backgroundColor: "#BDBDBD" }} />
+                )}
+              </>
             )}
             renderInput={(params) => (
               <TextField
