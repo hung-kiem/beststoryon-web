@@ -1,36 +1,52 @@
+import React, { SyntheticEvent, useState, memo } from "react";
+import { useRouter } from "next/router";
+import useSWR from "swr";
 import {
   Container,
   Link as MuiLink,
   Icon,
-  TextField,
   Autocomplete,
-  AutocompleteInputChangeReason,
+  Stack,
+  Box,
+  TextField,
 } from "@mui/material";
-import { Box, Stack } from "@mui/system";
-import React, { SyntheticEvent, useState } from "react";
 import { ROUTE_LIST } from "./routes";
 import Link from "next/link";
-import { useRouter } from "next/router";
-import clsx from "clsx";
-import ThemeToggle from "./ThemeToggle";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 import { SearchPayload } from "@/models";
 import { searchApi } from "@/api-client";
-import useSWR from "swr";
 import { useDebounce } from "use-debounce";
 import HomeIcon from "@mui/icons-material/Home";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import NewReleasesIcon from "@mui/icons-material/NewReleases";
+import ThemeToggle from "./ThemeToggle";
+import clsx from "clsx";
+import { SearchItem } from "./SearchItem";
+import { StoryDetail } from "@/models/story";
+import { useThemeContext } from "@/context";
 
-const fetcherSearch = (url: string, payload: SearchPayload) => {
-  return searchApi.search(payload);
-};
+const LogoComponent = memo(() => (
+  <h1 style={{ display: "flex", alignItems: "center", margin: 0 }}>
+    <Link href="/" passHref>
+      <Icon sx={{ fontSize: 70, alignItems: "center" }}>
+        <AutoStoriesIcon sx={{ fontSize: 50, height: "100%" }} />
+      </Icon>
+    </Link>
+    <span style={{ visibility: "hidden", position: "absolute" }}>
+      NovelsNook - Explore Fan-Fiction Novels Online Free!
+    </span>
+  </h1>
+));
+
+const fetcherSearch = (url: string, payload: SearchPayload) =>
+  searchApi.search(payload);
 
 export function HeaderDesktop() {
   const router = useRouter();
   const [searchValue, setSearchValue] = useState("");
   const [debouncedSearchValue] = useDebounce(searchValue, 1000);
+  const { mode } = useThemeContext();
 
   const payload: SearchPayload = {
     keyword: debouncedSearchValue,
@@ -39,32 +55,20 @@ export function HeaderDesktop() {
     pageIndex: 1,
     pageSize: 5,
   };
-  const { data: searchResults, mutate } = useSWR(
-    debouncedSearchValue ? [`/search`, payload] : null,
+
+  const { data: searchResults, isValidating } = useSWR(
+    debouncedSearchValue ? ["/search", payload] : null,
     ([url, payload]) => fetcherSearch(url, payload)
   );
 
-  const handleInputChange = (
-    event: SyntheticEvent<Element, Event>,
-    value: string,
-    reason: AutocompleteInputChangeReason
-  ) => {
+  const handleInputChange = (_: SyntheticEvent, value: string) => {
     setSearchValue(value);
   };
 
-  const handleOptionSelect = (
-    event: SyntheticEvent<Element, Event>,
-    value: string | null
-  ) => {
+  const handleOptionSelect = (value: StoryDetail) => {
     if (value) {
-      const selectedStory = searchResults?.data?.find(
-        (story) => story.storyName === value
-      );
-      if (selectedStory) {
-        router.push(
-          `/story/${selectedStory.storyNameAlias}-${selectedStory.storyId}.html`
-        );
-      }
+      router.push(`/story/${value.storyNameAlias}-${value.storyId}.html`);
+      (document.activeElement as HTMLElement)?.blur();
     }
   };
 
@@ -76,26 +80,7 @@ export function HeaderDesktop() {
           justifyContent="space-between"
           alignItems="center"
         >
-          <h1 style={{ display: "flex", alignItems: "center", margin: 0 }}>
-            <Link href="/" passHref>
-              <Icon
-                sx={{
-                  fontSize: 70,
-                  alignItems: "center",
-                }}
-              >
-                <AutoStoriesIcon
-                  sx={{
-                    fontSize: 50,
-                    height: "100%",
-                  }}
-                />
-              </Icon>
-            </Link>
-            <span style={{ visibility: "hidden", position: "absolute" }}>
-              NovelsNook - Explore Fan-Fiction Novels Online Free !
-            </span>
-          </h1>
+          <LogoComponent />
           <Stack direction="row" justifyContent="flex-start" spacing={4}>
             {ROUTE_LIST.map((route, index) => (
               <Link key={route.path} href={route.path} passHref legacyBehavior>
@@ -107,38 +92,39 @@ export function HeaderDesktop() {
                     display: "flex",
                   }}
                   underline="none"
-                  className={clsx({
-                    active: route.path === router.pathname,
-                  })}
+                  className={clsx({ active: route.path === router.pathname })}
                   fontWeight="bold"
                 >
-                  <Icon sx={{ mr: 1, display: "flex", alignItems: "center" }}>
+                  <Icon sx={{ mr: 1 }}>
                     {index === 0 && <HomeIcon />}
                     {index === 1 && <FormatListBulletedIcon />}
                     {index === 2 && <LocalOfferIcon />}
                     {index === 3 && <NewReleasesIcon />}
-                    {/* Thay đổi icon theo ý muốn */}
                   </Icon>
                   <span>{route.label}</span>
                 </MuiLink>
               </Link>
             ))}
           </Stack>
-          <Stack
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-            spacing={2}
-          >
+          <Stack direction="row" alignItems="center" spacing={2}>
             <Autocomplete
-              id="free-solo-demo"
+              id="search-autocomplete"
               freeSolo
-              options={
-                searchResults?.data?.map((option) => option.storyName) || []
-              }
+              options={searchResults?.data || []}
               onInputChange={handleInputChange}
-              onChange={handleOptionSelect}
               value={searchValue}
+              loading={isValidating}
+              fullWidth
+              getOptionLabel={(option) =>
+                typeof option === "string" ? option : option?.storyName || ""
+              }
+              renderOption={(props, option) => (
+                <SearchItem
+                  story={option}
+                  onSelected={handleOptionSelect}
+                  {...props}
+                />
+              )}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -150,39 +136,32 @@ export function HeaderDesktop() {
                         borderColor: "#1565c0",
                       },
                       borderRadius: "6px",
-                      height: "40px", // Giảm chiều cao của ô tìm kiếm
-                      fontSize: "14px", // Giảm kích thước font cho phù hợp
-                      padding: "0 12px", // Thêm padding ngang
+                      height: "40px",
+                      fontSize: "14px",
+                      padding: "0 12px",
                       "& .MuiInputBase-input": {
-                        padding: "10px 0", // Căn chỉnh padding dọc để chữ được căn giữa
+                        padding: "10px 0",
                       },
-                      width: "300px", // Điều chỉnh chiều rộng của ô tìm kiếm
+                      width: "300px",
                     },
                     "& .MuiInputLabel-root": {
-                      top: "-4px", // Điều chỉnh vị trí của label để căn giữa tốt hơn
+                      top: "-4px",
                       fontSize: "14px",
                     },
                   }}
                 />
               )}
-              // Tùy chỉnh màu nền của danh sách các tùy chọn
               componentsProps={{
                 paper: {
                   sx: {
-                    backgroundColor: "#e3f2fd", // Màu nền xanh dương rất nhạt cho danh sách các tùy chọn
+                    backgroundColor: mode === "light" ? "#0F172A" : "#FFF",
                     borderRadius: "8px",
+                    marginTop: "4px",
+                    maxHeight: "300px", // Giới hạn chiều cao tối đa của danh sách tùy chọn
+                    overflow: "auto", // Thêm cuộn khi danh sách tùy chọn quá dài
                     boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
                     "& .MuiAutocomplete-option": {
-                      backgroundColor: "#ffffff", // Màu nền trắng cho từng tùy chọn
-                      color: "#1565c0", // Màu chữ xanh dương đậm
-                      padding: "10px",
-                      "&:hover": {
-                        backgroundColor: "#bbdefb", // Màu nền xanh dương nhạt khi hover
-                      },
-                      "&[aria-selected='true']": {
-                        backgroundColor: "#1565c0", // Màu nền xanh dương đậm khi được chọn
-                        color: "#ffffff", // Màu chữ trắng khi tùy chọn được chọn
-                      },
+                      padding: "0px",
                     },
                   },
                 },

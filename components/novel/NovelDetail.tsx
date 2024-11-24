@@ -121,7 +121,7 @@ export function NovelDetail({
                       fontSize="small"
                       fontWeight="bold"
                     >
-                      2.42M Views
+                      {storyDetail?.story.viewNumberLabel || ""} Views
                     </Typography>
                   </Stack>
 

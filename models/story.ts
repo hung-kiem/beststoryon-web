@@ -73,6 +73,7 @@ export interface StoryDetail {
   catList: string[];
   tagList: string[];
   storyNameAlias: string | null;
+  viewNumberLabel: string;
 }
 
 export interface Chapter {

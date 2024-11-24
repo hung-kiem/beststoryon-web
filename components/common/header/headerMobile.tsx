@@ -26,6 +26,10 @@ import HomeIcon from "@mui/icons-material/Home";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import NewReleasesIcon from "@mui/icons-material/NewReleases";
+import { SearchItem } from "./SearchItem";
+import { StoryDetail } from "@/models/story";
+import { SearchItemMobile } from "./SearchItemMobile";
+import { useThemeContext } from "@/context";
 
 const fetcherSearch = (url: string, payload: SearchPayload) => {
   return searchApi.search(payload);
@@ -37,6 +41,7 @@ export function HeaderMobile() {
   const [open, setOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [debouncedSearchValue] = useDebounce(searchValue, 1000);
+  const { mode } = useThemeContext();
 
   const payload: SearchPayload = {
     keyword: debouncedSearchValue,
@@ -45,7 +50,7 @@ export function HeaderMobile() {
     pageIndex: 1,
     pageSize: 5,
   };
-  const { data: searchResults, mutate } = useSWR(
+  const { data: searchResults, isValidating } = useSWR(
     debouncedSearchValue ? [`/search`, payload] : null,
     ([url, payload]) => fetcherSearch(url, payload)
   );
@@ -58,22 +63,6 @@ export function HeaderMobile() {
     setSearchValue(value);
   };
 
-  const handleOptionSelect = (
-    event: SyntheticEvent<Element, Event>,
-    value: string | null
-  ) => {
-    if (value) {
-      const selectedStory = searchResults?.data?.find(
-        (story) => story.storyName === value
-      );
-      if (selectedStory) {
-        router.push(
-          `/story/${selectedStory.storyNameAlias}-${selectedStory.storyId}.html`
-        );
-      }
-    }
-  };
-
   const toggleDrawer = () => () => {
     setOpen(!open);
   };
@@ -81,6 +70,13 @@ export function HeaderMobile() {
   const handleMenuClick = (path: string) => {
     router.push(path);
     setOpen(false); // Đóng menu
+  };
+
+  const handleOptionSelect = (value: StoryDetail) => {
+    if (value) {
+      router.push(`/story/${value.storyNameAlias}-${value.storyId}.html`);
+      (document.activeElement as HTMLElement)?.blur();
+    }
   };
 
   return (
@@ -115,15 +111,23 @@ export function HeaderMobile() {
             </Link>
           </h1>
           <Autocomplete
-            id="free-solo-demo"
+            id="search-autocomplete"
             freeSolo
-            options={
-              searchResults?.data?.map((option) => option.storyName) || []
-            }
-            fullWidth
+            options={searchResults?.data || []}
             onInputChange={handleInputChange}
-            onChange={handleOptionSelect}
             value={searchValue}
+            loading={isValidating}
+            fullWidth
+            getOptionLabel={(option) =>
+              typeof option === "string" ? option : option?.storyName || ""
+            }
+            renderOption={(props, option) => (
+              <SearchItemMobile
+                story={option}
+                onSelected={handleOptionSelect}
+                {...props}
+              />
+            )}
             renderInput={(params) => (
               <TextField
                 {...params}
@@ -150,23 +154,18 @@ export function HeaderMobile() {
               />
             )}
             // Tùy chỉnh màu nền của danh sách các tùy chọn
+            // Tùy chỉnh màu nền của danh sách các tùy chọn
             componentsProps={{
               paper: {
                 sx: {
-                  backgroundColor: "#e3f2fd", // Màu nền xanh dương rất nhạt cho danh sách các tùy chọn
-                  borderRadius: "8px",
+                  backgroundColor: mode === "light" ? "#0F172A" : "#FFF", // Màu nền xanh dương rất nhạt cho danh sách các tùy chọn
+                  // borderRadius: "8px",
+                  maxHeight: "300px", // Giới hạn chiều cao tối đa của danh sách tùy chọn
+                  overflow: "auto", // Thêm cuộn khi danh sách tùy chọn quá dài
+                  marginTop: "4px", // Khoảng cách giữa ô tìm kiếm và danh sách tùy chọn
                   boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
                   "& .MuiAutocomplete-option": {
-                    backgroundColor: "#ffffff", // Màu nền trắng cho từng tùy chọn
-                    color: "#1565c0", // Màu chữ xanh dương đậm
-                    padding: "10px",
-                    "&:hover": {
-                      backgroundColor: "#bbdefb", // Màu nền xanh dương nhạt khi hover
-                    },
-                    "&[aria-selected='true']": {
-                      backgroundColor: "#1565c0", // Màu nền xanh dương đậm khi được chọn
-                      color: "#ffffff", // Màu chữ trắng khi tùy chọn được chọn
-                    },
+                    padding: "0px",
                   },
                 },
               },

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { MainLayout } from "@/components/layout";
 import { NextPageWithLayout } from "@/models";
 import { Box } from "@mui/material";
@@ -27,9 +27,12 @@ const Novel: NextPageWithLayout = () => {
     ? (Array.isArray(storyId) ? storyId[0] : storyId).split("-")
     : [];
   const id = idParts.pop();
-  console.log(id);
 
   const [pageIndex, setPageIndex] = useState(1);
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [pageIndex]);
+
   const payload: GetStoryDetailPayload = {
     storyId: id || "",
     pageIndex: pageIndex,
