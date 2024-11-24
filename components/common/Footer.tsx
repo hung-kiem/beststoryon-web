@@ -9,7 +9,7 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 const MILLISECOND_PER_HOUR = 1000 * 60 * 60;
 
 export function Footer() {
-  const { data: categories, isValidating: loadingList } = useSWR(
+  const { data: categories } = useSWR(
     "/category/getList",
     categoryApi.getList,
     {
@@ -36,24 +36,25 @@ export function Footer() {
     >
       <Container>
         {/* Categories từ API */}
-        <Stack
-          direction="row"
-          spacing={4}
-          justifyContent="space-between"
-          alignItems="flex-start"
-          flexWrap="wrap"
-        >
-          <Typography
+        <Stack direction="column" spacing={1} mb={6}>
+          {/* <Typography
             variant="h6"
             fontWeight="bold"
             textAlign={{ xs: "center", md: "left" }}
-            width={{ xs: "100%", md: "auto" }}
+            width={"100%"}
           >
             Categories
-          </Typography>
-          <Grid container spacing={2} mb={4} columns={{ xs: 2, md: 4 }}>
-            {categories?.map((category, index) => (
-              <Grid item xs={1} md={1} key={index}>
+          </Typography> */}
+          <Grid
+            container
+            spacing={2}
+            columns={{ xs: 2, sm: 4, md: 4 }}
+            sx={{
+              paddingRight: 2,
+            }}
+          >
+            {categories?.map((category) => (
+              <Grid item xs={1} md={1} key={category.catCode}>
                 <Link href={`/categories/${category.catCode}`} passHref>
                   <Typography
                     variant="caption"
@@ -73,26 +74,36 @@ export function Footer() {
           </Grid>
         </Stack>
 
-        <Stack direction={{ xs: "column", md: "row" }} mt={4} spacing={4}>
-          <Grid container spacing={2} columns={{ xs: 2, md: 4 }}>
-            {/* Tên trang web */}
-            <Grid item xs={2} md={2}>
-              <Typography
-                variant="h6"
-                fontWeight="bold"
-                textAlign={{ xs: "center", md: "left" }}
-              >
-                NovelsNook
-              </Typography>
-            </Grid>
-            {/* Mô tả bên trái */}
-            <Grid item xs={2} md={2}>
+        {/* Tên trang web */}
+        <Stack
+          direction="column"
+          spacing={2}
+          mb={2}
+          textAlign={{ xs: "center", md: "left" }}
+        >
+          <Typography
+            variant="h6"
+            fontWeight="bold"
+            sx={{
+              paddingLeft: { md: "20%" },
+            }}
+          >
+            NovelsNook
+          </Typography>
+        </Stack>
+
+        {/* Mô tả trang web và các liên kết điều khoản chính sách */}
+        <Grid container spacing={0} alignItems="flex-start">
+          {/* Mô tả trang web */}
+          <Grid item xs={12} md={6}>
+            <Stack direction="column" spacing={2}>
               <Typography
                 variant="body1"
-                mt={1}
-                textAlign={{ xs: "justify", md: "left" }}
                 sx={{
+                  mt: 1,
+                  textAlign: { xs: "justify", md: "left" },
                   textJustify: "inter-word",
+                  color: "white",
                 }}
               >
                 Dive into a world of free online novels! Discover daily-updated
@@ -100,36 +111,60 @@ export function Footer() {
                 captivating genres. From Chinese, Japanese, Korean, and English
                 novels.
               </Typography>
-            </Grid>
+            </Stack>
           </Grid>
 
-          {/* Các liên kết bên phải */}
-          <Grid container spacing={2} columns={{ xs: 2, md: 2 }}>
-            {links.map((link, index) => (
-              <Grid item xs={1} md={1} key={index}>
-                <Link href={link.url} passHref>
-                  <Typography
-                    variant="caption"
-                    color="inherit"
-                    sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      textDecoration: "underline",
-                    }}
-                  >
-                    <ChevronRightIcon fontSize="small" sx={{ mr: 1 }} />
-                    {link.label}
-                  </Typography>
-                </Link>
-              </Grid>
-            ))}
+          {/* Các liên kết điều khoản chính sách */}
+          <Grid
+            item
+            xs={12}
+            md={6}
+            sx={{
+              marginTop: { xs: 2, md: 0 },
+            }}
+          >
+            <Grid
+              container
+              spacing={2}
+              columns={{ xs: 2, sm: 4, md: 2 }}
+              sx={{
+                paddingLeft: 2,
+              }}
+            >
+              {links.map((link) => (
+                <Grid
+                  item
+                  xs={1}
+                  md={1}
+                  key={link.label}
+                  sx={{
+                    width: "50%",
+                  }}
+                >
+                  <Link href={link.url} passHref>
+                    <Typography
+                      variant="caption"
+                      color="inherit"
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        textDecoration: "underline",
+                      }}
+                    >
+                      <ChevronRightIcon fontSize="small" sx={{ mr: 1 }} />
+                      {link.label}
+                    </Typography>
+                  </Link>
+                </Grid>
+              ))}
+            </Grid>
           </Grid>
-        </Stack>
+        </Grid>
 
         {/* Phần Bản quyền */}
         <Typography variant="body2" color="inherit" mt={4} textAlign="center">
           © Copyright{" "}
-          <Link href="https://novelsnook.com/" passHref>
+          <Link href="https://novelsnook.com/">
             <Typography
               variant="body2"
               component="span"
