@@ -97,3 +97,9 @@ export interface RatingPayload {
   storyId: string;
   ratingNumber: number;
 }
+
+export interface GetStoryByAuthorPayload {
+  authorCode: string;
+  pageIndex: number;
+  pageSize: number;
+}

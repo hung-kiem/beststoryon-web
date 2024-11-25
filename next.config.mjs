@@ -26,6 +26,10 @@ const nextConfig = {
         source: "/dcma.html",
         destination: "/dcma",
       },
+      {
+        source: "/author/:authorCode.html",
+        destination: "/author/:authorCode",
+      },
     ];
   },
   reactStrictMode: true,

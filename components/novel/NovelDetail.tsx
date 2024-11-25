@@ -164,13 +164,15 @@ export function NovelDetail({
                   >
                     Author:
                   </Typography>
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    fontSize="medium"
-                  >
-                    {storyDetail?.story?.author}
-                  </Typography>
+                  <Link href={`/author/${storyDetail?.story.author}.html`}>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      fontSize="medium"
+                    >
+                      {storyDetail?.story?.author}
+                    </Typography>
+                  </Link>
                 </Stack>
                 <Stack direction="row" spacing={1} alignItems="center">
                   <Typography

@@ -18,6 +18,7 @@ import { LoadingOverlay } from "../loading/LoadingOverlay";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Head from "next/head";
+import { Seo } from "../common";
 
 const MILLISECOND_PER_HOUR = 1000 * 60 * 60;
 const statusArr = ["ALL", "Ongoing", "Completed"];
@@ -96,6 +97,14 @@ export function CategoryPage() {
           content={`Looking for good ${categoryName}? Explore the ${categoryName} novels with daily updates. Find your next great read!`}
         />
       </Head>
+      <Seo
+        data={{
+          url: "https://novelsnook.com/",
+          title: `NovelsNook - List of Novels - ${categoryName}`,
+          description: `Explore the latest and most popular ${categoryName} novels with daily updates. From hot releases to trending stories, find your next ${categoryName}.`,
+          thumbnailUrl: "https://novelsnook.com/",
+        }}
+      />
       <Box>
         <LoadingOverlay isLoading={isLoading} />
         <Container>

@@ -208,14 +208,21 @@ const Chapter = () => {
     }
   }, [chapterDetail]);
 
+  const descriptionSeo = useMemo(() => {
+    if (chapterDetail?.data.chapterName && chapterDetail?.data.storyName) {
+      return `Read the latest: ${chapterDetail?.data.storyName} - ${chapterDetail.data.chapterName}`;
+    } else {
+      return "Novelsnook";
+    }
+  }, [chapterDetail]);
+
   return (
     <Box>
       <Seo
         data={{
           url: "https://novelsnook.com/",
           title: titleSeo,
-          description:
-            "Novelsnook is a blog website that provides quality content on various topics.",
+          description: descriptionSeo,
           thumbnailUrl: "https://novelsnook.com/",
         }}
       />

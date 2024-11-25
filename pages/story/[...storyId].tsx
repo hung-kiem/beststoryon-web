@@ -65,8 +65,9 @@ const Novel: NextPageWithLayout = () => {
         data={{
           url: "https://novelsnook.com/",
           title: storyDetail?.story?.storyName || "Novelsnook",
-          description:
-            "Novelsnook is a blog website that provides quality content on various topics.",
+          description: `Read all ${
+            storyDetail?.story?.storyName || ""
+          } chapters on Full Novels Online Free.`,
           thumbnailUrl: "https://novelsnook.com/",
         }}
       />

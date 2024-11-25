@@ -28,15 +28,15 @@ export function ChapterRelease({ story }: ChapterReleaseProps) {
         sx={{
           borderRadius: 2,
           my: 1,
-          height: "88px",
-          width: "72px", // Tăng độ rộng khi màn hình lớn
-          minWidth: "72px",
+          height: "64px",
+          width: "52px", // Tăng độ rộng khi màn hình lớn
+          minWidth: "52px",
         }}
       >
         <CardMedia
           component="img"
-          height="88px"
-          width="72px"
+          height="64px"
+          width="52px"
           image={imageSrc}
           title={story?.storyName}
           alt={story?.storyName || "Novel image"}

@@ -9,6 +9,8 @@ import Link from "next/link";
 import { NovelCard } from "./NovelCard";
 import { useRouter } from "next/router";
 import { LoadingOverlay } from "../loading/LoadingOverlay";
+import Head from "next/head";
+import { Seo } from "../common";
 
 const MILLISECOND_PER_HOUR = 1000 * 60 * 60;
 const statusArr = ["All", "Ongoing", "Completed"];
@@ -44,8 +46,17 @@ export function TagDetail() {
   ) => {
     setPageIndex(value);
   };
+
   return (
     <Box>
+      <Seo
+        data={{
+          url: "https://novelsnook.com/",
+          title: `NovelsNook - List of Novels - ${tagCode}`,
+          description: `Dive into a world of captivating novels with thousands of ${tagCode} stories, fast updates, and a seamless reading experience.`,
+          thumbnailUrl: "https://novelsnook.com/",
+        }}
+      />
       <LoadingOverlay isLoading={isValidating} />
       <Container>
         <Stack direction="column" my={2} spacing={2}>

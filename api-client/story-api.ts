@@ -1,5 +1,6 @@
 import axiosClient from "./axios-client";
 import {
+  GetStoryByAuthorPayload,
   GetStoryByCategoryPayload,
   GetStoryByCategoryResponse,
   GetStoryDetailPayload,
@@ -60,6 +61,13 @@ export const storyApi = {
   ratingStory(payload: RatingPayload): Promise<any> {
     return axiosClient
       .post<any>("/rating/voteStory", payload)
+      .then((response) => response.data);
+  },
+  getByAuthor(
+    payload: GetStoryByAuthorPayload
+  ): Promise<GetStoryByCategoryResponse> {
+    return axiosClient
+      .post<GetStoryByCategoryResponse>("/story/getListByAuthor", payload)
       .then((response) => response.data);
   },
 };
