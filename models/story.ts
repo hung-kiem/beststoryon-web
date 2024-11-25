@@ -83,6 +83,7 @@ export interface Chapter {
   chapterName: string;
   createdDateLabel: string;
   createdDate: string;
+  chapterIndex: number;
 }
 
 export interface GetStoryListReferPayload {
