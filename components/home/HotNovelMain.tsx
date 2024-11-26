@@ -7,7 +7,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Grid from "@mui/material/Grid2";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import ImportContactsIcon from "@mui/icons-material/ImportContacts";
@@ -37,10 +37,29 @@ function ChapterHot({
   numberOfChapter,
   urlAvatar,
 }: ChapterHotProps) {
-  const [imageSrc, setImageSrc] = useState(urlAvatar);
+  const [imageSrc, setImageSrc] = useState("/images/no-image.jpg");
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+
+  useEffect(() => {
+    if (urlAvatar) {
+      if (urlAvatar.startsWith("https")) {
+        setImageSrc(urlAvatar);
+      } else {
+        setImageSrc(
+          `${process.env.NEXT_PUBLIC_IMAGE_DOMAIN || ""}${urlAvatar}`
+        );
+      }
+    } else {
+      setImageSrc("/images/no-image.jpg");
+    }
+  }, [urlAvatar]);
+
+  const handleImageLoad = () => {
+    setIsImageLoaded(true);
+  };
 
   const handleImageError = () => {
-    setImageSrc(process.env.NEXT_PUBLIC_DEFAULT_IMAGE || "");
+    setImageSrc("/images/no-image.jpg");
   };
 
   return (
@@ -64,14 +83,29 @@ function ChapterHot({
       >
         <CardMedia
           component="img"
+          image="/images/no-image.jpg"
+          alt={storyName}
+          title={storyName}
+          sx={{
+            height: "100%",
+            width: "100%",
+            objectFit: "cover",
+            objectPosition: "center",
+            display: isImageLoaded ? "none" : "block",
+          }}
+          onError={handleImageError}
+        />
+        <CardMedia
+          component="img"
           image={imageSrc}
           alt={storyName}
           title={storyName}
           sx={{
             height: "100%",
             width: "100%",
-            objectFit: "cover", // Đảm bảo hình ảnh được cắt để lấp đầy khung hình mà không bị biến dạng
-            objectPosition: "center", // Căn giữa hình ảnh
+            objectFit: "cover",
+            objectPosition: "center",
+            display: isImageLoaded ? "block" : "none",
           }}
           onError={handleImageError}
         />
@@ -123,10 +157,29 @@ interface HotTopListProps {
 
 export function HotNovelMain({ data }: HotTopListProps) {
   const firstStory = data?.[0];
-  const [imageSrc, setImageSrc] = useState(firstStory?.urlAvatar);
+  const [imageSrc, setImageSrc] = useState("/images/no-image.jpg");
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+
+  useEffect(() => {
+    if (firstStory.urlAvatar) {
+      if (firstStory.urlAvatar.startsWith("https")) {
+        setImageSrc(firstStory.urlAvatar);
+      } else {
+        setImageSrc(
+          `${process.env.NEXT_PUBLIC_IMAGE_DOMAIN || ""}${firstStory.urlAvatar}`
+        );
+      }
+    } else {
+      setImageSrc("/images/no-image.jpg");
+    }
+  }, [firstStory.urlAvatar]);
+
+  const handleImageLoad = () => {
+    setIsImageLoaded(true);
+  };
 
   const handleImageError = () => {
-    setImageSrc(process.env.NEXT_PUBLIC_DEFAULT_IMAGE || "");
+    setImageSrc("/images/no-image.jpg");
   };
 
   return (
@@ -150,10 +203,22 @@ export function HotNovelMain({ data }: HotTopListProps) {
                     component="img"
                     height="100%"
                     width="100%"
-                    image={imageSrc}
+                    image="/images/no-image.jpg"
                     title={firstStory.storyName}
                     alt={firstStory.storyName}
                     onError={handleImageError}
+                    sx={{ display: isImageLoaded ? "none" : "block" }}
+                  />
+                  <CardMedia
+                    component="img"
+                    height="100%"
+                    width="100%"
+                    image={imageSrc}
+                    title={firstStory.storyName}
+                    alt={firstStory.storyName}
+                    onLoad={handleImageLoad}
+                    onError={handleImageError}
+                    sx={{ display: isImageLoaded ? "block" : "none" }}
                   />
                   <Stack
                     direction="row"

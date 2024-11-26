@@ -12,14 +12,10 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 
 const MILLISECOND_PER_HOUR = 1000 * 60 * 60;
-const statusArr = ["All", "Ongoing", "Completed"];
-const sortByArr = ["Popular", "New", "Update"];
 
 export function UpdatePage() {
   const router = useRouter();
   const [catCode, setCatCode] = useState("ALL");
-  const [status, setStatus] = useState("All");
-  const [sortCondition, setSortCondition] = useState("Popular");
   const [pageIndex, setPageIndex] = useState(1);
 
   useEffect(() => {
@@ -38,13 +34,13 @@ export function UpdatePage() {
     }
   );
   const { data: stories, isValidating } = useSWR(
-    [`/updates`, catCode, status, sortCondition, pageIndex],
+    catCode ? [`/updates`, catCode, pageIndex] : null,
 
-    ([url, catCode, status, sortCondition, pageIndex]) =>
+    ([url, catCode, pageIndex]) =>
       storyApi.getUpdateList({
         catCode,
-        storyStatus: status,
-        sortCondition,
+        storyStatus: "All",
+        sortCondition: "Popular",
         pageIndex,
         pageSize: 12,
       }),
@@ -65,7 +61,7 @@ export function UpdatePage() {
     setCatCode(code);
     router.push(
       {
-        pathname: `/trending/${code}`,
+        pathname: `/update/${code}`,
       },
       undefined,
       { shallow: true }
@@ -97,7 +93,7 @@ export function UpdatePage() {
                   <Grid>
                     <CategoryButton
                       title="All"
-                      code="All"
+                      code="ALL"
                       isActive={catCode === "ALL"}
                       onClick={handleCategoryClick}
                     />
@@ -113,38 +109,6 @@ export function UpdatePage() {
                     </Grid>
                   ))}
                 </Grid>
-              </Stack>
-            </Stack>
-            <Stack direction="column" spacing={1}>
-              <Typography variant="h4" fontWeight="bold">
-                Status
-              </Typography>
-              <Stack direction="row" spacing={1}>
-                {statusArr.map((s) => (
-                  <CategoryButton
-                    key={s}
-                    title={s}
-                    code={s}
-                    isActive={s === status}
-                    onClick={setStatus}
-                  />
-                ))}
-              </Stack>
-            </Stack>
-            <Stack direction="column" spacing={1}>
-              <Typography variant="h4" fontWeight="bold">
-                Sort By
-              </Typography>
-              <Stack direction="row" spacing={1}>
-                {sortByArr.map((s) => (
-                  <CategoryButton
-                    key={s}
-                    title={s}
-                    code={s}
-                    isActive={s === sortCondition}
-                    onClick={setSortCondition}
-                  />
-                ))}
               </Stack>
             </Stack>
             {stories?.data?.length === 0 ? (
@@ -169,10 +133,7 @@ export function UpdatePage() {
                             rating={story.likeCount}
                             status={story.status}
                             chapterNumber={story.chapterNumber}
-                            urlAvatar={
-                              story.urlAvatar ||
-                              "https://plus.unsplash.com/premium_photo-1682125773446-259ce64f9dd7?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                            }
+                            urlAvatar={story.urlAvatar}
                           />
                         </Link>
                       </Grid>

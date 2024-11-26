@@ -1,5 +1,5 @@
 import { Stack, Typography, Card, CardMedia } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ImportContactsIcon from "@mui/icons-material/ImportContacts";
 import StarIcon from "@mui/icons-material/Star";
 import { StoryHome } from "@/models";
@@ -9,10 +9,29 @@ interface NovelCardProps {
 }
 
 export function NovelCard({ story }: NovelCardProps) {
-  const [imageSrc, setImageSrc] = useState(story.urlAvatar);
+  const [imageSrc, setImageSrc] = useState("/images/no-image.jpg");
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+
+  useEffect(() => {
+    if (story.urlAvatar) {
+      if (story.urlAvatar.startsWith("https")) {
+        setImageSrc(story.urlAvatar);
+      } else {
+        setImageSrc(
+          `${process.env.NEXT_PUBLIC_IMAGE_DOMAIN || ""}${story.urlAvatar}`
+        );
+      }
+    } else {
+      setImageSrc("/images/no-image.jpg");
+    }
+  }, [story.urlAvatar]);
+
+  const handleImageLoad = () => {
+    setIsImageLoaded(true);
+  };
 
   const handleImageError = () => {
-    setImageSrc(process.env.NEXT_PUBLIC_DEFAULT_IMAGE || "");
+    setImageSrc("/images/no-image.jpg");
   };
 
   return (
@@ -30,10 +49,22 @@ export function NovelCard({ story }: NovelCardProps) {
           component="img"
           height="250"
           width="230"
+          image="/images/no-image.jpg"
+          title={story?.storyName}
+          alt={story?.storyName || "Novel image"}
+          onError={handleImageError}
+          sx={{ display: isImageLoaded ? "none" : "block" }}
+        />
+        <CardMedia
+          component="img"
+          height="250"
+          width="230"
           image={imageSrc}
           title={story?.storyName}
           alt={story?.storyName || "Novel image"}
           onError={handleImageError}
+          onLoad={handleImageLoad}
+          sx={{ display: isImageLoaded ? "block" : "none" }}
         />
         <Stack
           direction="row"

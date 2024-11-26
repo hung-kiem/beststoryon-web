@@ -40,14 +40,31 @@ export function NovelDetail({
   const router = useRouter();
   const [showFullDescription, setShowFullDescription] = useState(false);
 
-  const [imageSrc, setImageSrc] = useState(storyDetail?.story?.urlAvatar);
+  const [imageSrc, setImageSrc] = useState("/images/no-image.jpg");
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+
   useEffect(() => {
-    setImageSrc(storyDetail?.story?.urlAvatar);
-  }, [storyDetail]);
+    if (storyDetail?.story.urlAvatar) {
+      if (storyDetail?.story.urlAvatar.startsWith("https")) {
+        setImageSrc(storyDetail?.story.urlAvatar);
+      } else {
+        setImageSrc(
+          `${process.env.NEXT_PUBLIC_IMAGE_DOMAIN || ""}${
+            storyDetail?.story.urlAvatar
+          }`
+        );
+      }
+    } else {
+      setImageSrc("/images/no-image.jpg");
+    }
+  }, [storyDetail?.story.urlAvatar]);
+
+  const handleImageLoad = () => {
+    setIsImageLoaded(true);
+  };
 
   const handleImageError = () => {
-    console.log("handleImageError");
-    setImageSrc(process.env.NEXT_PUBLIC_DEFAULT_IMAGE || "");
+    setImageSrc("/images/no-image.jpg");
   };
 
   const toggleDescription = () => {
@@ -96,10 +113,21 @@ export function NovelDetail({
                   component="img"
                   height="100%"
                   width="100%"
+                  image="/images/no-image.jpg"
+                  title={storyDetail?.story?.storyName}
+                  alt={storyDetail?.story?.storyName}
+                  sx={{ display: isImageLoaded ? "none" : "block" }}
+                />
+                <CardMedia
+                  component="img"
+                  height="100%"
+                  width="100%"
                   image={imageSrc}
                   title={storyDetail?.story?.storyName}
                   alt={storyDetail?.story?.storyName}
+                  onLoad={handleImageLoad}
                   onError={handleImageError}
+                  sx={{ display: isImageLoaded ? "block" : "none" }}
                 />
               </Card>
             </Grid>

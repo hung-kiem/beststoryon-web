@@ -33,6 +33,9 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
 
   const toggleTheme = () => {
     setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
+    if (typeof window !== "undefined") {
+      localStorage.setItem("themeMode", mode === "light" ? "dark" : "light");
+    }
   };
 
   const setTheme = (theme: "light" | "dark") => {
