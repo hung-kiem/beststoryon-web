@@ -104,7 +104,7 @@ export let darkTheme = createTheme({
       main: red.A400,
     },
     text: {
-      primary: "#FFFFFF",
+      primary: "#E0E0E0",
       secondary: "#757575",
     },
   },

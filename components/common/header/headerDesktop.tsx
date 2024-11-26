@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useState, memo } from "react";
+import React, { SyntheticEvent, useState, memo, useMemo } from "react";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import {
@@ -72,6 +72,12 @@ export function HeaderDesktop() {
       (document.activeElement as HTMLElement)?.blur();
     }
   };
+  console.log("mode", mode);
+  const color = useMemo(
+    () => (mode === "light" ? "#0F172A" : "#E0E0E0"),
+    [mode]
+  );
+  console.log("color", color);
 
   return (
     <Box display={{ xs: "none", sm: "block" }} py={2}>
@@ -91,18 +97,23 @@ export function HeaderDesktop() {
                     alignItems: "center",
                     justifyContent: "center",
                     display: "flex",
+                    color: "inherit",
+                    textDecoration: "none",
+                    height: "100%", // Đảm bảo chiều cao của link bằng với container bên ngoài
                   }}
                   underline="none"
-                  className={clsx({ active: route.path === router.pathname })}
+                  // className={clsx({ active: route.path === router.pathname })}
                   fontWeight="bold"
                 >
-                  <Icon sx={{ mr: 1 }}>
-                    {index === 0 && <HomeIcon />}
-                    {index === 1 && <FormatListBulletedIcon />}
-                    {index === 2 && <LocalOfferIcon />}
-                    {index === 3 && <NewReleasesIcon />}
-                  </Icon>
-                  <span>{route.label}</span>
+                  <Stack direction="row" alignItems="center" spacing={1}>
+                    <Icon sx={{ display: "flex", alignItems: "center" }}>
+                      {index === 0 && <HomeIcon />}
+                      {index === 1 && <FormatListBulletedIcon />}
+                      {index === 2 && <LocalOfferIcon />}
+                      {index === 3 && <NewReleasesIcon />}
+                    </Icon>
+                    <span>{route.label}</span>
+                  </Stack>
                 </MuiLink>
               </Link>
             ))}
@@ -138,8 +149,14 @@ export function HeaderDesktop() {
                   variant="outlined"
                   sx={{
                     "& .MuiOutlinedInput-root": {
+                      "& fieldset": {
+                        borderColor: "#1E90FF",
+                      },
+                      "&:hover fieldset": {
+                        borderColor: "#1E90FF",
+                      },
                       "&.Mui-focused fieldset": {
-                        borderColor: "#1565c0",
+                        borderColor: "#1E90FF",
                       },
                       borderRadius: "6px",
                       height: "40px",
@@ -153,6 +170,9 @@ export function HeaderDesktop() {
                     "& .MuiInputLabel-root": {
                       top: "-4px",
                       fontSize: "14px",
+                    },
+                    "& .MuiInputLabel-root.Mui-focused": {
+                      color: "#1E90FF", // Màu chữ khi được focus
                     },
                   }}
                 />

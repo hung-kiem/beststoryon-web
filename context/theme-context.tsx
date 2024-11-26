@@ -41,7 +41,7 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const setTheme = (theme: "light" | "dark") => {
     setMode(theme);
     if (typeof window !== "undefined") {
-      localStorage.setItem("themeMode", theme); // Lưu lại vào localStorage
+      localStorage.setItem("themeMode", theme);
     }
   };
 

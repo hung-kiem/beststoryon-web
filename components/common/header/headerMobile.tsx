@@ -29,7 +29,6 @@ import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import NewReleasesIcon from "@mui/icons-material/NewReleases";
 import { SearchItem } from "./SearchItem";
 import { StoryDetail } from "@/models/story";
-import { SearchItemMobile } from "./SearchItemMobile";
 import { useThemeContext } from "@/context";
 
 const fetcherSearch = (url: string, payload: SearchPayload) => {
@@ -145,30 +144,27 @@ export function HeaderMobile() {
                       borderColor: "#1565c0",
                     },
                     borderRadius: "6px",
-                    height: "40px", // Giảm chiều cao của ô tìm kiếm
-                    fontSize: "14px", // Giảm kích thước font cho phù hợp
-                    padding: "0 12px", // Thêm padding ngang
+                    height: "40px",
+                    fontSize: "14px",
+                    padding: "0 12px",
                     "& .MuiInputBase-input": {
-                      padding: "10px 0", // Căn chỉnh padding dọc để chữ được căn giữa
+                      padding: "10px 0",
                     },
                   },
                   "& .MuiInputLabel-root": {
-                    top: "-4px", // Điều chỉnh vị trí của label để căn giữa tốt hơn
+                    top: "-4px",
                     fontSize: "14px",
                   },
                 }}
               />
             )}
-            // Tùy chỉnh màu nền của danh sách các tùy chọn
-            // Tùy chỉnh màu nền của danh sách các tùy chọn
             componentsProps={{
               paper: {
                 sx: {
-                  backgroundColor: mode === "light" ? "#0F172A" : "#FFF", // Màu nền xanh dương rất nhạt cho danh sách các tùy chọn
-                  // borderRadius: "8px",
-                  maxHeight: "300px", // Giới hạn chiều cao tối đa của danh sách tùy chọn
-                  overflow: "auto", // Thêm cuộn khi danh sách tùy chọn quá dài
-                  marginTop: "4px", // Khoảng cách giữa ô tìm kiếm và danh sách tùy chọn
+                  backgroundColor: mode === "light" ? "#0F172A" : "#FFF",
+                  maxHeight: "300px",
+                  overflow: "auto",
+                  marginTop: "4px",
                   boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
                   "& .MuiAutocomplete-option": {
                     padding: "0px",
@@ -185,8 +181,8 @@ export function HeaderMobile() {
             onOpen={toggleDrawer()}
             PaperProps={{
               style: {
-                width: "40vw", // Tăng chiều rộng của menu
-                maxWidth: "400px", // Đặt chiều rộng tối đa cho menu
+                width: "40vw",
+                maxWidth: "400px",
                 backgroundColor:
                   theme.palette.mode === "light" ? "#EDF7FA" : "#0F172A",
               },
@@ -229,7 +225,6 @@ export function HeaderMobile() {
                       onClick={() => handleMenuClick(route.path)}
                       fontWeight="bold"
                     >
-                      {/* Thêm icon trước nhãn menu */}
                       <Icon
                         sx={{ mr: 1, display: "flex", alignItems: "center" }}
                       >
@@ -237,7 +232,6 @@ export function HeaderMobile() {
                         {index === 1 && <FormatListBulletedIcon />}
                         {index === 2 && <LocalOfferIcon />}
                         {index === 3 && <NewReleasesIcon />}
-                        {/* Thay đổi icon theo ý muốn */}
                       </Icon>
                       {route.label}
                     </MuiLink>
