@@ -35,4 +35,5 @@ export interface StoryHome {
   tagList: string[];
   storyNameAlias: string | null;
   lastAddNewChapterName: string;
+  ratingStar: number;
 }

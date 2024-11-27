@@ -226,7 +226,7 @@ export function CategoryPage() {
                     >
                       <NovelCard
                         storyName={story.storyName}
-                        rating={story.likeCount}
+                        rating={story.ratingStar}
                         status={story.status}
                         chapterNumber={story.chapterNumber}
                         urlAvatar={

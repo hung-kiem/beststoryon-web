@@ -42,6 +42,7 @@ export interface Story {
   isHot: string;
   isTopFocus: string;
   storyNameAlias: string | null;
+  ratingStar: number;
 }
 
 export interface GetStoryDetailPayload {

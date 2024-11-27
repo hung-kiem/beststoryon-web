@@ -96,7 +96,7 @@ export function NovelCard({
             color="secondary.contrastText"
             fontWeight="bold"
           >
-            5.0
+            {rating || "5.0"}
           </Typography>
           <StarIcon sx={{ color: "#FFF1C2" }} />
         </Stack>
