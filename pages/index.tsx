@@ -17,22 +17,34 @@ import { Seo } from "@/components/common";
 const Home: NextPageWithLayout = () => {
   const { data: hotTopList, isValidating: loadingHotTopList } = useSWR(
     "/home/getHotTopList",
-    () => homeApi.getHotTopList({ requestId: "1" })
+    () => homeApi.getHotTopList({ requestId: "1" }),
+    {
+      dedupingInterval: 3600000, // 1 giờ (3600000 ms)
+    }
   );
 
   const { data: trendingList, isValidating: loadingTrending } = useSWR(
     "/home/getTrendingList",
-    () => homeApi.getTrendingList({ requestId: "1" })
+    () => homeApi.getTrendingList({ requestId: "1" }),
+    {
+      dedupingInterval: 3600000, // 1 giờ (3600000 ms)
+    }
   );
 
   const { data: newReleaseList, isValidating: loadingNewRelease } = useSWR(
     "/home/getNewReleaseList",
-    () => homeApi.getNewReleaseList({ requestId: "1" })
+    () => homeApi.getNewReleaseList({ requestId: "1" }),
+    {
+      dedupingInterval: 3600000, // 1 giờ (3600000 ms)
+    }
   );
 
   const { data: hotList, isValidating: loadingHot } = useSWR(
     "/home/getHotList",
-    () => homeApi.getHotList({ requestId: "1" })
+    () => homeApi.getHotList({ requestId: "1" }),
+    {
+      dedupingInterval: 3600000, // 1 giờ (3600000 ms)
+    }
   );
 
   const { data: bannerList, isValidating: loadingBanner } = useSWR(
@@ -41,7 +53,10 @@ const Home: NextPageWithLayout = () => {
       homeApi.getBannerList({
         requestId: "1",
         bannerOfPage: "HOME",
-      })
+      }),
+    {
+      dedupingInterval: 3600000, // 1 giờ (3600000 ms)
+    }
   );
 
   // Kết hợp tất cả trạng thái loading
