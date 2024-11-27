@@ -40,7 +40,7 @@ const Novel: NextPageWithLayout = () => {
   };
 
   const { data: storyDetail, isValidating: loadingStoryDetail } = useSWR(
-    ["/story/getDetail", payload],
+    storyId ? ["/story/getDetail", payload] : null,
     ([url, payload]) => fetcher(url, payload)
   );
 
