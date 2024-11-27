@@ -9,7 +9,7 @@ import { categoryApi, storyApi } from "@/api-client";
 import Link from "next/link";
 import { LoadingOverlay } from "../loading/LoadingOverlay";
 import { useRouter } from "next/router";
-import Head from "next/head";
+import { Seo } from "../common";
 
 const MILLISECOND_PER_HOUR = 1000 * 60 * 60;
 
@@ -73,13 +73,14 @@ export function UpdatePage() {
 
   return (
     <>
-      <Head>
-        <title>NovelsNook - List of Novels - {categoryName}</title>
-        <meta
-          name="description"
-          content={`Looking for good ${categoryName}? Explore the ${categoryName} novels with daily updates. Find your next great read!`}
-        />
-      </Head>
+      <Seo
+        data={{
+          url: "https://novelsnook.com/",
+          title: `Stay Updated with Recently ${categoryName} Novel Chapters`,
+          description: `Never miss a moment! Explore the latest updates and newly released ${categoryName} novels. Dive back into the ${categoryName} with fresh content every day!`,
+          thumbnailUrl: "https://novelsnook.com/",
+        }}
+      />
       <Box>
         <LoadingOverlay isLoading={isValidating} />
         <Container>
