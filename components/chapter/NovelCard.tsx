@@ -101,7 +101,7 @@ export function NovelCard({ story }: NovelCardProps) {
           height="fit-content"
           p="4px"
           sx={{
-            backgroundColor: status === "Ongoing" ? "#c14646" : "#377f49",
+            backgroundColor: story.status === "Ongoing" ? "#c14646" : "#377f49",
             borderRadius: 2,
             position: "absolute",
             right: 0,
