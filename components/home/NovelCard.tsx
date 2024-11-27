@@ -52,7 +52,6 @@ export function NovelCard({ story }: NovelCardProps) {
           image="/images/no-image.jpg"
           title={story?.storyName}
           alt={story?.storyName || "Novel image"}
-          onError={handleImageError}
           sx={{ display: isImageLoaded ? "none" : "block" }}
         />
         <CardMedia

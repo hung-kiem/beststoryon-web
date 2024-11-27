@@ -75,7 +75,6 @@ export function SearchItem({ story, onSelected }: ISearchItemProps) {
               objectPosition: "center",
               display: isImageLoaded ? "none" : "block",
             }}
-            onError={handleImageError}
           />
           <CardMedia
             component="img"
@@ -89,6 +88,7 @@ export function SearchItem({ story, onSelected }: ISearchItemProps) {
               objectPosition: "center",
               display: isImageLoaded ? "block" : "none",
             }}
+            onLoad={handleImageLoad}
             onError={handleImageError}
           />
         </Card>

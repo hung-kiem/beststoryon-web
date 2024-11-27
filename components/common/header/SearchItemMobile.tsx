@@ -78,7 +78,6 @@ export function SearchItemMobile({
               objectPosition: "center",
               display: isImageLoaded ? "none" : "block",
             }}
-            onError={handleImageError}
           />
           <CardMedia
             component="img"

@@ -68,6 +68,7 @@ export function ChapterRelease({ story }: ChapterReleaseProps) {
           title={story?.storyName}
           alt={story?.storyName || "Novel image"}
           onError={handleImageError}
+          onLoad={handleImageLoad}
           sx={{ display: isImageLoaded ? "block" : "none" }}
         />
       </Card>

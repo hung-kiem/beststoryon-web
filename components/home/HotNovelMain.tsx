@@ -93,7 +93,6 @@ function ChapterHot({
             objectPosition: "center",
             display: isImageLoaded ? "none" : "block",
           }}
-          onError={handleImageError}
         />
         <CardMedia
           component="img"
@@ -107,6 +106,7 @@ function ChapterHot({
             objectPosition: "center",
             display: isImageLoaded ? "block" : "none",
           }}
+          onLoad={handleImageLoad}
           onError={handleImageError}
         />
       </Card>
@@ -206,7 +206,6 @@ export function HotNovelMain({ data }: HotTopListProps) {
                     image="/images/no-image.jpg"
                     title={firstStory.storyName}
                     alt={firstStory.storyName}
-                    onError={handleImageError}
                     sx={{ display: isImageLoaded ? "none" : "block" }}
                   />
                   <CardMedia
