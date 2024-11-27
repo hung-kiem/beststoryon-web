@@ -49,7 +49,7 @@ const Novel: NextPageWithLayout = () => {
   };
 
   const { data: storyRefer, isValidating: loadingStoryRefer } = useSWR(
-    ["/story/getListRefer", payloadRefer],
+    storyId ? ["/story/getListRefer", payloadRefer] : null,
     ([url, payload]) => fetcherRefer(url, payload)
   );
 
