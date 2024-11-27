@@ -106,29 +106,31 @@ export function ChapterRelease({ story }: ChapterReleaseProps) {
         >
           {story?.lastAddNewChapterLabel || "Chapter " + story.chapterNumber}
         </Typography>
-        <Stack direction="row" justifyContent="space-between">
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <ImportContactsIcon
-              sx={{
-                color: "text.secondary",
-              }}
-            />
-            <Typography
-              variant="subtitle2"
-              color="text.secondary"
-              fontWeight="bold"
-              sx={{
-                overflow: "hidden",
-                display: "-webkit-box",
-                WebkitBoxOrient: "vertical",
-                WebkitLineClamp: 1,
-                lineClamp: 1,
-              }}
-            >
-              {story?.lastAddNewChapterName}
-            </Typography>
+        {story?.lastAddNewChapterName && (
+          <Stack direction="row" justifyContent="space-between">
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <ImportContactsIcon
+                sx={{
+                  color: "text.secondary",
+                }}
+              />
+              <Typography
+                variant="subtitle2"
+                color="text.secondary"
+                fontWeight="bold"
+                sx={{
+                  overflow: "hidden",
+                  display: "-webkit-box",
+                  WebkitBoxOrient: "vertical",
+                  WebkitLineClamp: 1,
+                  lineClamp: 1,
+                }}
+              >
+                {story?.lastAddNewChapterName}
+              </Typography>
+            </Stack>
           </Stack>
-        </Stack>
+        )}
       </Stack>
     </Stack>
   );
