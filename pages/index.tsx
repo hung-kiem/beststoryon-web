@@ -60,12 +60,7 @@ const Home: NextPageWithLayout = () => {
   );
 
   // Kết hợp tất cả trạng thái loading
-  const isLoading =
-    loadingHotTopList ||
-    loadingTrending ||
-    loadingNewRelease ||
-    loadingHot ||
-    loadingBanner;
+  const isLoading = loadingHotTopList;
 
   return (
     <Box>
