@@ -141,11 +141,14 @@ const Chapter = () => {
 
   const { data: chapterDetail, isValidating: loadingChapterDetail } = useSWR(
     chapterPayload ? ["/chapter/getQuickByIndex", chapterPayload] : null,
-    ([, payload]) => fetchChapterDetail("", payload)
+    ([, payload]) => fetchChapterDetail("", payload),
+    {
+      dedupingInterval: 60000,
+    }
   );
 
   const { data: storyDetail, isValidating: loadingStoryDetail } = useSWR(
-    storyPayload ? ["/story/getDetail", storyPayload] : null,
+    storyId ? ["/story/getDetail", storyPayload] : null,
     ([, payload]) => fetchStoryDetail("", payload)
   );
 
@@ -153,7 +156,7 @@ const Chapter = () => {
     storyId: id || "",
   };
   const { data: storyRefer, isValidating: loadingStoryRefer } = useSWR(
-    ["/story/getListRefer", payloadRefer],
+    storyId ? ["/story/getListRefer", payloadRefer] : null,
     ([url, payload]) => fetcherRefer(url, payload)
   );
 
