@@ -15,6 +15,11 @@ export default function App({
   emotionCache = clientSideEmotionCache,
 }: AppPropsWithLayout) {
   const Layout = Component.Layout ? Component.Layout : EmptyLayout;
+  if (process.env.NODE_ENV === "production") {
+    console.log = function () {};
+    console.warn = function () {};
+    console.error = function () {};
+  }
 
   return (
     <CacheProvider value={emotionCache}>
