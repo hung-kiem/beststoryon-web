@@ -104,7 +104,7 @@ export function ChapterRelease({ story }: ChapterReleaseProps) {
             lineClamp: 2,
           }}
         >
-          {story?.lastAddNewChapterLabel.replace("update", "")}
+          {(story?.lastAddNewChapterLabel || "").replace("update", "")}
         </Typography>
         <Stack direction="row" justifyContent="space-between">
           <Stack direction="row" alignItems="center" spacing={1}>
