@@ -88,7 +88,7 @@ export function NovelCard({ story }: NovelCardProps) {
             color="secondary.contrastText"
             fontWeight="bold"
           >
-            {story.ratingStar || "5.0"}
+            {(story.ratingStar || 5.0).toFixed(1)}
           </Typography>
           <StarIcon sx={{ color: "#FFF1C2" }} />
         </Stack>
