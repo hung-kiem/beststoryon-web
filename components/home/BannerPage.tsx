@@ -40,32 +40,42 @@ const BannerCard = ({ banner }: { banner: Banner }) => {
   const handleImageLoad = (event: React.SyntheticEvent<HTMLImageElement>) => {
     const img = event.currentTarget;
     setIsVertical(img.naturalWidth < img.naturalHeight);
+    console.log("setLoaded: ", setLoaded);
     setLoaded(true);
   };
 
   useEffect(() => {
-    if (banner.bannerType === "HTML" && banner.bannerHTML) {
-      const sanitizedHTML = sanitizeHtml(banner.bannerHTML, {
-        allowedTags: sanitizeHtml.defaults.allowedTags.concat(["script"]),
-        allowedAttributes: {
-          "*": ["style", "class"],
-        },
-      });
-      banner.bannerHTML = sanitizedHTML;
-      setLoaded(true);
-    }
-  }, [banner]);
-
-  useEffect(() => {
     if (banner.bannerType === "HTML" && bannerRef.current) {
+      const images = bannerRef.current.querySelectorAll("img");
+      let loadedImages = 0;
+
+      const handleImageLoaded = () => {
+        loadedImages += 1;
+        if (loadedImages === images.length) {
+          setLoaded(true);
+        }
+      };
+
+      images.forEach((img) => {
+        if (img.complete) {
+          handleImageLoaded();
+        } else {
+          img.onload = handleImageLoaded;
+          img.onerror = handleImageLoaded; // Xử lý cả trường hợp lỗi để không treo trạng thái loading
+        }
+      });
+
+      // Thay thế các thẻ script để đảm bảo chúng được chạy lại
       const scripts = bannerRef.current.querySelectorAll("script");
       scripts.forEach((oldScript) => {
-        const newScript = document.createElement("script");
-        newScript.textContent = oldScript.textContent;
-        Array.from(oldScript.attributes).forEach((attr) =>
-          newScript.setAttribute(attr.name, attr.value)
-        );
-        oldScript.parentNode?.replaceChild(newScript, oldScript);
+        if (oldScript.parentNode) {
+          const newScript = document.createElement("script");
+          newScript.textContent = oldScript.textContent;
+          Array.from(oldScript.attributes).forEach((attr) =>
+            newScript.setAttribute(attr.name, attr.value)
+          );
+          oldScript.parentNode.replaceChild(newScript, oldScript);
+        }
       });
     }
   }, [banner.bannerType, banner.bannerHTML]);
@@ -96,6 +106,7 @@ const BannerCard = ({ banner }: { banner: Banner }) => {
               height: "auto",
               maxHeight: 400,
               overflow: "hidden",
+              backgroundColor: "green",
             }}
             dangerouslySetInnerHTML={{ __html: banner.bannerHTML }}
           />
@@ -115,7 +126,9 @@ const BannerCard = ({ banner }: { banner: Banner }) => {
           "&:hover": {
             transform: "scale(1.05)",
           },
-          backgroundColor: "transparent",
+          // backgroundColor: "transparent",
+          backgroundColor: "pink",
+          height: "auto",
         }}
       >
         {renderBannerContent()}
