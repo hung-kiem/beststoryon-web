@@ -80,7 +80,7 @@ const BannerCard = ({ banner }: { banner: Banner }) => {
               height: "auto",
               width: "100%",
               objectFit: isVertical ? "contain" : "cover",
-              maxHeight: 600,
+              maxHeight: 400,
             }}
             image={banner.bannerUrl}
             alt={banner.bannerDesc}
@@ -94,7 +94,7 @@ const BannerCard = ({ banner }: { banner: Banner }) => {
             sx={{
               width: "100%",
               height: "auto",
-              maxHeight: 600,
+              maxHeight: 400,
               overflow: "hidden",
             }}
             dangerouslySetInnerHTML={{ __html: banner.bannerHTML }}
