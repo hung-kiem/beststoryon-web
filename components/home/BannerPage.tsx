@@ -16,8 +16,7 @@ const BannerPage = ({ data }: BannerProps) => {
         <Grid container spacing={4} direction="column">
           {data.map((banner, index) => {
             if (
-              (banner.bannerType === "IMAGE" ||
-                banner.bannerType === "VIDEO") &&
+              banner.bannerType === "IMAGE" &&
               banner.bannerUrl &&
               banner.bannerUrl !== ""
             ) {
@@ -86,19 +85,6 @@ const BannerCard = ({ banner }: { banner: Banner }) => {
             image={banner.bannerUrl}
             alt={banner.bannerDesc}
             onLoad={handleImageLoad}
-          />
-        );
-      case "VIDEO":
-        return (
-          <CardMedia
-            component="video"
-            controls
-            sx={{
-              height: "auto",
-              width: "100%",
-              maxHeight: 600,
-            }}
-            src={banner.bannerUrl}
           />
         );
       case "HTML":
