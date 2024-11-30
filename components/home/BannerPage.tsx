@@ -40,7 +40,6 @@ const BannerCard = ({ banner }: { banner: Banner }) => {
   const handleImageLoad = (event: React.SyntheticEvent<HTMLImageElement>) => {
     const img = event.currentTarget;
     setIsVertical(img.naturalWidth < img.naturalHeight);
-    console.log("setLoaded: ", setLoaded);
     setLoaded(true);
   };
 
@@ -87,7 +86,7 @@ const BannerCard = ({ banner }: { banner: Banner }) => {
           <CardMedia
             component="img"
             sx={{
-              height: "auto",
+              height: "100%",
               width: "100%",
               objectFit: isVertical ? "contain" : "cover",
               maxHeight: 400,
@@ -106,7 +105,9 @@ const BannerCard = ({ banner }: { banner: Banner }) => {
               height: "auto",
               maxHeight: 400,
               overflow: "hidden",
-              backgroundColor: "green",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
             }}
             dangerouslySetInnerHTML={{ __html: banner.bannerHTML }}
           />
@@ -127,7 +128,6 @@ const BannerCard = ({ banner }: { banner: Banner }) => {
             transform: "scale(1.05)",
           },
           backgroundColor: "transparent",
-          height: "auto",
         }}
       >
         {renderBannerContent()}
