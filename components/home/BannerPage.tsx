@@ -37,7 +37,6 @@ const BannerCard = ({ banner }: { banner: Banner }) => {
   const [loaded, setLoaded] = useState(false);
   const [isVertical, setIsVertical] = useState(false);
   const bannerRef = useRef<HTMLDivElement>(null);
-  const [countdown, setCountdown] = useState(3);
 
   const handleImageLoad = (event: React.SyntheticEvent<HTMLImageElement>) => {
     setLoaded(true);
@@ -54,13 +53,12 @@ const BannerCard = ({ banner }: { banner: Banner }) => {
         },
       });
       banner.bannerHTML = sanitizedHTML;
-      setLoaded(true); // Set loaded to true for sanitized HTML content
+      setLoaded(true);
     }
   }, [banner]);
 
   useEffect(() => {
     if (banner.bannerType === "HTML" && bannerRef.current) {
-      // Tìm và thực thi các thẻ <script> sau khi HTML đã được render
       const scripts = bannerRef.current.querySelectorAll("script");
       scripts.forEach((oldScript) => {
         const newScript = document.createElement("script");
@@ -72,10 +70,6 @@ const BannerCard = ({ banner }: { banner: Banner }) => {
       });
     }
   }, [banner.bannerType, banner.bannerHTML]);
-
-  const exampleHtmlAd = `<div style="text-align: center; position: relative;"><a href="https://www.rolex.com" target="_blank"><img src="https://images.unsplash.com/photo-1709884732294-90379fee354c?q=80&w=2728&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Quảng cáo Banner" style="width: 100%; height: 100%; object-fit: cover;"/></a><div style="position: absolute; top: 10px; right: 10px; background: rgba(0, 0, 0, 0.7); color: white; padding: 5px 10px; border-radius: 5px;">Chuyển đến sau: <span id="countdown">3</span> giây</div><script>(function() {var countdownElement = document.getElementById('countdown');var countdownValue = 3;var countdownInterval = setInterval(function() {countdownValue--;if (countdownElement) {countdownElement.textContent = countdownValue;}if (countdownValue <= 0) {clearInterval(countdownInterval);}}, 1000);})();</script></div>`;
-
-  banner.bannerHTML = exampleHtmlAd;
 
   const renderBannerContent = () => {
     switch (banner.bannerType) {
