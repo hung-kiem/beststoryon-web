@@ -126,8 +126,7 @@ const BannerCard = ({ banner }: { banner: Banner }) => {
           "&:hover": {
             transform: "scale(1.05)",
           },
-          // backgroundColor: "transparent",
-          backgroundColor: "pink",
+          backgroundColor: "transparent",
           height: "auto",
         }}
       >
