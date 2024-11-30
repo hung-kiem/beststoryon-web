@@ -55,7 +55,7 @@ const Novel: NextPageWithLayout = () => {
   );
 
   const { data: bannerList } = useSWR(
-    "/home/getBannerList",
+    ["/home/getBannerList", "STORY"],
     () =>
       bannerApi.getBannerList({
         requestId: "1",

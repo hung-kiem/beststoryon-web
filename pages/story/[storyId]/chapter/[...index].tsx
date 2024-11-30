@@ -164,7 +164,7 @@ const Chapter = () => {
   );
 
   const { data: bannerList } = useSWR(
-    "/home/getBannerList",
+    ["/home/getBannerList", "CHAPTER"],
     () =>
       bannerApi.getBannerList({
         requestId: "1",

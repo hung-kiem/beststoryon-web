@@ -48,7 +48,7 @@ const Home: NextPageWithLayout = () => {
   );
 
   const { data: bannerList, isValidating: loadingBanner } = useSWR(
-    "/home/getBannerList",
+    ["/home/getBannerList", "HOME"],
     () =>
       homeApi.getBannerList({
         requestId: "1",

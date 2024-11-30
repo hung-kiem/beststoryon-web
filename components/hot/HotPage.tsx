@@ -10,6 +10,8 @@ import Link from "next/link";
 import { LoadingOverlay } from "../loading/LoadingOverlay";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import { bannerApi } from "@/api-client/banner-api";
+import BannerPage from "../home/BannerPage";
 
 const MILLISECOND_PER_HOUR = 1000 * 60 * 60;
 const statusArr = ["All", "Ongoing", "Completed"];
@@ -75,6 +77,25 @@ export function HotPage() {
   const currentCategory = categories?.find((cat) => cat.catCode === catCode);
   const categoryName = currentCategory ? currentCategory.catName : "All Genres";
 
+  const { data: bannerList } = useSWR(
+    ["/home/getBannerList", "HOT"],
+    () =>
+      bannerApi.getBannerList({
+        requestId: "1",
+        bannerOfPage: "HOT",
+      }),
+    {
+      dedupingInterval: 3600000,
+    }
+  );
+
+  const banner1 =
+    bannerList?.data?.filter((banner) => banner.bannerPos === "1") || [];
+  const banner2 =
+    bannerList?.data?.filter((banner) => banner.bannerPos === "2") || [];
+  const banner3 =
+    bannerList?.data?.filter((banner) => banner.bannerPos === "3") || [];
+
   return (
     <>
       <Head>
@@ -87,6 +108,7 @@ export function HotPage() {
       <Box>
         <LoadingOverlay isLoading={isValidating} />
         <Container>
+          {banner1?.length > 0 && <BannerPage data={banner1} />}
           <Stack direction="column" my={2} spacing={2}>
             <Stack direction="column" spacing={1}>
               <Typography variant="h4" fontWeight="bold">
@@ -148,6 +170,7 @@ export function HotPage() {
                   ))}
                 </Stack>
               </Stack>
+              {banner2?.length > 0 && <BannerPage data={banner2} />}
               <Typography
                 variant="h4"
                 fontWeight="bold"
@@ -209,6 +232,7 @@ export function HotPage() {
               )}
             </Stack>
           </Stack>
+          {banner3?.length > 0 && <BannerPage data={banner3} />}
         </Container>
       </Box>
     </>

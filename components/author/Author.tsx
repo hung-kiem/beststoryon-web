@@ -8,6 +8,8 @@ import { LoadingOverlay } from "../loading/LoadingOverlay";
 import Grid from "@mui/material/Grid2";
 import Link from "next/link";
 import { NovelCard } from "./NovelCard";
+import { bannerApi } from "@/api-client/banner-api";
+import BannerPage from "../home/BannerPage";
 
 const MILLISECOND_PER_HOUR = 1000 * 60 * 60;
 
@@ -44,6 +46,25 @@ const AuthorPage = () => {
     setPageIndex(value);
   };
 
+  const { data: bannerList } = useSWR(
+    ["/home/getBannerList", "AUTHOR"],
+    () =>
+      bannerApi.getBannerList({
+        requestId: "1",
+        bannerOfPage: "AUTHOR",
+      }),
+    {
+      dedupingInterval: 3600000,
+    }
+  );
+
+  const banner1 =
+    bannerList?.data?.filter((banner) => banner.bannerPos === "1") || [];
+  const banner2 =
+    bannerList?.data?.filter((banner) => banner.bannerPos === "2") || [];
+  const banner3 =
+    bannerList?.data?.filter((banner) => banner.bannerPos === "3") || [];
+
   return (
     <Box>
       <Seo
@@ -57,11 +78,13 @@ const AuthorPage = () => {
       />
       <Box>
         <LoadingOverlay isLoading={isValidating} />
+        {banner1?.length > 0 && <BannerPage data={banner1} />}
         <Container>
           <Stack direction="column" my={2} spacing={2}>
             <Typography variant="h4" fontWeight="bold">
               {`${author}`}
             </Typography>
+            {banner2?.length > 0 && <BannerPage data={banner2} />}
             {stories?.data?.length === 0 && (
               <Typography
                 variant="body1"
@@ -107,6 +130,7 @@ const AuthorPage = () => {
               />
             )}
           </Stack>
+          {banner3?.length > 0 && <BannerPage data={banner3} />}
         </Container>
       </Box>
     </Box>

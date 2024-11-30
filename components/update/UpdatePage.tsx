@@ -10,6 +10,8 @@ import Link from "next/link";
 import { LoadingOverlay } from "../loading/LoadingOverlay";
 import { useRouter } from "next/router";
 import { Seo } from "../common";
+import { bannerApi } from "@/api-client/banner-api";
+import BannerPage from "../home/BannerPage";
 
 const MILLISECOND_PER_HOUR = 1000 * 60 * 60;
 
@@ -68,6 +70,25 @@ export function UpdatePage() {
     );
   };
 
+  const { data: bannerList } = useSWR(
+    ["/home/getBannerList", "UPDATE"],
+    () =>
+      bannerApi.getBannerList({
+        requestId: "1",
+        bannerOfPage: "UPDATE",
+      }),
+    {
+      dedupingInterval: 3600000,
+    }
+  );
+
+  const banner1 =
+    bannerList?.data?.filter((banner) => banner.bannerPos === "1") || [];
+  const banner2 =
+    bannerList?.data?.filter((banner) => banner.bannerPos === "2") || [];
+  const banner3 =
+    bannerList?.data?.filter((banner) => banner.bannerPos === "3") || [];
+
   const currentCategory = categories?.find((cat) => cat.catCode === catCode);
   const categoryName = currentCategory ? currentCategory.catName : "All Genres";
 
@@ -84,6 +105,7 @@ export function UpdatePage() {
       <Box>
         <LoadingOverlay isLoading={isValidating} />
         <Container>
+          {banner1?.length > 0 && <BannerPage data={banner1} />}
           <Stack direction="column" my={2} spacing={2}>
             <Stack direction="column" spacing={1}>
               <Typography variant="h4" fontWeight="bold">
@@ -112,6 +134,7 @@ export function UpdatePage() {
                 </Grid>
               </Stack>
             </Stack>
+            {banner2?.length > 0 && <BannerPage data={banner2} />}
             {stories?.data?.length === 0 ? (
               <Typography
                 variant="body1"
@@ -159,6 +182,7 @@ export function UpdatePage() {
               </>
             )}
           </Stack>
+          {banner3?.length > 0 && <BannerPage data={banner3} />}
         </Container>
       </Box>
     </>
