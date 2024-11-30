@@ -38,9 +38,9 @@ const BannerCard = ({ banner }: { banner: Banner }) => {
   const bannerRef = useRef<HTMLDivElement>(null);
 
   const handleImageLoad = (event: React.SyntheticEvent<HTMLImageElement>) => {
-    setLoaded(true);
     const img = event.currentTarget;
     setIsVertical(img.naturalWidth < img.naturalHeight);
+    setLoaded(true);
   };
 
   useEffect(() => {
@@ -106,14 +106,12 @@ const BannerCard = ({ banner }: { banner: Banner }) => {
   };
 
   return (
-    <Grid item xs={12}>
+    <Grid item xs={12} style={{ display: loaded ? "block" : "none" }}>
       <Card
         sx={{
           borderRadius: 2,
           boxShadow: 3,
           transition: "transform 0.3s ease-in-out",
-          visibility:
-            loaded || banner.bannerType !== "IMAGE" ? "visible" : "hidden",
           "&:hover": {
             transform: "scale(1.05)",
           },
