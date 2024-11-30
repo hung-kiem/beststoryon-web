@@ -21,6 +21,8 @@ import { useRouter } from "next/router";
 import { GetStoryDetailResponse, StoryDetail } from "@/models/story";
 import StoryRating from "./StoryRating";
 import { LoadingOverlay } from "../loading/LoadingOverlay";
+import { Banner } from "@/models/banner";
+import BannerPage from "../home/BannerPage";
 
 interface NovelDetailProps {
   storyDetail?: GetStoryDetailResponse;
@@ -28,6 +30,9 @@ interface NovelDetailProps {
   onChangePageIndex: (pageIndex: number) => void;
   pageIndex: number;
   isLoading: boolean;
+  banner1: Banner[];
+  banner2: Banner[];
+  banner3: Banner[];
 }
 
 export function NovelDetail({
@@ -36,6 +41,9 @@ export function NovelDetail({
   isLoading,
   pageIndex,
   onChangePageIndex,
+  banner1,
+  banner2,
+  banner3,
 }: NovelDetailProps) {
   const router = useRouter();
   const [showFullDescription, setShowFullDescription] = useState(false);
@@ -96,6 +104,7 @@ export function NovelDetail({
     <Box>
       <LoadingOverlay isLoading={isLoading} />
       <Container>
+        {banner1?.length > 0 && <BannerPage data={banner1} />}
         <Box sx={{ flexGrow: 1 }}>
           <Grid container spacing={2}>
             <Grid size={{ xs: 12, sm: 12, lg: 4 }}>
@@ -284,6 +293,7 @@ export function NovelDetail({
             </Grid>
           </Grid>
         </Box>
+        {banner2?.length > 0 && <BannerPage data={banner2} />}
         <Stack direction="column" spacing={2} my={6}>
           <Typography
             variant="h4"
@@ -350,6 +360,7 @@ export function NovelDetail({
             onChange={handleChangePageIndex}
           />
         </Stack>
+        {banner3?.length > 0 && <BannerPage data={banner3} />}
         <Stack direction="column" spacing={2} my={4}>
           <Stack
             direction="row"

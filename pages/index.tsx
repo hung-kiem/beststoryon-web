@@ -59,7 +59,13 @@ const Home: NextPageWithLayout = () => {
     }
   );
 
-  // Kết hợp tất cả trạng thái loading
+  const banner1 =
+    bannerList?.data?.filter((banner) => banner.bannerPos === "1") || [];
+  const banner2 =
+    bannerList?.data?.filter((banner) => banner.bannerPos === "2") || [];
+  const banner3 =
+    bannerList?.data?.filter((banner) => banner.bannerPos === "3") || [];
+
   const isLoading = loadingHotTopList;
 
   return (
@@ -75,24 +81,21 @@ const Home: NextPageWithLayout = () => {
         }}
       />
       <LoadingOverlay isLoading={isLoading} />
+      {banner1?.length > 0 && <BannerPage data={banner1} />}
       {hotTopList?.data && hotTopList?.data.length > 0 && (
         <HotNovelMain data={hotTopList?.data || []} />
       )}
       {trendingList?.data && trendingList?.data.length > 0 && (
         <TrendingNovel data={trendingList?.data || []} />
       )}
-      {bannerList?.data && bannerList?.data.length > 0 && (
-        <BannerPage data={bannerList?.data || []} />
-      )}
+      {banner2?.length > 0 && <BannerPage data={banner2} />}
       {newReleaseList?.data && newReleaseList?.data.length > 0 && (
         <NewRelease data={newReleaseList?.data || []} />
       )}
       {hotList?.data && hotList?.data.length > 0 && (
         <HotNovel data={hotList?.data || []} />
       )}
-      {bannerList?.data && bannerList?.data.length > 0 && (
-        <BannerPage data={bannerList?.data || []} />
-      )}
+      {banner3?.length > 0 && <BannerPage data={banner3} />}
     </Box>
   );
 };

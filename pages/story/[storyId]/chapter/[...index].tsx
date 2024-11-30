@@ -38,6 +38,9 @@ import { useThemeContext } from "@/context";
 import useSWR from "swr";
 import { useTheme } from "@mui/material/styles";
 import { NovelCard } from "@/components/chapter/NovelCard";
+import { bannerApi } from "@/api-client/banner-api";
+import BannerPage from "@/components/home/BannerPage";
+import Content from "./Content";
 
 const style = {
   position: "absolute" as "absolute",
@@ -160,6 +163,25 @@ const Chapter = () => {
     ([url, payload]) => fetcherRefer(url, payload)
   );
 
+  const { data: bannerList } = useSWR(
+    "/home/getBannerList",
+    () =>
+      bannerApi.getBannerList({
+        requestId: "1",
+        bannerOfPage: "CHAPTER",
+      }),
+    {
+      dedupingInterval: 3600000,
+    }
+  );
+
+  const banner1 =
+    bannerList?.data?.filter((banner) => banner.bannerPos === "1") || [];
+  const banner2 =
+    bannerList?.data?.filter((banner) => banner.bannerPos === "2") || [];
+  const banner3 =
+    bannerList?.data?.filter((banner) => banner.bannerPos === "3") || [];
+
   const isLoading = loadingChapterDetail || loadingStoryDetail;
 
   const handleOpen = () => setOpen(true);
@@ -232,6 +254,7 @@ const Chapter = () => {
       <Box>
         <LoadingOverlay isLoading={isLoading} />
         <Container>
+          {banner1?.length > 0 && <BannerPage data={banner1} />}
           <Stack
             direction="column"
             spacing={2}
@@ -436,6 +459,7 @@ const Chapter = () => {
                 content={chapterDetail?.data?.content || ""}
                 fontSize={fontSize}
                 fontFamily={fontFamily}
+                banner={banner2?.length > 0 && <BannerPage data={banner2} />}
               />
             )}
             <div style={{ marginTop: "32px" }}>
@@ -655,7 +679,7 @@ const Chapter = () => {
               </Stack>
             </Modal>
           )}
-
+          {banner3?.length > 0 && <BannerPage data={banner3} />}
           <Stack direction="column" spacing={2} my={4}>
             <Stack
               direction="row"
@@ -709,32 +733,32 @@ const Chapter = () => {
   );
 };
 
-const Content = ({
-  content,
-  fontSize,
-  fontFamily,
-}: {
-  content: string;
-  fontSize: number;
-  fontFamily: string;
-}) => {
-  return (
-    <Typography
-      variant="body2"
-      textAlign="left"
-      sx={{
-        fontSize: `${fontSize}px`,
-        fontFamily: fontFamily === "Default" ? "inherit" : fontFamily,
-        "& p, & div, & li": {
-          marginBottom: "20px",
-        },
-      }}
-      dangerouslySetInnerHTML={{
-        __html: content || "",
-      }}
-    />
-  );
-};
+// const Content = ({
+//   content,
+//   fontSize,
+//   fontFamily,
+// }: {
+//   content: string;
+//   fontSize: number;
+//   fontFamily: string;
+// }) => {
+//   return (
+//     <Typography
+//       variant="body2"
+//       textAlign="left"
+//       sx={{
+//         fontSize: `${fontSize}px`,
+//         fontFamily: fontFamily === "Default" ? "inherit" : fontFamily,
+//         "& p, & div, & li": {
+//           marginBottom: "20px",
+//         },
+//       }}
+//       dangerouslySetInnerHTML={{
+//         __html: content || "",
+//       }}
+//     />
+//   );
+// };
 
 Chapter.Layout = MainLayout;
 

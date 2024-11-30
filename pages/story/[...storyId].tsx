@@ -11,6 +11,7 @@ import {
 import { storyApi } from "@/api-client";
 import useSWR from "swr";
 import { useRouter } from "next/router";
+import { bannerApi } from "@/api-client/banner-api";
 
 const fetcher = (url: string, payload: GetStoryDetailPayload) => {
   return storyApi.getDetail(payload);
@@ -53,6 +54,25 @@ const Novel: NextPageWithLayout = () => {
     ([url, payload]) => fetcherRefer(url, payload)
   );
 
+  const { data: bannerList } = useSWR(
+    "/home/getBannerList",
+    () =>
+      bannerApi.getBannerList({
+        requestId: "1",
+        bannerOfPage: "STORY",
+      }),
+    {
+      dedupingInterval: 3600000,
+    }
+  );
+
+  const banner1 =
+    bannerList?.data?.filter((banner) => banner.bannerPos === "1") || [];
+  const banner2 =
+    bannerList?.data?.filter((banner) => banner.bannerPos === "2") || [];
+  const banner3 =
+    bannerList?.data?.filter((banner) => banner.bannerPos === "3") || [];
+
   const isLoading = loadingStoryDetail || loadingStoryRefer;
 
   const handleOnChangePageIndex = (index: number) => {
@@ -77,6 +97,9 @@ const Novel: NextPageWithLayout = () => {
         isLoading={isLoading}
         onChangePageIndex={handleOnChangePageIndex}
         pageIndex={pageIndex}
+        banner1={banner1}
+        banner2={banner2}
+        banner3={banner3}
       />
     </Box>
   );
