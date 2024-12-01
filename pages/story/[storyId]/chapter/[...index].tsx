@@ -445,13 +445,14 @@ const Chapter = () => {
                 <SettingsIcon sx={{ fontSize: "24px", height: "100%" }} />
               </Button>
             </Stack>
-            {banner1?.length > 0 && <BannerPage data={banner1} />}
+
             {isInitialized && (
               <Content
                 content={chapterDetail?.data?.content || ""}
                 fontSize={fontSize}
                 fontFamily={fontFamily}
                 banner={banner2?.length > 0 && <BannerPage data={banner2} />}
+                banner1={banner1?.length > 0 && <BannerPage data={banner1} />}
               />
             )}
             <div style={{ marginTop: "32px" }}>
@@ -730,11 +731,13 @@ const Content = ({
   fontSize,
   fontFamily,
   banner,
+  banner1,
 }: {
   content: string;
   fontSize: number;
   fontFamily: string;
   banner: React.ReactNode;
+  banner1?: React.ReactNode;
 }) => {
   const parts = content.split("</p>");
   const middleIndex = Math.floor(parts.length / 2);
@@ -755,6 +758,7 @@ const Content = ({
       }}
     >
       <div>
+        {banner1}
         <div dangerouslySetInnerHTML={{ __html: firstHalf }} />
         <div id="banner-2">{banner}</div>
         <div dangerouslySetInnerHTML={{ __html: secondHalf }} />
