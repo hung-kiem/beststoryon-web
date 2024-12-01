@@ -84,10 +84,6 @@ export function UpdatePage() {
 
   const banner1 =
     bannerList?.data?.filter((banner) => banner.bannerPos === "1") || [];
-  const banner2 =
-    bannerList?.data?.filter((banner) => banner.bannerPos === "2") || [];
-  const banner3 =
-    bannerList?.data?.filter((banner) => banner.bannerPos === "3") || [];
 
   const currentCategory = categories?.find((cat) => cat.catCode === catCode);
   const categoryName = currentCategory ? currentCategory.catName : "All Genres";
@@ -105,7 +101,7 @@ export function UpdatePage() {
       <Box>
         <LoadingOverlay isLoading={isValidating} />
         <Container>
-          {banner1?.length > 0 && <BannerPage data={banner1} />}
+          {/* {banner1?.length > 0 && <BannerPage data={banner1} />} */}
           <Stack direction="column" my={2} spacing={2}>
             <Stack direction="column" spacing={1}>
               <Typography variant="h4" fontWeight="bold">
@@ -134,7 +130,7 @@ export function UpdatePage() {
                 </Grid>
               </Stack>
             </Stack>
-            {banner2?.length > 0 && <BannerPage data={banner2} />}
+            {banner1?.length > 0 && <BannerPage data={banner1} />}
             {stories?.data?.length === 0 ? (
               <Typography
                 variant="body1"
@@ -182,7 +178,7 @@ export function UpdatePage() {
               </>
             )}
           </Stack>
-          {banner3?.length > 0 && <BannerPage data={banner3} />}
+          {/* {banner3?.length > 0 && <BannerPage data={banner3} />} */}
         </Container>
       </Box>
     </>

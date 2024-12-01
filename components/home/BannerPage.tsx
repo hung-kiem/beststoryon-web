@@ -60,11 +60,10 @@ const BannerCard = ({ banner }: { banner: Banner }) => {
           handleImageLoaded();
         } else {
           img.onload = handleImageLoaded;
-          img.onerror = handleImageLoaded; // Xử lý cả trường hợp lỗi để không treo trạng thái loading
+          img.onerror = handleImageLoaded;
         }
       });
 
-      // Thay thế các thẻ script để đảm bảo chúng được chạy lại
       const scripts = bannerRef.current.querySelectorAll("script");
       scripts.forEach((oldScript) => {
         if (oldScript.parentNode) {

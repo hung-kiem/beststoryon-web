@@ -69,7 +69,7 @@ export function HeaderMobile() {
 
   const handleMenuClick = (path: string) => {
     router.push(path);
-    setOpen(false); // Đóng menu
+    setOpen(false);
   };
 
   const handleOptionSelect = (value: StoryDetail) => {

@@ -13,7 +13,7 @@ export interface Chapter {
   content: string | null;
   chapterName: string;
   createdDateLabel: string;
-  createdDate: string; // Assuming the format is "yyyy-MM-dd HH:mm:ss"
+  createdDate: string;
   chapterIndex: number;
   storyId: number;
   previousIndex: number;

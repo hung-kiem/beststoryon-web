@@ -99,10 +99,9 @@ export function HeaderDesktop() {
                     display: "flex",
                     color: "inherit",
                     textDecoration: "none",
-                    height: "100%", // Đảm bảo chiều cao của link bằng với container bên ngoài
+                    height: "100%",
                   }}
                   underline="none"
-                  // className={clsx({ active: route.path === router.pathname })}
                   fontWeight="bold"
                 >
                   <Stack direction="row" alignItems="center" spacing={1}>
@@ -172,7 +171,7 @@ export function HeaderDesktop() {
                       fontSize: "14px",
                     },
                     "& .MuiInputLabel-root.Mui-focused": {
-                      color: "#1E90FF", // Màu chữ khi được focus
+                      color: "#1E90FF",
                     },
                   }}
                 />
@@ -183,8 +182,8 @@ export function HeaderDesktop() {
                     backgroundColor: mode === "light" ? "#0F172A" : "#FFF",
                     borderRadius: "8px",
                     marginTop: "4px",
-                    maxHeight: "300px", // Giới hạn chiều cao tối đa của danh sách tùy chọn
-                    overflow: "auto", // Thêm cuộn khi danh sách tùy chọn quá dài
+                    maxHeight: "300px",
+                    overflow: "auto",
                     boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
                     "& .MuiAutocomplete-option": {
                       padding: "0px",

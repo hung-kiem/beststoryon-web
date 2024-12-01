@@ -1,7 +1,6 @@
 import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 import { red } from "@mui/material/colors";
 
-// Create a theme instance.
 export let lightTheme = createTheme({
   typography: {
     fontFamily: "Roboto, sans-serif",

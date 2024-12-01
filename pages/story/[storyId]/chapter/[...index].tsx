@@ -253,7 +253,6 @@ const Chapter = () => {
       <Box>
         <LoadingOverlay isLoading={isLoading} />
         <Container>
-          {banner1?.length > 0 && <BannerPage data={banner1} />}
           <Stack
             direction="column"
             spacing={2}
@@ -290,11 +289,10 @@ const Chapter = () => {
                 sx={{
                   backgroundColor: "background.paper",
                   color: "secondary.contrastText",
-                  height: "40px", // Giảm chiều cao
-                  // padding: "0 12px", // Thêm padding
-                  borderRadius: "8px", // Bo góc
-                  justifyContent: "center", // Căn giữa theo chiều ngang
-                  alignItems: "center", // Căn giữa theo chiều dọc
+                  height: "40px",
+                  borderRadius: "8px",
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
                 onClick={() => router.push(`/story/${storyId}`)}
               >
@@ -307,8 +305,8 @@ const Chapter = () => {
                 sx={{
                   color: "secondary.contrastText",
                   backgroundColor: "background.paper",
-                  height: "40px", // Giảm chiều cao
-                  borderRadius: "8px", // Bo góc
+                  height: "40px",
+                  borderRadius: "8px",
                 }}
               >
                 <SettingsIcon sx={{ fontSize: "24px" }} />
@@ -326,11 +324,10 @@ const Chapter = () => {
                 sx={{
                   backgroundColor: "background.paper",
                   color: "secondary.contrastText",
-                  height: "40px", // Giảm chiều cao
-                  // padding: "0 12px", // Thêm padding
-                  borderRadius: "8px", // Bo góc
-                  justifyContent: "center", // Căn giữa theo chiều ngang
-                  alignItems: "center", // Căn giữa theo chiều dọc
+                  height: "40px",
+                  borderRadius: "8px",
+                  justifyContent: "center",
+                  alignItems: "center",
                   display: { xs: "none", sm: "block" },
                 }}
                 onClick={() => router.push(`/story/${storyId}`)}
@@ -344,9 +341,9 @@ const Chapter = () => {
                 sx={{
                   color: "secondary.contrastText",
                   backgroundColor: "background.paper",
-                  height: "40px", // Giảm chiều cao
-                  padding: "0 12px", // Thêm padding
-                  borderRadius: "8px", // Bo góc
+                  height: "40px",
+                  padding: "0 12px",
+                  borderRadius: "8px",
                 }}
               >
                 Prev
@@ -354,16 +351,13 @@ const Chapter = () => {
               <FormControl
                 sx={{
                   width: 160,
-                  height: "40px", // Giảm chiều cao để bằng với button
+                  height: "40px",
                   "& .MuiInputBase-root": {
-                    height: "40px", // Căn chỉnh chiều cao của input
-                    borderRadius: "8px", // Bo góc để phù hợp với button
-                    padding: "0 12px", // Thêm padding cho hợp lý
-                    "& .MuiInputBase-input": {
-                      // color: theme.palette.text.primary, // Màu chữ trong select
-                    },
+                    height: "40px",
+                    borderRadius: "8px",
+                    padding: "0 12px",
                     "& .MuiSvgIcon-root": {
-                      color: theme.palette.text.primary, // Màu của icon dropdown
+                      color: theme.palette.text.primary,
                     },
                   },
                 }}
@@ -385,11 +379,9 @@ const Chapter = () => {
                     onChange={handleChange}
                     color="primary"
                     sx={{
-                      height: "40px", // Giảm chiều cao của select
-                      borderRadius: "8px", // Bo góc cho select
-                      "& .MuiSelect-select": {
-                        // color: theme.palette.text.primary, // Màu chữ khi chọn
-                      },
+                      height: "40px",
+                      borderRadius: "8px",
+                      "& .MuiSelect-select": {},
                       color: mode === "light" ? "#0F172A" : "#FFFFFF",
                     }}
                     MenuProps={{
@@ -430,9 +422,9 @@ const Chapter = () => {
                 sx={{
                   color: "secondary.contrastText",
                   backgroundColor: "background.paper",
-                  height: "40px", // Giảm chiều cao
-                  padding: "0 12px", // Thêm padding
-                  borderRadius: "8px", // Bo góc
+                  height: "40px",
+                  padding: "0 12px",
+                  borderRadius: "8px",
                 }}
               >
                 Next
@@ -444,15 +436,16 @@ const Chapter = () => {
                 sx={{
                   color: "secondary.contrastText",
                   backgroundColor: "background.paper",
-                  height: "40px", // Giảm chiều cao
-                  borderRadius: "8px", // Bo góc
-                  alignItems: "center", // Căn giữa theo chiều dọc
+                  height: "40px",
+                  borderRadius: "8px",
+                  alignItems: "center",
                   display: { xs: "none", sm: "block" },
                 }}
               >
                 <SettingsIcon sx={{ fontSize: "24px", height: "100%" }} />
               </Button>
             </Stack>
+            {banner1?.length > 0 && <BannerPage data={banner1} />}
             {isInitialized && (
               <Content
                 content={chapterDetail?.data?.content || ""}
@@ -476,9 +469,9 @@ const Chapter = () => {
                   sx={{
                     color: "secondary.contrastText",
                     backgroundColor: "background.paper",
-                    height: "40px", // Giảm chiều cao
-                    padding: "0 12px", // Thêm padding
-                    borderRadius: "8px", // Bo góc
+                    height: "40px",
+                    padding: "0 12px",
+                    borderRadius: "8px",
                     marginTop: "auto",
                   }}
                 >
@@ -487,18 +480,18 @@ const Chapter = () => {
                 <FormControl
                   sx={{
                     width: 160,
-                    height: "40px", // Giảm chiều cao để bằng với button
+                    height: "40px",
                     "& .MuiInputBase-root": {
-                      height: "40px", // Căn chỉnh chiều cao của input
-                      borderRadius: "8px", // Bo góc để phù hợp với button
-                      padding: "0 12px", // Thêm padding cho hợp lý
+                      height: "40px",
+                      borderRadius: "8px",
+                      padding: "0 12px",
                     },
                   }}
                 >
                   <InputLabel
                     id="chapter-select-label"
                     sx={{
-                      top: "-6px", // Điều chỉnh vị trí của label
+                      top: "-6px",
                     }}
                   >
                     Chapter
@@ -511,8 +504,8 @@ const Chapter = () => {
                     onChange={handleChange}
                     color="primary"
                     sx={{
-                      height: "40px", // Giảm chiều cao của select
-                      borderRadius: "8px", // Bo góc cho select
+                      height: "40px",
+                      borderRadius: "8px",
                     }}
                     MenuProps={{
                       PaperProps: {
@@ -550,9 +543,9 @@ const Chapter = () => {
                   sx={{
                     color: "secondary.contrastText",
                     backgroundColor: "background.paper",
-                    height: "40px", // Giảm chiều cao
-                    padding: "0 12px", // Thêm padding
-                    borderRadius: "8px", // Bo góc
+                    height: "40px",
+                    padding: "0 12px",
+                    borderRadius: "8px",
                   }}
                 >
                   Next
@@ -567,8 +560,8 @@ const Chapter = () => {
                 spacing={2}
                 sx={{
                   ...style,
-                  width: "100%", // Đảm bảo modal phù hợp với màn hình nhỏ
-                  maxWidth: "400px", // Giới hạn chiều rộng
+                  width: "100%",
+                  maxWidth: "400px",
                 }}
               >
                 <Stack
@@ -581,7 +574,7 @@ const Chapter = () => {
                     variant="outlined"
                     onClick={decreaseFontSize}
                     sx={{
-                      minWidth: "50px", // Đảm bảo kích thước nút nhỏ gọn
+                      minWidth: "50px",
                       height: "50px",
                     }}
                   >
@@ -649,8 +642,8 @@ const Chapter = () => {
                     label="Font"
                     color="primary"
                     sx={{
-                      height: "40px", // Giảm chiều cao của select
-                      borderRadius: "8px", // Bo góc cho select
+                      height: "40px",
+                      borderRadius: "8px",
                     }}
                     MenuProps={{
                       PaperProps: {
@@ -731,33 +724,6 @@ const Chapter = () => {
     </Box>
   );
 };
-
-// const Content = ({
-//   content,
-//   fontSize,
-//   fontFamily,
-// }: {
-//   content: string;
-//   fontSize: number;
-//   fontFamily: string;
-// }) => {
-//   return (
-//     <Typography
-//       variant="body2"
-//       textAlign="left"
-//       sx={{
-//         fontSize: `${fontSize}px`,
-//         fontFamily: fontFamily === "Default" ? "inherit" : fontFamily,
-//         "& p, & div, & li": {
-//           marginBottom: "20px",
-//         },
-//       }}
-//       dangerouslySetInnerHTML={{
-//         __html: content || "",
-//       }}
-//     />
-//   );
-// };
 
 const Content = ({
   content,

@@ -26,7 +26,6 @@ const CustomError: NextPageWithLayout = () => {
   );
 };
 
-// Xử lý để lấy mã lỗi (statusCode)
 CustomError.getInitialProps = ({ res, err }: NextPageContext) => {
   const statusCode = res ? res.statusCode : err ? err.statusCode : 404;
   return { statusCode };

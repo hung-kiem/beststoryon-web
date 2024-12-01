@@ -114,7 +114,6 @@ export function NovelDetail({
                   height: "100%",
                   width: "100%",
                   maxHeight: { xs: "300px", sm: "300px", lg: "460px" },
-                  display: "absolute",
                   position: "relative",
                 }}
               >

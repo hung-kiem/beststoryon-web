@@ -8,7 +8,7 @@ export function useAuth(options?: Partial<PublicConfiguration>) {
     error,
     mutate,
   } = useSWR("/profile", {
-    dedupingInterval: 60 * 60 * 1000, // 1hr
+    dedupingInterval: 60 * 60 * 1000,
     revalidateOnFocus: false,
     ...options,
   });

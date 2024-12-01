@@ -19,35 +19,35 @@ const Home: NextPageWithLayout = () => {
     "/home/getHotTopList",
     () => homeApi.getHotTopList({ requestId: "1" }),
     {
-      dedupingInterval: 3600000, // 1 giờ (3600000 ms)
+      dedupingInterval: 3600000,
     }
   );
 
-  const { data: trendingList, isValidating: loadingTrending } = useSWR(
+  const { data: trendingList } = useSWR(
     "/home/getTrendingList",
     () => homeApi.getTrendingList({ requestId: "1" }),
     {
-      dedupingInterval: 3600000, // 1 giờ (3600000 ms)
+      dedupingInterval: 3600000,
     }
   );
 
-  const { data: newReleaseList, isValidating: loadingNewRelease } = useSWR(
+  const { data: newReleaseList } = useSWR(
     "/home/getNewReleaseList",
     () => homeApi.getNewReleaseList({ requestId: "1" }),
     {
-      dedupingInterval: 3600000, // 1 giờ (3600000 ms)
+      dedupingInterval: 3600000,
     }
   );
 
-  const { data: hotList, isValidating: loadingHot } = useSWR(
+  const { data: hotList } = useSWR(
     "/home/getHotList",
     () => homeApi.getHotList({ requestId: "1" }),
     {
-      dedupingInterval: 3600000, // 1 giờ (3600000 ms)
+      dedupingInterval: 3600000,
     }
   );
 
-  const { data: bannerList, isValidating: loadingBanner } = useSWR(
+  const { data: bannerList } = useSWR(
     ["/home/getBannerList", "HOME"],
     () =>
       homeApi.getBannerList({
@@ -55,12 +55,10 @@ const Home: NextPageWithLayout = () => {
         bannerOfPage: "HOME",
       }),
     {
-      dedupingInterval: 3600000, // 1 giờ (3600000 ms)
+      dedupingInterval: 3600000,
     }
   );
 
-  const banner1 =
-    bannerList?.data?.filter((banner) => banner.bannerPos === "1") || [];
   const banner2 =
     bannerList?.data?.filter((banner) => banner.bannerPos === "2") || [];
   const banner3 =
@@ -81,7 +79,6 @@ const Home: NextPageWithLayout = () => {
         }}
       />
       <LoadingOverlay isLoading={isLoading} />
-      {banner1?.length > 0 && <BannerPage data={banner1} />}
       {hotTopList?.data && hotTopList?.data.length > 0 && (
         <HotNovelMain data={hotTopList?.data || []} />
       )}

@@ -39,8 +39,8 @@ export function ChapterRelease({ story }: ChapterReleaseProps) {
       spacing={2}
       mt={2}
       sx={{
-        flexDirection: { xs: "row", md: "row" }, // Đảm bảo vẫn là hàng ngang
-        maxWidth: { xs: "100%", md: "100%" }, // Tăng độ rộng khi màn hình lớn
+        flexDirection: { xs: "row", md: "row" },
+        maxWidth: { xs: "100%", md: "100%" },
       }}
     >
       <Card
@@ -48,7 +48,7 @@ export function ChapterRelease({ story }: ChapterReleaseProps) {
           borderRadius: 2,
           my: 1,
           height: "64px",
-          width: "52px", // Tăng độ rộng khi màn hình lớn
+          width: "52px",
           minWidth: "52px",
         }}
       >

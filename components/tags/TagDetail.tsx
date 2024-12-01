@@ -9,7 +9,6 @@ import Link from "next/link";
 import { NovelCard } from "./NovelCard";
 import { useRouter } from "next/router";
 import { LoadingOverlay } from "../loading/LoadingOverlay";
-import Head from "next/head";
 import { Seo } from "../common";
 import { bannerApi } from "@/api-client/banner-api";
 import BannerPage from "../home/BannerPage";
@@ -63,10 +62,6 @@ export function TagDetail() {
 
   const banner1 =
     bannerList?.data?.filter((banner) => banner.bannerPos === "1") || [];
-  const banner2 =
-    bannerList?.data?.filter((banner) => banner.bannerPos === "2") || [];
-  const banner3 =
-    bannerList?.data?.filter((banner) => banner.bannerPos === "3") || [];
 
   return (
     <Box>
@@ -80,7 +75,7 @@ export function TagDetail() {
       />
       <LoadingOverlay isLoading={isValidating} />
       <Container>
-        {banner1?.length > 0 && <BannerPage data={banner1} />}
+        {/* {banner1?.length > 0 && <BannerPage data={banner1} />} */}
         <Stack direction="column" my={2} spacing={2}>
           <Stack direction="column" spacing={1}>
             <Typography variant="h4" fontWeight="bold">
@@ -114,7 +109,7 @@ export function TagDetail() {
               ))}
             </Stack>
           </Stack>
-          {banner2?.length > 0 && <BannerPage data={banner2} />}
+          {banner1?.length > 0 && <BannerPage data={banner1} />}
           {stories?.data?.length === 0 ? (
             <Typography
               variant="body1"
@@ -161,7 +156,7 @@ export function TagDetail() {
               )}
             </>
           )}
-          {banner3?.length > 0 && <BannerPage data={banner3} />}
+          {/* {banner3?.length > 0 && <BannerPage data={banner3} />} */}
         </Stack>
       </Container>
     </Box>
