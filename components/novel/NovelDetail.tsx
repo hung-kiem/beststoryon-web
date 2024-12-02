@@ -324,11 +324,12 @@ export function NovelDetail({
               </Typography>
             </Stack>
             {storyDetail?.data?.map((chapter, index) => {
-              // if (!chapter.chapterIndex) {
-              //   return null;
-              // }
-              const chapterIndex =
-                (storyDetail.pageIndex - 1) * storyDetail.pageSize + index + 1;
+              if (!chapter.chapterIndex) {
+                return null;
+              }
+              const chapterIndex = chapter.chapterIndex;
+              // const chapterIndex =
+              //   (storyDetail.pageIndex - 1) * storyDetail.pageSize + index + 1;
               return (
                 <Link
                   href={`/story/${storyDetail.story.storyNameAlias}-${storyDetail.story.storyId}/chapter/${chapterIndex}.html`}
