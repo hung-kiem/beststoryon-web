@@ -760,7 +760,9 @@ const Content = ({
       <div>
         {banner1}
         <div dangerouslySetInnerHTML={{ __html: firstHalf }} />
-        <div id="banner-2">{banner}</div>
+        <div id="banner-2" style={{ marginBottom: "0px" }}>
+          {banner}
+        </div>
         <div dangerouslySetInnerHTML={{ __html: secondHalf }} />
       </div>
     </Typography>

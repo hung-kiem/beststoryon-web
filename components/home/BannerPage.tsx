@@ -11,7 +11,7 @@ interface BannerProps {
 
 const BannerPage = ({ data }: BannerProps) => {
   return (
-    <Box component="section" bgcolor={"background.default"} py={4}>
+    <Box component="section" bgcolor={"background.default"} py={2}>
       <Container>
         <Grid container spacing={4} direction="column">
           {data.map((banner, index) => {
@@ -89,6 +89,7 @@ const BannerCard = ({ banner }: { banner: Banner }) => {
               width: "100%",
               objectFit: isVertical ? "contain" : "cover",
               maxHeight: 400,
+              marginBottom: 0,
             }}
             image={banner.bannerUrl}
             alt={banner.bannerDesc}
@@ -107,6 +108,7 @@ const BannerCard = ({ banner }: { banner: Banner }) => {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              marginBottom: 0,
             }}
             dangerouslySetInnerHTML={{ __html: banner.bannerHTML }}
           />
@@ -117,7 +119,11 @@ const BannerCard = ({ banner }: { banner: Banner }) => {
   };
 
   return (
-    <Grid item xs={12} style={{ display: loaded ? "block" : "none" }}>
+    <Grid
+      item
+      xs={12}
+      style={{ display: loaded ? "block" : "none", marginBottom: 0 }}
+    >
       <Card
         sx={{
           borderRadius: 2,
@@ -127,6 +133,7 @@ const BannerCard = ({ banner }: { banner: Banner }) => {
             transform: "scale(1.05)",
           },
           backgroundColor: "transparent",
+          marginBottom: 0,
         }}
       >
         {renderBannerContent()}
