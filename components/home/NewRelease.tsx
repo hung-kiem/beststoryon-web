@@ -32,7 +32,7 @@ export function NewRelease({ data }: NewReleaseProps) {
               New Releases
             </Typography>
           </Stack>
-          <Link passHref href="/newRelease/ALL" legacyBehavior>
+          <Link passHref href="/newRelease/ALL/list-1.html" legacyBehavior>
             <MuiLink color="background.paper">View all</MuiLink>
           </Link>
         </Stack>

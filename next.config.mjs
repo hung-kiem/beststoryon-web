@@ -30,6 +30,18 @@ const nextConfig = {
         source: "/author/:authorCode.html",
         destination: "/author/:authorCode",
       },
+      {
+        source: "/trending/:catCode/list-:pageIndex.html",
+        destination: "/trending/:catCode/list-:pageIndex",
+      },
+      {
+        source: "/newRelease/:catCode/list-:pageIndex.html",
+        destination: "/newRelease/:catCode/list-:pageIndex",
+      },
+      {
+        source: "/hot/:catCode/list-:pageIndex.html",
+        destination: "/hot/:catCode/list-:pageIndex",
+      },
     ];
   },
   reactStrictMode: true,

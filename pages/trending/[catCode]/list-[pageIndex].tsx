@@ -3,7 +3,7 @@ import { MainLayout } from "@/components/layout";
 import { NextPageWithLayout } from "@/models";
 import { Box } from "@mui/material";
 import { Seo } from "@/components/common";
-import { TrendingPage } from "@/components/trending";
+import TrendingPage from "@/components/trending/TrendingPage";
 
 const Trending: NextPageWithLayout = () => {
   return (

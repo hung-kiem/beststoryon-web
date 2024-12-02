@@ -19,17 +19,14 @@ const sortByArr = ["Popular", "New", "Update"];
 
 export function NewReleasePage() {
   const router = useRouter();
-  const [catCode, setCatCode] = useState("ALL");
+  const { catCode, pageIndex: rawPageIndex } = router.query;
+  const pageIndex =
+    rawPageIndex && typeof rawPageIndex === "string"
+      ? parseInt(rawPageIndex.replace("list-", "").replace(".html", ""))
+      : 1;
+
   const [status, setStatus] = useState("All");
   const [sortCondition, setSortCondition] = useState("Popular");
-  const [pageIndex, setPageIndex] = useState(1);
-
-  useEffect(() => {
-    if (router.query.catCode) {
-      const code = router.query.catCode as string;
-      setCatCode(code);
-    }
-  }, [router.query.catCode]);
 
   const { data: categories, isValidating: loadingCategory } = useSWR(
     `/category/getList`,
@@ -44,7 +41,7 @@ export function NewReleasePage() {
 
     ([url, catCode, status, sortCondition, pageIndex]) =>
       storyApi.getNewReleaseList({
-        catCode,
+        catCode: typeof catCode === "string" ? catCode : "",
         storyStatus: status,
         sortCondition,
         pageIndex,
@@ -62,14 +59,19 @@ export function NewReleasePage() {
     event: React.ChangeEvent<unknown>,
     value: number
   ) => {
-    setPageIndex(value);
+    router.push(
+      {
+        pathname: `/newRelease/${catCode}/list-${value}.html`,
+      },
+      undefined,
+      { shallow: true }
+    );
   };
 
   const handleCategoryClick = (code: string) => {
-    setCatCode(code);
     router.push(
       {
-        pathname: `/trending/${code}`,
+        pathname: `/newRelease/${code}/list-1.html`,
       },
       undefined,
       { shallow: true }

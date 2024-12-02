@@ -19,17 +19,14 @@ const sortByArr = ["Popular", "New", "Update"];
 
 export function HotPage() {
   const router = useRouter();
-  const [catCode, setCatCode] = useState("ALL");
+  const { catCode, pageIndex: rawPageIndex } = router.query;
+  const pageIndex =
+    rawPageIndex && typeof rawPageIndex === "string"
+      ? parseInt(rawPageIndex.replace("list-", "").replace(".html", ""))
+      : 1;
+
   const [status, setStatus] = useState("All");
   const [sortCondition, setSortCondition] = useState("Popular");
-  const [pageIndex, setPageIndex] = useState(1);
-
-  useEffect(() => {
-    if (router.query.catCode) {
-      const code = router.query.catCode as string;
-      setCatCode(code);
-    }
-  }, [router.query.catCode]);
 
   const { data: categories } = useSWR(
     `/category/getList`,
@@ -44,7 +41,7 @@ export function HotPage() {
 
     ([url, catCode, status, sortCondition, pageIndex]) =>
       storyApi.getHotList({
-        catCode,
+        catCode: typeof catCode === "string" ? catCode : "",
         storyStatus: status,
         sortCondition,
         pageIndex,
@@ -60,14 +57,19 @@ export function HotPage() {
     event: React.ChangeEvent<unknown>,
     value: number
   ) => {
-    setPageIndex(value);
+    router.push(
+      {
+        pathname: `/hot/${catCode}/list-${value}.html`,
+      },
+      undefined,
+      { shallow: true }
+    );
   };
 
   const handleCategoryClick = (code: string) => {
-    setCatCode(code);
     router.push(
       {
-        pathname: `/trending/${code}`,
+        pathname: `/hot/${code}/list-1.html`,
       },
       undefined,
       { shallow: true }

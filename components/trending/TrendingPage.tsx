@@ -1,59 +1,52 @@
-import { Box, Container, Stack, Typography, Button } from "@mui/material";
+import { Box, Container, Stack, Typography } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import Grid from "@mui/material/Grid2";
-import { NovelCard } from "./NovelCard";
 import Pagination from "@mui/material/Pagination";
 import useSWR from "swr";
 import { categoryApi, storyApi } from "@/api-client";
-import { CategoryButton } from "./CategoryButton";
-import Link from "next/link";
-import { LoadingOverlay } from "../loading/LoadingOverlay";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import Link from "next/link";
+import { LoadingOverlay } from "@/components/loading/LoadingOverlay";
 import { bannerApi } from "@/api-client/banner-api";
-import BannerPage from "../home/BannerPage";
+import BannerPage from "@/components/home/BannerPage";
+import { CategoryButton } from "./CategoryButton";
+import { NovelCard } from "./NovelCard";
 
 const MILLISECOND_PER_HOUR = 1000 * 60 * 60;
 const statusArr = ["All", "Ongoing", "Completed"];
 const sortByArr = ["Popular", "New", "Update"];
 
-export function TrendingPage() {
+const TrendingPage = () => {
   const router = useRouter();
-  const [catCode, setCatCode] = useState("ALL");
+  const { catCode, pageIndex: rawPageIndex } = router.query;
+
+  // Parse pageIndex from `list-{number}.html`
+  const pageIndex =
+    rawPageIndex && typeof rawPageIndex === "string"
+      ? parseInt(rawPageIndex.replace("list-", "").replace(".html", ""))
+      : 1;
+
   const [status, setStatus] = useState("All");
   const [sortCondition, setSortCondition] = useState("Popular");
-  const [pageIndex, setPageIndex] = useState(1);
-
-  useEffect(() => {
-    if (router.query.catCode) {
-      const code = router.query.catCode as string;
-      setCatCode(code);
-    }
-  }, [router.query.catCode]);
 
   const { data: categories, isValidating: loadingCategory } = useSWR(
     `/category/getList`,
     categoryApi.getList,
-    {
-      revalidateOnFocus: false,
-      dedupingInterval: MILLISECOND_PER_HOUR,
-    }
+    { revalidateOnFocus: false, dedupingInterval: MILLISECOND_PER_HOUR }
   );
+
   const { data: stories, isValidating: loadingTrending } = useSWR(
     [`/story/getTrendingList`, catCode, status, sortCondition, pageIndex],
-
     ([url, catCode, status, sortCondition, pageIndex]) =>
       storyApi.getTrendingList({
-        catCode,
+        catCode: typeof catCode === "string" ? catCode : "",
         storyStatus: status,
         sortCondition,
         pageIndex,
         pageSize: 12,
       }),
-    {
-      revalidateOnFocus: false,
-      dedupingInterval: MILLISECOND_PER_HOUR,
-    }
+    { revalidateOnFocus: false, dedupingInterval: MILLISECOND_PER_HOUR }
   );
 
   const isLoading = loadingCategory || loadingTrending;
@@ -62,18 +55,13 @@ export function TrendingPage() {
     event: React.ChangeEvent<unknown>,
     value: number
   ) => {
-    setPageIndex(value);
+    router.push(`/trending/${catCode}/list-${value}.html`, undefined, {
+      shallow: true,
+    });
   };
 
   const handleCategoryClick = (code: string) => {
-    setCatCode(code);
-    router.push(
-      {
-        pathname: `/trending/${code}`,
-      },
-      undefined,
-      { shallow: true }
-    );
+    router.push(`/trending/${code}/list-1.html`, undefined, { shallow: true });
   };
 
   const currentCategory = categories?.find((cat) => cat.catCode === catCode);
@@ -86,9 +74,7 @@ export function TrendingPage() {
         requestId: "1",
         bannerOfPage: "TRENDING",
       }),
-    {
-      dedupingInterval: 3600000,
-    }
+    { dedupingInterval: MILLISECOND_PER_HOUR }
   );
 
   const banner1 =
@@ -123,7 +109,7 @@ export function TrendingPage() {
                       title="ALL"
                       code="ALL"
                       isActive={catCode === "ALL"}
-                      onClick={handleCategoryClick}
+                      onClick={() => handleCategoryClick("ALL")}
                     />
                   </Grid>
                   {categories?.map((cat) => (
@@ -132,7 +118,7 @@ export function TrendingPage() {
                         title={cat.catName}
                         code={cat.catCode}
                         isActive={cat.catCode === catCode}
-                        onClick={handleCategoryClick}
+                        onClick={() => handleCategoryClick(cat.catCode)}
                       />
                     </Grid>
                   ))}
@@ -150,7 +136,7 @@ export function TrendingPage() {
                     title={s}
                     code={s}
                     isActive={s === status}
-                    onClick={setStatus}
+                    onClick={() => setStatus(s)}
                   />
                 ))}
               </Stack>
@@ -166,7 +152,7 @@ export function TrendingPage() {
                     title={s}
                     code={s}
                     isActive={s === sortCondition}
-                    onClick={setSortCondition}
+                    onClick={() => setSortCondition(s)}
                   />
                 ))}
               </Stack>
@@ -235,4 +221,6 @@ export function TrendingPage() {
       </Box>
     </>
   );
-}
+};
+
+export default TrendingPage;
