@@ -50,6 +50,10 @@ const nextConfig = {
         source: "/update/:catCode/list-:pageIndex.html",
         destination: "/update/:catCode/list-:pageIndex",
       },
+      {
+        source: "/tag/:tagCode/list-:pageIndex.html",
+        destination: "/tag/:tagCode/list-:pageIndex",
+      },
     ];
   },
   reactStrictMode: true,
