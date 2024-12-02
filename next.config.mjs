@@ -42,6 +42,14 @@ const nextConfig = {
         source: "/hot/:catCode/list-:pageIndex.html",
         destination: "/hot/:catCode/list-:pageIndex",
       },
+      {
+        source: "/categories/:catCode/list-:pageIndex.html",
+        destination: "/categories/:catCode/list-:pageIndex",
+      },
+      {
+        source: "/update/:catCode/list-:pageIndex.html",
+        destination: "/update/:catCode/list-:pageIndex",
+      },
     ];
   },
   reactStrictMode: true,

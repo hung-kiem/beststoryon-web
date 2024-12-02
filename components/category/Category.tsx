@@ -28,19 +28,15 @@ const sortByArr = ["Popular", "New", "Update"];
 
 export function CategoryPage() {
   const router = useRouter();
-  const [catCode, setCatCode] = useState("ALL");
+  const { catCode, pageIndex: rawPageIndex } = router.query;
+  const pageIndex =
+    rawPageIndex && typeof rawPageIndex === "string"
+      ? parseInt(rawPageIndex.replace("list-", "").replace(".html", ""))
+      : 1;
   const [status, setStatus] = useState("ALL");
   const [sortCondition, setSortCondition] = useState("Popular");
-  const [pageIndex, setPageIndex] = useState(1);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
-  useEffect(() => {
-    if (router.query.catCode) {
-      const code = router.query.catCode as string;
-      setCatCode(code);
-    }
-  }, [router.query.catCode]);
 
   const { data: categories, isValidating: loadingList } = useSWR(
     `/category/getList`,
@@ -55,7 +51,7 @@ export function CategoryPage() {
     [`/category/getListByCatCode`, catCode, status, sortCondition, pageIndex],
     ([url, catCode, status, sortCondition, pageIndex]) =>
       storyApi.getListByCatId({
-        catCode,
+        catCode: typeof catCode === "string" ? catCode : "",
         storyStatus: status,
         sortCondition,
         pageIndex,
@@ -73,14 +69,19 @@ export function CategoryPage() {
     event: React.ChangeEvent<unknown>,
     value: number
   ) => {
-    setPageIndex(value);
+    router.push(
+      {
+        pathname: `/categories/${catCode}/list-${value}.html`,
+      },
+      undefined,
+      { shallow: true }
+    );
   };
 
   const handleCategoryClick = (code: string) => {
-    setCatCode(code);
     router.push(
       {
-        pathname: `/categories/${code}`,
+        pathname: `/categories/${code}/list-1.html`,
       },
       undefined,
       { shallow: true }

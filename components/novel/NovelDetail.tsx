@@ -220,7 +220,7 @@ export function NovelDetail({
                     Genre:
                   </Typography>
                   {storyDetail?.story?.catList?.map((cat, index) => (
-                    <Link key={index} href={`/categories/${cat}`}>
+                    <Link key={index} href={`/categories/${cat}/list-1.html`}>
                       <Typography
                         variant="body2"
                         color="secondary.contrastText"

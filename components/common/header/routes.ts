@@ -5,7 +5,7 @@ export const ROUTE_LIST = [
   },
   {
     label: "Categories",
-    path: "/categories/ALL",
+    path: "/categories/ALL/list-1.html",
   },
   {
     label: "Tags",
@@ -13,6 +13,6 @@ export const ROUTE_LIST = [
   },
   {
     label: "Update",
-    path: "/update/ALL",
+    path: "/update/ALL/list-1.html",
   },
 ];

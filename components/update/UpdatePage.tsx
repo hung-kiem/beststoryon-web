@@ -17,15 +17,11 @@ const MILLISECOND_PER_HOUR = 1000 * 60 * 60;
 
 export function UpdatePage() {
   const router = useRouter();
-  const [catCode, setCatCode] = useState("ALL");
-  const [pageIndex, setPageIndex] = useState(1);
-
-  useEffect(() => {
-    if (router.query.catCode) {
-      const code = router.query.catCode as string;
-      setCatCode(code);
-    }
-  }, [router.query.catCode]);
+  const { catCode, pageIndex: rawPageIndex } = router.query;
+  const pageIndex =
+    rawPageIndex && typeof rawPageIndex === "string"
+      ? parseInt(rawPageIndex.replace("list-", "").replace(".html", ""))
+      : 1;
 
   const { data: categories } = useSWR(
     `/category/getList`,
@@ -40,7 +36,7 @@ export function UpdatePage() {
 
     ([url, catCode, pageIndex]) =>
       storyApi.getUpdateList({
-        catCode,
+        catCode: typeof catCode === "string" ? catCode : "",
         storyStatus: "All",
         sortCondition: "Popular",
         pageIndex,
@@ -56,14 +52,19 @@ export function UpdatePage() {
     event: React.ChangeEvent<unknown>,
     value: number
   ) => {
-    setPageIndex(value);
+    router.push(
+      {
+        pathname: `/update/${catCode}/list-${value}.html`,
+      },
+      undefined,
+      { shallow: true }
+    );
   };
 
   const handleCategoryClick = (code: string) => {
-    setCatCode(code);
     router.push(
       {
-        pathname: `/update/${code}`,
+        pathname: `/update/${code}/list-1.html`,
       },
       undefined,
       { shallow: true }

@@ -18,11 +18,15 @@ const statusArr = ["All", "Ongoing", "Completed"];
 const sortByArr = ["Popular", "New", "Update"];
 
 export function TagDetail() {
+  const router = useRouter();
+  const { tagCode, pageIndex: rawPageIndex } = router.query;
+  const pageIndex =
+    rawPageIndex && typeof rawPageIndex === "string"
+      ? parseInt(rawPageIndex.replace("list-", "").replace(".html", ""))
+      : 1;
+
   const [status, setStatus] = useState("All");
   const [sortCondition, setSortCondition] = useState("Popular");
-  const [pageIndex, setPageIndex] = useState(1);
-  const router = useRouter();
-  const { tagCode } = router.query;
 
   const { data: stories, isValidating } = useSWR(
     [`/story/getNewReleaseList`, tagCode, status, sortCondition, pageIndex],
@@ -45,7 +49,13 @@ export function TagDetail() {
     event: React.ChangeEvent<unknown>,
     value: number
   ) => {
-    setPageIndex(value);
+    router.push(
+      {
+        pathname: `/tag/${tagCode}/list-${value}.html`,
+      },
+      undefined,
+      { shallow: true }
+    );
   };
 
   const { data: bannerList } = useSWR(
