@@ -88,7 +88,7 @@ export function NovelDetail({
 
   const handleReadFirstChapter = () => {
     router.push(
-      `/story/${storyDetail?.story?.storyNameAlias}-${storyDetail?.story?.storyId}/chapter/1`
+      `/story/${storyDetail?.story?.storyNameAlias}-${storyDetail?.story?.storyId}/chapter/1.html`
     );
   };
 
@@ -96,7 +96,7 @@ export function NovelDetail({
     router.push(
       `/story/${storyDetail?.story?.storyNameAlias}-${
         storyDetail?.story?.storyId
-      }/chapter/${storyDetail?.story?.chapterNumber || 1}`
+      }/chapter/${storyDetail?.story?.chapterNumber || 1}.html`
     );
   };
 
@@ -229,6 +229,7 @@ export function NovelDetail({
                           backgroundColor: "text.secondary",
                           borderRadius: 2,
                           p: 0.5,
+                          m: 0.5,
                         }}
                       >
                         {cat}

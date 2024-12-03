@@ -294,7 +294,7 @@ const Chapter = () => {
                   justifyContent: "center",
                   alignItems: "center",
                 }}
-                onClick={() => router.push(`/story/${storyId}`)}
+                onClick={() => router.push(`/story/${storyId}.html`)}
               >
                 <HomeIcon sx={{ fontSize: "24px" }} />
               </Button>
@@ -330,7 +330,7 @@ const Chapter = () => {
                   alignItems: "center",
                   display: { xs: "none", sm: "block" },
                 }}
-                onClick={() => router.push(`/story/${storyId}`)}
+                onClick={() => router.push(`/story/${storyId}.html`)}
               >
                 <HomeIcon sx={{ fontSize: "24px", height: "100%" }} />
               </Button>
