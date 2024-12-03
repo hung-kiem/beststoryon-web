@@ -210,7 +210,13 @@ export function NovelDetail({
                     </Typography>
                   </Link>
                 </Stack>
-                <Stack direction="row" spacing={1} alignItems="center">
+                <Stack
+                  direction="row"
+                  alignItems="center"
+                  flexWrap="wrap"
+                  spacing={0.5}
+                  sx={{ maxWidth: "100%" }}
+                >
                   <Typography
                     variant="body2"
                     color="text.primary"
