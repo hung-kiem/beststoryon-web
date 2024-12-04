@@ -331,7 +331,7 @@ export function NovelDetail({
               </Typography>
             </Stack>
             {storyDetail?.data?.map((chapter, index) => {
-              if (!chapter.chapterIndex || !chapter.chapterName) {
+              if (!chapter.chapterIndex) {
                 return null;
               }
               const chapterIndex = chapter.chapterIndex;
