@@ -294,7 +294,11 @@ const Chapter = () => {
                   justifyContent: "center",
                   alignItems: "center",
                 }}
-                onClick={() => router.push(`/story/${storyId}.html`)}
+                onClick={() =>
+                  router.push(
+                    `/story/${chapterDetail?.data.storyNameAlias}-${storyId}.html`
+                  )
+                }
               >
                 <HomeIcon sx={{ fontSize: "24px" }} />
               </Button>
