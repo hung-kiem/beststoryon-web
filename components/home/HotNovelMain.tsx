@@ -369,7 +369,11 @@ export function HotNovelMain({ data }: HotTopListProps) {
                 }}
               >
                 {data?.slice(1, 5).map((story, id) => (
-                  <Link key={id} href={`/story/${story.storyId}`} passHref>
+                  <Link
+                    key={id}
+                    href={`/story/${story.storyNameAlias}-${story.storyId}.html`}
+                    passHref
+                  >
                     <ChapterHot
                       key={id}
                       storyName={story.storyName}
