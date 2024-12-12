@@ -74,7 +74,9 @@ export function HeaderMobile() {
 
   const handleOptionSelect = (value: StoryDetail) => {
     if (value) {
-      router.push(`/story/${value.storyNameAlias}-${value.storyId}.html`);
+      router.push(
+        `/story/${value.storyNameAlias}-${value.storyId}/list-1.html`
+      );
       (document.activeElement as HTMLElement)?.blur();
     }
   };

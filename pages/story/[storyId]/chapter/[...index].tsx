@@ -296,7 +296,7 @@ const Chapter = () => {
                 }}
                 onClick={() =>
                   router.push(
-                    `/story/${chapterDetail?.data.storyNameAlias}-${storyId}.html`
+                    `/story/${chapterDetail?.data.storyNameAlias}-${storyId}/list-1.html`
                   )
                 }
               >
@@ -334,7 +334,7 @@ const Chapter = () => {
                   alignItems: "center",
                   display: { xs: "none", sm: "block" },
                 }}
-                onClick={() => router.push(`/story/${storyId}.html`)}
+                onClick={() => router.push(`/story/${storyId}/list-1.html`)}
               >
                 <HomeIcon sx={{ fontSize: "24px", height: "100%" }} />
               </Button>
@@ -714,7 +714,7 @@ const Chapter = () => {
                     }
                   >
                     <Link
-                      href={`/story/${story.storyNameAlias}-${story.storyId}.html`}
+                      href={`/story/${story.storyNameAlias}-${story.storyId}/list-1.html`}
                       passHref
                     >
                       <NovelCard story={story} />

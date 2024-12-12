@@ -55,7 +55,7 @@ export function NewRelease({ data }: NewReleaseProps) {
               <Grid item key={index} xs={12} sm={6} md={4}>
                 <Link
                   passHref
-                  href={`/story/${story.storyNameAlias}-${story.storyId}.html`}
+                  href={`/story/${story.storyNameAlias}-${story.storyId}/list-1.html`}
                 >
                   <ChapterRelease story={story} />
                 </Link>

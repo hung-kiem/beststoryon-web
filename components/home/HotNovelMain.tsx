@@ -331,7 +331,7 @@ export function HotNovelMain({ data }: HotTopListProps) {
 
                       <Stack direction="row">
                         <Link
-                          href={`/story/${firstStory.storyNameAlias}-${firstStory.storyId}.html`}
+                          href={`/story/${firstStory.storyNameAlias}-${firstStory.storyId}/list-1.html`}
                           passHref
                         >
                           <Button
@@ -371,7 +371,7 @@ export function HotNovelMain({ data }: HotTopListProps) {
                 {data?.slice(1, 5).map((story, id) => (
                   <Link
                     key={id}
-                    href={`/story/${story.storyNameAlias}-${story.storyId}.html`}
+                    href={`/story/${story.storyNameAlias}-${story.storyId}/list-1.html`}
                     passHref
                   >
                     <ChapterHot

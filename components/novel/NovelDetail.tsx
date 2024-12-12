@@ -404,7 +404,7 @@ export function NovelDetail({
                   }
                 >
                   <Link
-                    href={`/story/${story.storyNameAlias}-${story.storyId}.html`}
+                    href={`/story/${story.storyNameAlias}-${story.storyId}/list-1.html`}
                     passHref
                   >
                     <NovelCard

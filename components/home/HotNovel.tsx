@@ -42,7 +42,7 @@ export function HotNovel({ data }: HotProps) {
               <Grid key={index} size={{ xs: 6, sm: 3, md: 2 }}>
                 <Link
                   passHref
-                  href={`/story/${story.storyNameAlias}-${story.storyId}.html`}
+                  href={`/story/${story.storyNameAlias}-${story.storyId}/list-1.html`}
                 >
                   <NovelCard key={index} story={story} />
                 </Link>

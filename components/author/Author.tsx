@@ -100,7 +100,7 @@ const AuthorPage = () => {
                   <Grid key={story.storyId} size={{ xs: 6, sm: 3, md: 2 }}>
                     <Link
                       passHref
-                      href={`/story/${story.storyNameAlias}-${story.storyId}.html`}
+                      href={`/story/${story.storyNameAlias}-${story.storyId}/list-1.html`}
                     >
                       <NovelCard
                         storyName={story.storyName}

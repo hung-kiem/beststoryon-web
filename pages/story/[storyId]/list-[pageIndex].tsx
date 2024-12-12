@@ -23,13 +23,18 @@ const fetcherRefer = (url: string, payload: GetStoryListReferPayload) => {
 
 const Novel: NextPageWithLayout = () => {
   const router = useRouter();
-  const { storyId } = router.query;
+  const { storyId, pageIndex: rawPageIndex } = router.query;
   const idParts = storyId
     ? (Array.isArray(storyId) ? storyId[0] : storyId).split("-")
     : [];
   const id = idParts.pop();
 
-  const [pageIndex, setPageIndex] = useState(1);
+  const pageIndex =
+    rawPageIndex && typeof rawPageIndex === "string"
+      ? parseInt(rawPageIndex.replace("list-", "").replace(".html", ""))
+      : 1;
+  console.log(">>>pageIndex", pageIndex);
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [pageIndex]);
@@ -76,7 +81,9 @@ const Novel: NextPageWithLayout = () => {
   const isLoading = loadingStoryDetail || loadingStoryRefer;
 
   const handleOnChangePageIndex = (index: number) => {
-    setPageIndex(index);
+    router.push(`/story/${storyId}/list-${index}.html`, undefined, {
+      shallow: true,
+    });
   };
 
   return (
