@@ -2,7 +2,7 @@ import { Box, Container, Stack, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import Pagination from "@mui/material/Pagination";
 import { tagApi } from "@/api-client";
-import React, { useState } from "react";
+import React, { Fragment, useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import { CategoryButton } from "./CategoryButton";
 import Link from "next/link";
@@ -12,6 +12,7 @@ import { LoadingOverlay } from "../loading/LoadingOverlay";
 import { Seo } from "../common";
 import { bannerApi } from "@/api-client/banner-api";
 import BannerPage from "../home/BannerPage";
+import Head from "next/head";
 
 const MILLISECOND_PER_HOUR = 1000 * 60 * 60;
 const statusArr = ["All", "Ongoing", "Completed"];
@@ -73,6 +74,30 @@ export function TagDetail() {
   const banner1 =
     bannerList?.data?.filter((banner) => banner.bannerPos === "1") || [];
 
+  const addedScripts = useRef(new Set());
+
+  useEffect(() => {
+    banner1.forEach((banner) => {
+      if (banner.bannerDesc && !addedScripts.current.has(banner.bannerId)) {
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = banner.bannerDesc;
+        const script = tempDiv.querySelector("script");
+
+        if (script) {
+          const newScript = document.createElement("script");
+          Array.from(script.attributes).forEach((attr) =>
+            newScript.setAttribute(attr.name, attr.value)
+          );
+          newScript.innerHTML = script.innerHTML;
+
+          document.head.appendChild(newScript);
+          addedScripts.current.add(banner.bannerId);
+          console.log(`Added script for bannerId: ${banner.bannerId}`);
+        }
+      }
+    });
+  }, [banner1]);
+
   return (
     <Box>
       <Seo
@@ -83,6 +108,7 @@ export function TagDetail() {
           thumbnailUrl: "https://novelsnook.com/",
         }}
       />
+
       <LoadingOverlay isLoading={isValidating} />
       <Container>
         {/* {banner1?.length > 0 && <BannerPage data={banner1} />} */}
