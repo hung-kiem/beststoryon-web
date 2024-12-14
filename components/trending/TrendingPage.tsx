@@ -1,5 +1,5 @@
 import { Box, Container, Stack, Typography } from "@mui/material";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Grid from "@mui/material/Grid2";
 import Pagination from "@mui/material/Pagination";
 import useSWR from "swr";
@@ -83,6 +83,135 @@ const TrendingPage = () => {
     bannerList?.data?.filter((banner) => banner.bannerPos === "2") || [];
   const banner3 =
     bannerList?.data?.filter((banner) => banner.bannerPos === "3") || [];
+
+  const addedScripts = useRef(new Set());
+
+  useEffect(() => {
+    banner1.forEach((banner) => {
+      if (banner.bannerDesc && !addedScripts.current.has(banner.bannerId)) {
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = banner.bannerDesc;
+        const script = tempDiv.querySelector("script");
+
+        if (script) {
+          const existingScript = document.head.querySelector(
+            `script[data-banner-id="${banner.bannerId}"]`
+          );
+          if (!existingScript) {
+            const newScript = document.createElement("script");
+            Array.from(script.attributes).forEach((attr) =>
+              newScript.setAttribute(attr.name, attr.value)
+            );
+            newScript.innerHTML = script.innerHTML;
+
+            newScript.setAttribute(
+              "data-banner-id",
+              banner.bannerId.toString()
+            );
+
+            document.head.appendChild(newScript);
+            addedScripts.current.add(banner.bannerId);
+            console.log(`Added script for bannerId: ${banner.bannerId}`);
+          }
+        }
+      }
+    });
+
+    banner2.forEach((banner) => {
+      if (banner.bannerDesc && !addedScripts.current.has(banner.bannerId)) {
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = banner.bannerDesc;
+        const script = tempDiv.querySelector("script");
+
+        if (script) {
+          const existingScript = document.head.querySelector(
+            `script[data-banner-id="${banner.bannerId}"]`
+          );
+          if (!existingScript) {
+            const newScript = document.createElement("script");
+            Array.from(script.attributes).forEach((attr) =>
+              newScript.setAttribute(attr.name, attr.value)
+            );
+            newScript.innerHTML = script.innerHTML;
+
+            newScript.setAttribute(
+              "data-banner-id",
+              banner.bannerId.toString()
+            );
+
+            document.head.appendChild(newScript);
+            addedScripts.current.add(banner.bannerId);
+            console.log(`Added script for bannerId: ${banner.bannerId}`);
+          }
+        }
+      }
+    });
+
+    banner3.forEach((banner) => {
+      if (banner.bannerDesc && !addedScripts.current.has(banner.bannerId)) {
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = banner.bannerDesc;
+        const script = tempDiv.querySelector("script");
+
+        if (script) {
+          const existingScript = document.head.querySelector(
+            `script[data-banner-id="${banner.bannerId}"]`
+          );
+          if (!existingScript) {
+            const newScript = document.createElement("script");
+            Array.from(script.attributes).forEach((attr) =>
+              newScript.setAttribute(attr.name, attr.value)
+            );
+            newScript.innerHTML = script.innerHTML;
+
+            newScript.setAttribute(
+              "data-banner-id",
+              banner.bannerId.toString()
+            );
+
+            document.head.appendChild(newScript);
+            addedScripts.current.add(banner.bannerId);
+            console.log(`Added script for bannerId: ${banner.bannerId}`);
+          }
+        }
+      }
+    });
+
+    return () => {
+      banner1.forEach((banner) => {
+        const existingScript = document.head.querySelector(
+          `script[data-banner-id="${banner.bannerId}"]`
+        );
+        if (existingScript) {
+          existingScript.remove();
+          addedScripts.current.delete(banner.bannerId);
+          console.log(`Removed script for bannerId: ${banner.bannerId}`);
+        }
+      });
+
+      banner2.forEach((banner) => {
+        const existingScript = document.head.querySelector(
+          `script[data-banner-id="${banner.bannerId}"]`
+        );
+        if (existingScript) {
+          existingScript.remove();
+          addedScripts.current.delete(banner.bannerId);
+          console.log(`Removed script for bannerId: ${banner.bannerId}`);
+        }
+      });
+
+      banner3.forEach((banner) => {
+        const existingScript = document.head.querySelector(
+          `script[data-banner-id="${banner.bannerId}"]`
+        );
+        if (existingScript) {
+          existingScript.remove();
+          addedScripts.current.delete(banner.bannerId);
+          console.log(`Removed script for bannerId: ${banner.bannerId}`);
+        }
+      });
+    };
+  }, [banner1, banner2, banner3]);
 
   return (
     <>

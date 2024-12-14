@@ -1,5 +1,5 @@
 import { Box, Container, Pagination, Stack, Typography } from "@mui/material";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Seo } from "../common";
 import { useRouter } from "next/router";
 import useSWR from "swr";
@@ -64,6 +64,70 @@ const AuthorPage = () => {
     bannerList?.data?.filter((banner) => banner.bannerPos === "2") || [];
   const banner3 =
     bannerList?.data?.filter((banner) => banner.bannerPos === "3") || [];
+
+  const addedScripts = useRef(new Set());
+
+  useEffect(() => {
+    banner1.forEach((banner) => {
+      if (banner.bannerDesc && !addedScripts.current.has(banner.bannerId)) {
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = banner.bannerDesc;
+        const script = tempDiv.querySelector("script");
+
+        if (script) {
+          const newScript = document.createElement("script");
+          Array.from(script.attributes).forEach((attr) =>
+            newScript.setAttribute(attr.name, attr.value)
+          );
+          newScript.innerHTML = script.innerHTML;
+
+          document.head.appendChild(newScript);
+          addedScripts.current.add(banner.bannerId);
+          console.log(`Added script for bannerId: ${banner.bannerId}`);
+        }
+      }
+    });
+
+    banner2.forEach((banner) => {
+      if (banner.bannerDesc && !addedScripts.current.has(banner.bannerId)) {
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = banner.bannerDesc;
+        const script = tempDiv.querySelector("script");
+
+        if (script) {
+          const newScript = document.createElement("script");
+          Array.from(script.attributes).forEach((attr) =>
+            newScript.setAttribute(attr.name, attr.value)
+          );
+          newScript.innerHTML = script.innerHTML;
+
+          document.head.appendChild(newScript);
+          addedScripts.current.add(banner.bannerId);
+          console.log(`Added script for bannerId: ${banner.bannerId}`);
+        }
+      }
+    });
+
+    banner3.forEach((banner) => {
+      if (banner.bannerDesc && !addedScripts.current.has(banner.bannerId)) {
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = banner.bannerDesc;
+        const script = tempDiv.querySelector("script");
+
+        if (script) {
+          const newScript = document.createElement("script");
+          Array.from(script.attributes).forEach((attr) =>
+            newScript.setAttribute(attr.name, attr.value)
+          );
+          newScript.innerHTML = script.innerHTML;
+
+          document.head.appendChild(newScript);
+          addedScripts.current.add(banner.bannerId);
+          console.log(`Added script for bannerId: ${banner.bannerId}`);
+        }
+      }
+    });
+  }, [banner1, banner2, banner3]);
 
   return (
     <Box>

@@ -84,18 +84,41 @@ export function TagDetail() {
         const script = tempDiv.querySelector("script");
 
         if (script) {
-          const newScript = document.createElement("script");
-          Array.from(script.attributes).forEach((attr) =>
-            newScript.setAttribute(attr.name, attr.value)
+          const existingScript = document.head.querySelector(
+            `script[data-banner-id="${banner.bannerId}"]`
           );
-          newScript.innerHTML = script.innerHTML;
+          if (!existingScript) {
+            const newScript = document.createElement("script");
+            Array.from(script.attributes).forEach((attr) =>
+              newScript.setAttribute(attr.name, attr.value)
+            );
+            newScript.innerHTML = script.innerHTML;
 
-          document.head.appendChild(newScript);
-          addedScripts.current.add(banner.bannerId);
-          console.log(`Added script for bannerId: ${banner.bannerId}`);
+            newScript.setAttribute(
+              "data-banner-id",
+              banner.bannerId.toString()
+            );
+
+            document.head.appendChild(newScript);
+            addedScripts.current.add(banner.bannerId);
+            console.log(`Added script for bannerId: ${banner.bannerId}`);
+          }
         }
       }
     });
+
+    return () => {
+      banner1.forEach((banner) => {
+        const existingScript = document.head.querySelector(
+          `script[data-banner-id="${banner.bannerId}"]`
+        );
+        if (existingScript) {
+          existingScript.remove();
+          addedScripts.current.delete(banner.bannerId);
+          console.log(`Removed script for bannerId: ${banner.bannerId}`);
+        }
+      });
+    };
   }, [banner1]);
 
   return (
@@ -111,7 +134,6 @@ export function TagDetail() {
 
       <LoadingOverlay isLoading={isValidating} />
       <Container>
-        {/* {banner1?.length > 0 && <BannerPage data={banner1} />} */}
         <Stack direction="column" my={2} spacing={2}>
           <Stack direction="column" spacing={1}>
             <Typography variant="h4" fontWeight="bold">
@@ -192,7 +214,6 @@ export function TagDetail() {
               )}
             </>
           )}
-          {/* {banner3?.length > 0 && <BannerPage data={banner3} />} */}
         </Stack>
       </Container>
     </Box>
