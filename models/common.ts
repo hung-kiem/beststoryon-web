@@ -11,6 +11,10 @@ export type NextPageWithLayout = NextPage & {
   Layout?: (props: LayoutProps) => ReactElement;
 };
 
+export type NextPageWithLayout2 = NextPage & {
+  Layout?: (props: LayoutProps) => ReactElement;
+};
+
 export type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
   emotionCache?: EmotionCache;

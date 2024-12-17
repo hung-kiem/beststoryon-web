@@ -6,47 +6,98 @@ import {
   HotNovelMain,
 } from "@/components/home";
 import { MainLayout } from "@/components/layout";
-import { NextPageWithLayout } from "@/models";
 import { Box } from "@mui/material";
 import useSWR from "swr";
-import React, { useEffect, useRef } from "react";
-import { LoadingOverlay } from "@/components/loading/LoadingOverlay";
+import React, { ReactNode, useEffect, useRef } from "react";
 import BannerPage from "@/components/home/BannerPage";
 import { Seo } from "@/components/common";
+import { NextPage } from "next";
 
-const Home: NextPageWithLayout = () => {
-  const { data: hotTopList, isValidating: loadingHotTopList } = useSWR(
-    "/home/getHotTopList",
-    () => homeApi.getHotTopList({ requestId: "1" }),
+export async function getServerSideProps() {
+  const dataHotTopList = await fetch(
+    `${process.env.CORE_API}/api/home/getHotTopList`,
     {
-      dedupingInterval: 3600000,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ requestId: "123" }),
     }
   );
 
-  const { data: trendingList } = useSWR(
-    "/home/getTrendingList",
-    () => homeApi.getTrendingList({ requestId: "1" }),
+  const hotTopList = await dataHotTopList.json();
+
+  const dataTrendingList = await fetch(
+    `${process.env.CORE_API}/api/home/getTrendingList`,
     {
-      dedupingInterval: 3600000,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ requestId: "123" }),
     }
   );
 
-  const { data: newReleaseList } = useSWR(
-    "/home/getNewReleaseList",
-    () => homeApi.getNewReleaseList({ requestId: "1" }),
+  const trendingList = await dataTrendingList.json();
+
+  const dataNewReleaseList = await fetch(
+    `${process.env.CORE_API}/api/home/getNewReleaseList`,
     {
-      dedupingInterval: 3600000,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ requestId: "123" }),
     }
   );
 
-  const { data: hotList } = useSWR(
-    "/home/getHotList",
-    () => homeApi.getHotList({ requestId: "1" }),
+  const newReleaseList = await dataNewReleaseList.json();
+
+  const dataHotList = await fetch(
+    `${process.env.CORE_API}/api/home/getHotList`,
     {
-      dedupingInterval: 3600000,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ requestId: "123" }),
     }
   );
 
+  const hotList = await dataHotList.json();
+
+  return {
+    props: {
+      hotTopList: hotTopList?.data || [],
+      trendingList: trendingList?.data || [],
+      newReleaseList: newReleaseList?.data || [],
+      hotList: hotList?.data || [],
+    },
+  };
+}
+
+type LayoutProps = {
+  children: ReactNode;
+};
+
+type HomeProps = {
+  hotTopList: any[];
+  trendingList: any[];
+  newReleaseList: any[];
+  hotList: any[];
+};
+
+const Home: NextPage<HomeProps> & { Layout?: React.FC<LayoutProps> } = ({
+  hotTopList,
+  trendingList,
+  newReleaseList,
+  hotList,
+}) => {
+  console.log("Home page render");
+  console.log(">>>>>>>> hotTopList", hotTopList);
+  console.log(">>>>>>>> trendingList", trendingList);
+  console.log(">>>>>>>> newReleaseList", newReleaseList);
+  console.log(">>>>>>>> hotList", hotList);
   const { data: bannerList } = useSWR(
     ["/home/getBannerList", "HOME"],
     () =>
@@ -58,16 +109,12 @@ const Home: NextPageWithLayout = () => {
       dedupingInterval: 3600000,
     }
   );
-
   const banner1 =
     bannerList?.data?.filter((banner) => banner.bannerPos === "1") || [];
   const banner2 =
     bannerList?.data?.filter((banner) => banner.bannerPos === "2") || [];
   const banner3 =
     bannerList?.data?.filter((banner) => banner.bannerPos === "3") || [];
-
-  const isLoading = loadingHotTopList;
-
   const addedScripts = useRef(new Set());
 
   useEffect(() => {
@@ -209,21 +256,19 @@ const Home: NextPageWithLayout = () => {
           thumbnailUrl: "https://novelsnook.com/",
         }}
       />
-      <LoadingOverlay isLoading={isLoading} />
-      {hotTopList?.data && hotTopList?.data.length > 0 && (
-        <HotNovelMain data={hotTopList?.data || []} />
+      {/* <LoadingOverlay isLoading={isLoading} /> */}
+      {hotTopList && hotTopList?.length > 0 && (
+        <HotNovelMain data={hotTopList || []} />
       )}
       {banner1?.length > 0 && <BannerPage data={banner1} />}
-      {trendingList?.data && trendingList?.data.length > 0 && (
-        <TrendingNovel data={trendingList?.data || []} />
+      {trendingList && trendingList.length > 0 && (
+        <TrendingNovel data={trendingList || []} />
       )}
       {banner2?.length > 0 && <BannerPage data={banner2} />}
-      {newReleaseList?.data && newReleaseList?.data.length > 0 && (
-        <NewRelease data={newReleaseList?.data || []} />
+      {newReleaseList && newReleaseList.length > 0 && (
+        <NewRelease data={newReleaseList || []} />
       )}
-      {hotList?.data && hotList?.data.length > 0 && (
-        <HotNovel data={hotList?.data || []} />
-      )}
+      {hotList && hotList.length > 0 && <HotNovel data={hotList || []} />}
       {banner3?.length > 0 && <BannerPage data={banner3} />}
     </Box>
   );

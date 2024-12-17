@@ -17,9 +17,10 @@ import Link from "next/link";
 import { StoryHome } from "@/models";
 
 function sanitizeHTML(content: string) {
-  return {
-    __html: DOMPurify.sanitize(content),
-  };
+  if (typeof window !== "undefined") {
+    return { __html: DOMPurify.sanitize(content) };
+  }
+  return { __html: content };
 }
 
 export function StorySummary({ summaryContent }: { summaryContent: string }) {
