@@ -72,7 +72,9 @@ export function TagDetail() {
   );
 
   const banner1 =
-    bannerList?.data?.filter((banner) => banner.bannerPos === "1") || [];
+    bannerList?.data?.filter(
+      (banner) => banner.bannerPos === "1" || banner.bannerPos === "0"
+    ) || [];
 
   const addedScripts = useRef(new Set());
 

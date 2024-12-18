@@ -94,11 +94,17 @@ export function NewReleasePage() {
   );
 
   const banner1 =
-    bannerList?.data?.filter((banner) => banner.bannerPos === "1") || [];
+    bannerList?.data?.filter(
+      (banner) => banner.bannerPos === "1" || banner.bannerPos === "0"
+    ) || [];
   const banner2 =
-    bannerList?.data?.filter((banner) => banner.bannerPos === "2") || [];
+    bannerList?.data?.filter(
+      (banner) => banner.bannerPos === "2" || banner.bannerPos === "0"
+    ) || [];
   const banner3 =
-    bannerList?.data?.filter((banner) => banner.bannerPos === "3") || [];
+    bannerList?.data?.filter(
+      (banner) => banner.bannerPos === "3" || banner.bannerPos === "0"
+    ) || [];
 
   const addedScripts = useRef(new Set());
 
