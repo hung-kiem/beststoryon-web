@@ -94,6 +94,7 @@ export async function getServerSideProps(
     },
   };
 }
+
 Trending.Layout = MainLayout;
 
 export default Trending;
