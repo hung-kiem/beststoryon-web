@@ -83,7 +83,7 @@ export async function getServerSideProps(
         catCode: typeof catCode === "string" ? catCode : "",
         storyStatus: "All",
         sortCondition: "Popular",
-        pageIndex: Number(pageIndex),
+        pageIndex: Number(pageIndex) || 1,
         pageSize: 12,
       }),
     }

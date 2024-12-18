@@ -17,9 +17,6 @@ type TrendingPageProps = {
 const Trending: NextPage<TrendingPageProps> & {
   Layout?: React.FC<LayoutProps>;
 } = ({ categories, stories }) => {
-  console.log(">>>>categories", categories);
-  console.log(">>>>stories", stories);
-
   return (
     <Box>
       <Seo
@@ -83,7 +80,7 @@ export async function getServerSideProps(
         catCode: typeof catCode === "string" ? catCode : "",
         storyStatus: "All",
         sortCondition: "Popular",
-        pageIndex: Number(pageIndex),
+        pageIndex: Number(pageIndex) || 1,
         pageSize: 12,
       }),
     }
