@@ -59,22 +59,19 @@ export async function getServerSideProps(
     }
   );
   const categories = await categoriesResponse.json();
-  const storiesResponse = await fetch(
-    `${process.env.CORE_API}/api/category/getListByCatCode`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        catCode: typeof catCode === "string" ? catCode : "",
-        storyStatus: "All",
-        sortCondition: "Popular",
-        pageIndex: Number(pageIndex) || 1,
-        pageSize: 12,
-      }),
-    }
-  );
+  const storiesResponse = await fetch(`${process.env.CORE_API}/api/updates`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      catCode: typeof catCode === "string" ? catCode : "",
+      storyStatus: "All",
+      sortCondition: "Popular",
+      pageIndex: Number(pageIndex) || 1,
+      pageSize: 12,
+    }),
+  });
   const stories = await storiesResponse.json();
 
   return {
