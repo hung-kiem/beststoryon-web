@@ -1,27 +1,36 @@
 import { Box, Container, Stack, Typography } from "@mui/material";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, ReactNode } from "react";
 import Grid from "@mui/material/Grid2";
 import Pagination from "@mui/material/Pagination";
 import useSWR from "swr";
-import { categoryApi, storyApi } from "@/api-client";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
-import { LoadingOverlay } from "@/components/loading/LoadingOverlay";
 import { bannerApi } from "@/api-client/banner-api";
 import BannerPage from "@/components/home/BannerPage";
 import { CategoryButton } from "./CategoryButton";
 import { NovelCard } from "./NovelCard";
+import { Category } from "@/models";
+import { Story } from "@/models/story";
 
 const MILLISECOND_PER_HOUR = 1000 * 60 * 60;
 const statusArr = ["All", "Ongoing", "Completed"];
 const sortByArr = ["Popular", "New", "Update"];
 
-const TrendingPage = () => {
+interface TrendingPageProps {
+  categories: Category[];
+  stories: Story[];
+  totalPage: number;
+}
+
+const TrendingPage = ({
+  categories,
+  stories,
+  totalPage,
+}: TrendingPageProps) => {
   const router = useRouter();
   const { catCode, pageIndex: rawPageIndex } = router.query;
 
-  // Parse pageIndex from `list-{number}.html`
   const pageIndex =
     rawPageIndex && typeof rawPageIndex === "string"
       ? parseInt(rawPageIndex.replace("list-", "").replace(".html", ""))
@@ -29,27 +38,6 @@ const TrendingPage = () => {
 
   const [status, setStatus] = useState("All");
   const [sortCondition, setSortCondition] = useState("Popular");
-
-  const { data: categories, isValidating: loadingCategory } = useSWR(
-    `/category/getList`,
-    categoryApi.getList,
-    { revalidateOnFocus: false, dedupingInterval: MILLISECOND_PER_HOUR }
-  );
-
-  const { data: stories, isValidating: loadingTrending } = useSWR(
-    [`/story/getTrendingList`, catCode, status, sortCondition, pageIndex],
-    ([url, catCode, status, sortCondition, pageIndex]) =>
-      storyApi.getTrendingList({
-        catCode: typeof catCode === "string" ? catCode : "",
-        storyStatus: status,
-        sortCondition,
-        pageIndex,
-        pageSize: 12,
-      }),
-    { revalidateOnFocus: false, dedupingInterval: MILLISECOND_PER_HOUR }
-  );
-
-  const isLoading = loadingCategory || loadingTrending;
 
   const handleChangePageIndex = (
     event: React.ChangeEvent<unknown>,
@@ -229,7 +217,6 @@ const TrendingPage = () => {
         />
       </Head>
       <Box>
-        <LoadingOverlay isLoading={isLoading} />
         <Container>
           {banner1?.length > 0 && <BannerPage data={banner1} />}
           <Stack direction="column" my={2} spacing={2}>
@@ -304,7 +291,7 @@ const TrendingPage = () => {
             >
               Trending
             </Typography>
-            {stories?.data?.length === 0 ? (
+            {stories?.length === 0 ? (
               <Typography
                 variant="body1"
                 color="text.secondary"
@@ -316,7 +303,7 @@ const TrendingPage = () => {
               <>
                 <Box sx={{ flexGrow: 1 }}>
                   <Grid container spacing={2}>
-                    {stories?.data?.map((story) => (
+                    {stories?.map((story) => (
                       <Grid key={story.storyId} size={{ xs: 6, sm: 3, md: 2 }}>
                         <Link
                           href={`/story/${story.storyNameAlias}-${story.storyId}/list-1.html`}
@@ -333,9 +320,9 @@ const TrendingPage = () => {
                     ))}
                   </Grid>
                 </Box>
-                {stories?.totalPage && (
+                {totalPage && (
                   <Pagination
-                    count={stories.totalPage}
+                    count={totalPage}
                     variant="outlined"
                     shape="rounded"
                     boundaryCount={1}

@@ -4,20 +4,27 @@ import Grid from "@mui/material/Grid2";
 import { NovelCard } from "./NovelCard";
 import Pagination from "@mui/material/Pagination";
 import useSWR from "swr";
-import { categoryApi, storyApi } from "@/api-client";
 import { CategoryButton } from "./CategoryButton";
 import Link from "next/link";
-import { LoadingOverlay } from "../loading/LoadingOverlay";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { bannerApi } from "@/api-client/banner-api";
 import BannerPage from "../home/BannerPage";
+import { Category } from "@/models";
+import { Story } from "@/models/story";
 
-const MILLISECOND_PER_HOUR = 1000 * 60 * 60;
 const statusArr = ["All", "Ongoing", "Completed"];
 const sortByArr = ["Popular", "New", "Update"];
-
-export function NewReleasePage() {
+interface NewReleasePageProps {
+  categories: Category[];
+  stories: Story[];
+  totalPage: number;
+}
+export function NewReleasePage({
+  categories,
+  stories,
+  totalPage,
+}: NewReleasePageProps) {
   const router = useRouter();
   const { catCode, pageIndex: rawPageIndex } = router.query;
   const pageIndex =
@@ -27,33 +34,6 @@ export function NewReleasePage() {
 
   const [status, setStatus] = useState("All");
   const [sortCondition, setSortCondition] = useState("Popular");
-
-  const { data: categories, isValidating: loadingCategory } = useSWR(
-    `/category/getList`,
-    categoryApi.getList,
-    {
-      revalidateOnFocus: false,
-      dedupingInterval: MILLISECOND_PER_HOUR,
-    }
-  );
-  const { data: stories, isValidating: loadingNewRelease } = useSWR(
-    [`/story/getNewReleaseList`, catCode, status, sortCondition, pageIndex],
-
-    ([url, catCode, status, sortCondition, pageIndex]) =>
-      storyApi.getNewReleaseList({
-        catCode: typeof catCode === "string" ? catCode : "",
-        storyStatus: status,
-        sortCondition,
-        pageIndex,
-        pageSize: 12,
-      }),
-    {
-      revalidateOnFocus: false,
-      dedupingInterval: MILLISECOND_PER_HOUR,
-    }
-  );
-
-  const isLoading = loadingCategory || loadingNewRelease;
 
   const handleChangePageIndex = (
     event: React.ChangeEvent<unknown>,
@@ -245,7 +225,6 @@ export function NewReleasePage() {
         />
       </Head>
       <Box>
-        <LoadingOverlay isLoading={isLoading} />
         <Container>
           {banner1?.length > 0 && <BannerPage data={banner1} />}
           <Stack direction="column" my={2} spacing={2}>
@@ -319,7 +298,7 @@ export function NewReleasePage() {
             >
               New Release
             </Typography>
-            {stories?.data?.length === 0 ? (
+            {stories?.length === 0 ? (
               <Typography
                 variant="body1"
                 color="text.secondary"
@@ -331,7 +310,7 @@ export function NewReleasePage() {
               <>
                 <Box sx={{ flexGrow: 1 }}>
                   <Grid container spacing={2}>
-                    {stories?.data?.map((story) => (
+                    {stories?.map((story) => (
                       <Grid key={story.storyId} size={{ xs: 6, sm: 3, md: 2 }}>
                         <Link
                           href={`/story/${story.storyNameAlias}-${story.storyId}/list-1.html`}
@@ -348,9 +327,9 @@ export function NewReleasePage() {
                     ))}
                   </Grid>
                 </Box>
-                {stories?.totalPage && (
+                {totalPage && (
                   <Pagination
-                    count={stories.totalPage}
+                    count={totalPage}
                     variant="outlined"
                     shape="rounded"
                     boundaryCount={1}
