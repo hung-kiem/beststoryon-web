@@ -33,7 +33,7 @@ const TrendingPage = ({
 
   const pageIndex =
     rawPageIndex && typeof rawPageIndex === "string"
-      ? parseInt(rawPageIndex.replace("list-", "").replace(".html", ""))
+      ? parseInt(rawPageIndex.replaceAll("list-", "").replace(".html", ""))
       : 1;
 
   const [status, setStatus] = useState("All");
@@ -43,9 +43,7 @@ const TrendingPage = ({
     event: React.ChangeEvent<unknown>,
     value: number
   ) => {
-    router.push(`/trending/${catCode}/list-${value}.html`, undefined, {
-      shallow: true,
-    });
+    router.push(`/trending/${catCode}/list-${value}.html`, undefined);
   };
 
   const handleCategoryClick = (code: string) => {

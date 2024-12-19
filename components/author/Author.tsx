@@ -10,10 +10,16 @@ import Link from "next/link";
 import { NovelCard } from "./NovelCard";
 import { bannerApi } from "@/api-client/banner-api";
 import BannerPage from "../home/BannerPage";
+import { Story } from "@/models/story";
 
 const MILLISECOND_PER_HOUR = 1000 * 60 * 60;
 
-const AuthorPage = () => {
+interface AuthorPageProps {
+  stories: Story[];
+  totalPage: number;
+}
+
+const AuthorPage = ({ stories, totalPage }: AuthorPageProps) => {
   const router = useRouter();
   const [pageIndex, setPageIndex] = useState(1);
   const [author, setAuthor] = useState("");
@@ -24,20 +30,6 @@ const AuthorPage = () => {
       setAuthor(code);
     }
   }, [router.query.authorCode]);
-
-  const { data: stories, isValidating } = useSWR(
-    author ? [`/story/getListByAuthor`, author, pageIndex] : null,
-    ([url, author, pageIndex]) =>
-      storyApi.getByAuthor({
-        authorCode: author,
-        pageIndex,
-        pageSize: 20,
-      }),
-    {
-      revalidateOnFocus: false,
-      dedupingInterval: MILLISECOND_PER_HOUR,
-    }
-  );
 
   const handleChangePageIndex = (
     event: React.ChangeEvent<unknown>,
@@ -147,7 +139,6 @@ const AuthorPage = () => {
         }}
       />
       <Box>
-        <LoadingOverlay isLoading={isValidating} />
         {banner1?.length > 0 && <BannerPage data={banner1} />}
         <Container>
           <Stack direction="column" my={2} spacing={2}>
@@ -155,7 +146,7 @@ const AuthorPage = () => {
               {`${author}`}
             </Typography>
             {banner2?.length > 0 && <BannerPage data={banner2} />}
-            {stories?.data?.length === 0 && (
+            {stories?.length === 0 && (
               <Typography
                 variant="body1"
                 color="text.secondary"
@@ -166,7 +157,7 @@ const AuthorPage = () => {
             )}
             <Box sx={{ flexGrow: 1 }}>
               <Grid container spacing={2}>
-                {stories?.data?.map((story) => (
+                {stories?.map((story) => (
                   <Grid key={story.storyId} size={{ xs: 6, sm: 3, md: 2 }}>
                     <Link
                       passHref
@@ -184,9 +175,9 @@ const AuthorPage = () => {
                 ))}
               </Grid>
             </Box>
-            {stories?.totalPage && (
+            {totalPage && (
               <Pagination
-                count={stories.totalPage}
+                count={totalPage}
                 variant="outlined"
                 shape="rounded"
                 boundaryCount={1}

@@ -31,9 +31,8 @@ const Novel: NextPageWithLayout = () => {
 
   const pageIndex =
     rawPageIndex && typeof rawPageIndex === "string"
-      ? parseInt(rawPageIndex.replace("list-", "").replace(".html", ""))
+      ? parseInt(rawPageIndex.replaceAll("list-", "").replace(".html", ""))
       : 1;
-  console.log(">>>pageIndex", pageIndex);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -216,9 +215,7 @@ const Novel: NextPageWithLayout = () => {
   const isLoading = loadingStoryDetail || loadingStoryRefer;
 
   const handleOnChangePageIndex = (index: number) => {
-    router.push(`/story/${storyId}/list-${index}.html`, undefined, {
-      shallow: true,
-    });
+    router.push(`/story/${storyId}/list-${index}.html`, undefined);
   };
 
   return (

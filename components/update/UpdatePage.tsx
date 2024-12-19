@@ -28,7 +28,7 @@ export function UpdatePage({
   const { catCode, pageIndex: rawPageIndex } = router.query;
   const pageIndex =
     rawPageIndex && typeof rawPageIndex === "string"
-      ? parseInt(rawPageIndex.replace("list-", "").replace(".html", ""))
+      ? parseInt(rawPageIndex.replaceAll("list-", "").replace(".html", ""))
       : 1;
 
   const handleChangePageIndex = (
@@ -39,8 +39,7 @@ export function UpdatePage({
       {
         pathname: `/update/${catCode}/list-${value}.html`,
       },
-      undefined,
-      { shallow: true }
+      undefined
     );
   };
 

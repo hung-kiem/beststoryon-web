@@ -27,7 +27,7 @@ export function HotPage({ categories, stories, totalPage }: HotPageProps) {
   const { catCode, pageIndex: rawPageIndex } = router.query;
   const pageIndex =
     rawPageIndex && typeof rawPageIndex === "string"
-      ? parseInt(rawPageIndex.replace("list-", "").replace(".html", ""))
+      ? parseInt(rawPageIndex.replaceAll("list-", "").replace(".html", ""))
       : 1;
 
   const [status, setStatus] = useState("All");
@@ -41,8 +41,7 @@ export function HotPage({ categories, stories, totalPage }: HotPageProps) {
       {
         pathname: `/hot/${catCode}/list-${value}.html`,
       },
-      undefined,
-      { shallow: true }
+      undefined
     );
   };
 

@@ -11,10 +11,7 @@ import Grid from "@mui/material/Grid2";
 import { NovelCard } from "./NovelCard";
 import Pagination from "@mui/material/Pagination";
 import useSWR from "swr";
-import { categoryApi } from "@/api-client/category-api";
 import { CategoryButton } from "./CategoryButton";
-import { storyApi } from "@/api-client/story-api";
-import { LoadingOverlay } from "../loading/LoadingOverlay";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import Head from "next/head";
@@ -30,7 +27,6 @@ interface CategoryPageProps {
   totalPage: number;
 }
 
-const MILLISECOND_PER_HOUR = 1000 * 60 * 60;
 const statusArr = ["ALL", "Ongoing", "Completed"];
 const sortByArr = ["Popular", "New", "Update"];
 
@@ -43,7 +39,7 @@ export function CategoryPage({
   const { catCode, pageIndex: rawPageIndex } = router.query;
   const pageIndex =
     rawPageIndex && typeof rawPageIndex === "string"
-      ? parseInt(rawPageIndex.replace("list-", "").replace(".html", ""))
+      ? parseInt(rawPageIndex.replaceAll("list-", "").replace(".html", ""))
       : 1;
   const [status, setStatus] = useState("ALL");
   const [sortCondition, setSortCondition] = useState("Popular");
@@ -54,12 +50,12 @@ export function CategoryPage({
     event: React.ChangeEvent<unknown>,
     value: number
   ) => {
+    console.log("handleChangePageIndex", value);
     router.push(
       {
         pathname: `/categories/${catCode}/list-${value}.html`,
       },
-      undefined,
-      { shallow: true }
+      undefined
     );
   };
 
@@ -68,8 +64,7 @@ export function CategoryPage({
       {
         pathname: `/categories/${code}/list-1.html`,
       },
-      undefined,
-      { shallow: true }
+      undefined
     );
   };
 

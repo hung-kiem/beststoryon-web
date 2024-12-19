@@ -29,7 +29,7 @@ export function NewReleasePage({
   const { catCode, pageIndex: rawPageIndex } = router.query;
   const pageIndex =
     rawPageIndex && typeof rawPageIndex === "string"
-      ? parseInt(rawPageIndex.replace("list-", "").replace(".html", ""))
+      ? parseInt(rawPageIndex.replaceAll("list-", "").replace(".html", ""))
       : 1;
 
   const [status, setStatus] = useState("All");
@@ -43,8 +43,7 @@ export function NewReleasePage({
       {
         pathname: `/newRelease/${catCode}/list-${value}.html`,
       },
-      undefined,
-      { shallow: true }
+      undefined
     );
   };
 
