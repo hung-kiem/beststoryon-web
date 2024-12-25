@@ -17,8 +17,6 @@ type CategoryPageProps = {
 const CategoryParent: NextPage<CategoryPageProps> & {
   Layout?: React.FC<LayoutProps>;
 } = ({ categories, stories }) => {
-  console.log("categories", categories);
-  console.log("stories", stories);
   return (
     <CategoryPage
       categories={categories}
@@ -32,6 +30,8 @@ interface GetServerSidePropsContext {
   query: {
     catCode?: string;
     pageIndex?: string;
+    status?: string;
+    sortCondition?: string;
   };
 }
 
@@ -48,9 +48,22 @@ interface GetServerSidePropsResult {
 export async function getServerSideProps(
   context: GetServerSidePropsContext
 ): Promise<GetServerSidePropsResult> {
-  const { catCode = "ALL" } = context.query;
+  const {
+    catCode = "ALL",
+    status = "ALL",
+    sortCondition = "Popular",
+  } = context.query;
   let pageIndex = context.query.pageIndex || "list-1";
   pageIndex = pageIndex.replaceAll("list-", "");
+  pageIndex = pageIndex.replaceAll(".html", "");
+
+  console.log(">>>>>>>>>>");
+  console.log("context.query", context.query);
+  console.log("catCode", catCode);
+  console.log("status", status);
+  console.log("sortCondition", sortCondition);
+  console.log("pageIndex", pageIndex);
+
   const categoriesResponse = await fetch(
     `${process.env.CORE_API}/api/category/getList`,
     {
@@ -68,9 +81,9 @@ export async function getServerSideProps(
     },
     body: JSON.stringify({
       catCode: typeof catCode === "string" ? catCode : "",
-      storyStatus: "ALL",
-      sortCondition: "Popular",
-      pageIndex: Number(pageIndex) || 1,
+      storyStatus: status,
+      sortCondition: sortCondition,
+      pageIndex: pageIndex,
       pageSize: 12,
     }),
   });

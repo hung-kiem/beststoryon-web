@@ -214,7 +214,6 @@ const Chapter = () => {
 
             document.head.appendChild(newScript);
             addedScripts.current.add(banner.bannerId);
-            console.log(`Added script for bannerId: ${banner.bannerId}`);
           }
         }
       }
@@ -244,7 +243,6 @@ const Chapter = () => {
 
             document.head.appendChild(newScript);
             addedScripts.current.add(banner.bannerId);
-            console.log(`Added script for bannerId: ${banner.bannerId}`);
           }
         }
       }
@@ -274,7 +272,6 @@ const Chapter = () => {
 
             document.head.appendChild(newScript);
             addedScripts.current.add(banner.bannerId);
-            console.log(`Added script for bannerId: ${banner.bannerId}`);
           }
         }
       }
@@ -288,7 +285,6 @@ const Chapter = () => {
         if (existingScript) {
           existingScript.remove();
           addedScripts.current.delete(banner.bannerId);
-          console.log(`Removed script for bannerId: ${banner.bannerId}`);
         }
       });
 
@@ -299,7 +295,6 @@ const Chapter = () => {
         if (existingScript) {
           existingScript.remove();
           addedScripts.current.delete(banner.bannerId);
-          console.log(`Removed script for bannerId: ${banner.bannerId}`);
         }
       });
 
@@ -310,7 +305,6 @@ const Chapter = () => {
         if (existingScript) {
           existingScript.remove();
           addedScripts.current.delete(banner.bannerId);
-          console.log(`Removed script for bannerId: ${banner.bannerId}`);
         }
       });
     };

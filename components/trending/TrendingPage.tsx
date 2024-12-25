@@ -103,7 +103,6 @@ const TrendingPage = ({
 
             document.head.appendChild(newScript);
             addedScripts.current.add(banner.bannerId);
-            console.log(`Added script for bannerId: ${banner.bannerId}`);
           }
         }
       }
@@ -133,7 +132,6 @@ const TrendingPage = ({
 
             document.head.appendChild(newScript);
             addedScripts.current.add(banner.bannerId);
-            console.log(`Added script for bannerId: ${banner.bannerId}`);
           }
         }
       }
@@ -163,7 +161,6 @@ const TrendingPage = ({
 
             document.head.appendChild(newScript);
             addedScripts.current.add(banner.bannerId);
-            console.log(`Added script for bannerId: ${banner.bannerId}`);
           }
         }
       }
@@ -177,7 +174,6 @@ const TrendingPage = ({
         if (existingScript) {
           existingScript.remove();
           addedScripts.current.delete(banner.bannerId);
-          console.log(`Removed script for bannerId: ${banner.bannerId}`);
         }
       });
 
@@ -188,7 +184,6 @@ const TrendingPage = ({
         if (existingScript) {
           existingScript.remove();
           addedScripts.current.delete(banner.bannerId);
-          console.log(`Removed script for bannerId: ${banner.bannerId}`);
         }
       });
 
@@ -199,7 +194,6 @@ const TrendingPage = ({
         if (existingScript) {
           existingScript.remove();
           addedScripts.current.delete(banner.bannerId);
-          console.log(`Removed script for bannerId: ${banner.bannerId}`);
         }
       });
     };

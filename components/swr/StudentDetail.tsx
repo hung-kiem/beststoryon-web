@@ -12,6 +12,5 @@ export function StudentDetail({ studentId }: StudentDetailProps) {
     revalidateOnFocus: false,
     dedupingInterval: MILLISECOND_PER_HOUR,
   });
-  console.log("Student data:", data);
   return <div>{data?.name || "--"}</div>;
 }

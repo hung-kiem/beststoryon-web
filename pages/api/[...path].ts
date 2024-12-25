@@ -15,10 +15,8 @@ export default function handler(
   res: NextApiResponse<unknown>
 ) {
   return new Promise<void>((resolve) => {
-    console.log("in here");
     const cookies = new Cookies(req, res);
     const accessToken = cookies.get("accessToken");
-    console.log("payload", req.body);
     if (accessToken) {
       req.headers.Authorization = `Bearer ${accessToken}`;
     }

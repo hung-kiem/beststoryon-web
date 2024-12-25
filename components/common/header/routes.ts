@@ -5,7 +5,7 @@ export const ROUTE_LIST = [
   },
   {
     label: "Categories",
-    path: "/categories/ALL/list-1.html",
+    path: "/categories/ALL/list-1.html?status=ALL&sort=Popular",
   },
   {
     label: "Tags",

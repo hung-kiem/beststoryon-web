@@ -74,12 +74,11 @@ export function HeaderDesktop() {
       (document.activeElement as HTMLElement)?.blur();
     }
   };
-  console.log("mode", mode);
+
   const color = useMemo(
     () => (mode === "light" ? "#0F172A" : "#E0E0E0"),
     [mode]
   );
-  console.log("color", color);
 
   return (
     <Box display={{ xs: "none", sm: "block" }} py={2}>

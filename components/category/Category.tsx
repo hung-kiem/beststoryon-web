@@ -36,36 +36,61 @@ export function CategoryPage({
   totalPage,
 }: CategoryPageProps) {
   const router = useRouter();
-  const { catCode, pageIndex: rawPageIndex } = router.query;
+  const {
+    catCode = "ALL",
+    pageIndex: rawPageIndex,
+    status: queryStatus,
+    sort: querySort,
+  } = router.query;
+
   const pageIndex =
     rawPageIndex && typeof rawPageIndex === "string"
       ? parseInt(rawPageIndex.replaceAll("list-", "").replace(".html", ""))
       : 1;
-  const [status, setStatus] = useState("ALL");
-  const [sortCondition, setSortCondition] = useState("Popular");
+
+  const [status, setStatus] = useState(queryStatus || "ALL");
+  const [sortCondition, setSortCondition] = useState(querySort || "Popular");
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+  useEffect(() => {
+    if (queryStatus && typeof queryStatus === "string") {
+      setStatus(queryStatus);
+    }
+    if (querySort && typeof querySort === "string") {
+      setSortCondition(querySort);
+    }
+  }, [queryStatus, querySort]);
 
   const handleChangePageIndex = (
     event: React.ChangeEvent<unknown>,
     value: number
   ) => {
-    console.log("handleChangePageIndex", value);
-    router.push(
-      {
-        pathname: `/categories/${catCode}/list-${value}.html`,
-      },
-      undefined
-    );
+    router.push({
+      pathname: `/categories/${catCode}/list-${value}.html`,
+    });
   };
 
   const handleCategoryClick = (code: string) => {
-    router.push(
-      {
-        pathname: `/categories/${code}/list-1.html`,
-      },
-      undefined
-    );
+    router.push({
+      pathname: `/categories/${code}/list-1.html`,
+    });
+  };
+
+  const handleStatusChange = (newStatus: string) => {
+    setStatus(newStatus);
+    router.push({
+      pathname: `/categories/${catCode}/list-1.html`,
+      query: { status: newStatus, sort: sortCondition },
+    });
+  };
+
+  const handleSortChange = (newSortCondition: string) => {
+    setSortCondition(newSortCondition);
+    router.push({
+      pathname: `/categories/${catCode}/list-1.html`,
+      query: { status, sort: newSortCondition },
+    });
   };
 
   const { data: bannerList } = useSWR(
@@ -112,7 +137,6 @@ export function CategoryPage({
 
             document.head.appendChild(newScript);
             addedScripts.current.add(banner.bannerId);
-            console.log(`Added script for bannerId: ${banner.bannerId}`);
           }
         }
       }
@@ -126,7 +150,6 @@ export function CategoryPage({
         if (existingScript) {
           existingScript.remove();
           addedScripts.current.delete(banner.bannerId);
-          console.log(`Removed script for bannerId: ${banner.bannerId}`);
         }
       });
     };
@@ -196,7 +219,7 @@ export function CategoryPage({
                         name={s}
                         code={s}
                         isActive={s === status}
-                        onClick={setStatus}
+                        onClick={() => handleStatusChange(s)}
                       />
                     ))}
                   </Stack>
@@ -212,7 +235,7 @@ export function CategoryPage({
                         name={s}
                         code={s}
                         isActive={s === sortCondition}
-                        onClick={setSortCondition}
+                        onClick={() => handleSortChange(s)}
                       />
                     ))}
                   </Stack>
