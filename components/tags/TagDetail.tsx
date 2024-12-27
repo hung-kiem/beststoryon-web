@@ -13,12 +13,18 @@ import { Seo } from "../common";
 import { bannerApi } from "@/api-client/banner-api";
 import BannerPage from "../home/BannerPage";
 import Head from "next/head";
+import { Story } from "@/models/story";
 
 const MILLISECOND_PER_HOUR = 1000 * 60 * 60;
 const statusArr = ["All", "Ongoing", "Completed"];
 const sortByArr = ["Popular", "New", "Update"];
 
-export function TagDetail() {
+interface TagPageProps {
+  stories: Story[];
+  totalPage: number;
+}
+
+export function TagDetail({ stories, totalPage }: TagPageProps) {
   const router = useRouter();
   const { tagCode, pageIndex: rawPageIndex } = router.query;
   const pageIndex =
@@ -29,33 +35,14 @@ export function TagDetail() {
   const [status, setStatus] = useState("All");
   const [sortCondition, setSortCondition] = useState("Popular");
 
-  const { data: stories, isValidating } = useSWR(
-    [`/story/getNewReleaseList`, tagCode, status, sortCondition, pageIndex],
-
-    ([url, tagCode, status, sortCondition, pageIndex]) =>
-      tagApi.getStoryByTagCode({
-        keyword: Array.isArray(tagCode) ? tagCode[0] : tagCode || "",
-        status,
-        sortCondition,
-        pageIndex,
-        pageSize: 12,
-      }),
-    {
-      revalidateOnFocus: false,
-      dedupingInterval: MILLISECOND_PER_HOUR,
-    }
-  );
-
   const handleChangePageIndex = (
     event: React.ChangeEvent<unknown>,
     value: number
   ) => {
-    router.push(
-      {
-        pathname: `/tag/${tagCode}/list-${value}.html`,
-      },
-      undefined
-    );
+    router.push({
+      pathname: `/tag/${tagCode}/list-${value}.html`,
+      query: { status, sort: sortCondition },
+    });
   };
 
   const { data: bannerList } = useSWR(
@@ -120,6 +107,22 @@ export function TagDetail() {
     };
   }, [banner1]);
 
+  const handleStatusChange = (newStatus: string) => {
+    setStatus(newStatus);
+    router.push({
+      pathname: `/tag/${tagCode}/list-1.html`,
+      query: { status: newStatus, sort: sortCondition },
+    });
+  };
+
+  const handleSortChange = (newSortCondition: string) => {
+    setSortCondition(newSortCondition);
+    router.push({
+      pathname: `/tag/${tagCode}/list-1.html`,
+      query: { status, sort: newSortCondition },
+    });
+  };
+
   return (
     <Box>
       <Seo
@@ -131,7 +134,6 @@ export function TagDetail() {
         }}
       />
 
-      <LoadingOverlay isLoading={isValidating} />
       <Container>
         <Stack direction="column" my={2} spacing={2}>
           <Stack direction="column" spacing={1}>
@@ -145,7 +147,7 @@ export function TagDetail() {
                   title={s}
                   code={s}
                   isActive={s === status}
-                  onClick={setStatus}
+                  onClick={() => handleStatusChange(s)}
                 />
               ))}
             </Stack>
@@ -161,13 +163,13 @@ export function TagDetail() {
                   title={s}
                   code={s}
                   isActive={s === sortCondition}
-                  onClick={setSortCondition}
+                  onClick={() => handleSortChange(s)}
                 />
               ))}
             </Stack>
           </Stack>
           {banner1?.length > 0 && <BannerPage data={banner1} />}
-          {stories?.data?.length === 0 ? (
+          {stories?.length === 0 ? (
             <Typography
               variant="body1"
               color="text.secondary"
@@ -179,7 +181,7 @@ export function TagDetail() {
             <>
               <Box sx={{ flexGrow: 1 }}>
                 <Grid container spacing={2}>
-                  {stories?.data?.map((story) => (
+                  {stories?.map((story) => (
                     <Grid key={story.storyId} size={{ xs: 6, sm: 3, md: 2 }}>
                       <Link
                         href={`/story/${story.storyNameAlias}-${story.storyId}/list-1.html`}
@@ -196,9 +198,9 @@ export function TagDetail() {
                   ))}
                 </Grid>
               </Box>
-              {stories?.totalPage && (
+              {totalPage && (
                 <Pagination
-                  count={stories.totalPage}
+                  count={totalPage}
                   variant="outlined"
                   shape="rounded"
                   boundaryCount={1}

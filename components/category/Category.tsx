@@ -68,6 +68,7 @@ export function CategoryPage({
   ) => {
     router.push({
       pathname: `/categories/${catCode}/list-${value}.html`,
+      query: { status, sort: sortCondition },
     });
   };
 
@@ -79,7 +80,6 @@ export function CategoryPage({
 
   const handleStatusChange = (newStatus: string) => {
     setStatus(newStatus);
-    console.log("status", newStatus);
     router.push({
       pathname: `/categories/${catCode}/list-1.html`,
       query: { status: newStatus, sort: sortCondition },
@@ -88,7 +88,6 @@ export function CategoryPage({
 
   const handleSortChange = (newSortCondition: string) => {
     setSortCondition(newSortCondition);
-    console.log("sort", newSortCondition);
     router.push({
       pathname: `/categories/${catCode}/list-1.html`,
       query: { status, sort: newSortCondition },
