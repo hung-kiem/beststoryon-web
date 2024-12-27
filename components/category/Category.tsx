@@ -88,6 +88,7 @@ export function CategoryPage({
 
   const handleSortChange = (newSortCondition: string) => {
     setSortCondition(newSortCondition);
+    console.log("sort", newSortCondition);
     router.push({
       pathname: `/categories/${catCode}/list-1.html`,
       query: { status, sort: newSortCondition },
