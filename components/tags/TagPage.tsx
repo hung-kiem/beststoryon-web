@@ -77,7 +77,9 @@ export function TagPage() {
                     textAlign: "center",
                   }}
                 >
-                  <Link href={`/tag/${tag.storyTagCode}/list-1.html`}>
+                  <Link
+                    href={`/tag/${tag.storyTagCode}/list-1.html?status=All&sort=Popular`}
+                  >
                     <Typography variant="body2" alignSelf="center">
                       {tag.storyTagName}
                     </Typography>

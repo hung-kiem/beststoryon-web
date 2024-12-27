@@ -24,6 +24,7 @@ interface GetServerSidePropsContext {
     pageIndex?: string;
     status?: string;
     sort?: string;
+    tagCode?: string;
   };
 }
 
@@ -39,7 +40,7 @@ interface GetServerSidePropsResult {
 export async function getServerSideProps(
   context: GetServerSidePropsContext
 ): Promise<GetServerSidePropsResult> {
-  const { status = "ALL", sort = "Popular" } = context.query;
+  const { tagCode, status = "ALL", sort = "Popular" } = context.query;
   let pageIndex = context.query.pageIndex || "list-1";
   pageIndex = pageIndex.replaceAll("list-", "");
   pageIndex = pageIndex.replaceAll(".html", "");
@@ -47,6 +48,7 @@ export async function getServerSideProps(
   console.log("pageIndex", pageIndex);
   console.log("status", status);
   console.log("sort", sort);
+  console.log("tagCode", tagCode);
 
   const storiesResponse = await fetch(
     `${process.env.CORE_API}/api/tag/getStoryByTag`,
@@ -56,6 +58,7 @@ export async function getServerSideProps(
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        keyword: tagCode,
         status,
         sortCondition: sort,
         pageIndex: pageIndex,
