@@ -49,6 +49,8 @@ export async function getServerSideProps(
   const { catCode = "ALL" } = context.query;
   let pageIndex = context.query.pageIndex || "list-1";
   pageIndex = pageIndex.replaceAll("list-", "");
+  pageIndex = pageIndex.replaceAll(".html", "");
+
   const categoriesResponse = await fetch(
     `${process.env.CORE_API}/api/category/getList`,
     {
@@ -66,8 +68,6 @@ export async function getServerSideProps(
     },
     body: JSON.stringify({
       catCode: typeof catCode === "string" ? catCode : "",
-      storyStatus: "All",
-      sortCondition: "Popular",
       pageIndex: Number(pageIndex) || 1,
       pageSize: 12,
     }),

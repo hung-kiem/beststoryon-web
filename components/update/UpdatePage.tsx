@@ -44,13 +44,9 @@ export function UpdatePage({
   };
 
   const handleCategoryClick = (code: string) => {
-    router.push(
-      {
-        pathname: `/update/${code}/list-1.html`,
-      },
-      undefined,
-      { shallow: true }
-    );
+    router.push({
+      pathname: `/update/${code}/list-1.html`,
+    });
   };
 
   const { data: bannerList } = useSWR(

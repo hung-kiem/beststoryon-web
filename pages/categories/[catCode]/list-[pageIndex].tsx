@@ -57,13 +57,6 @@ export async function getServerSideProps(
   pageIndex = pageIndex.replaceAll("list-", "");
   pageIndex = pageIndex.replaceAll(".html", "");
 
-  console.log(">>>>>>>>>>");
-  console.log("context.query", context.query);
-  console.log("catCode", catCode);
-  console.log("status", status);
-  console.log("sortCondition", sortCondition);
-  console.log("pageIndex", pageIndex);
-
   const categoriesResponse = await fetch(
     `${process.env.CORE_API}/api/category/getList`,
     {
@@ -74,19 +67,22 @@ export async function getServerSideProps(
     }
   );
   const categories = await categoriesResponse.json();
-  const storiesResponse = await fetch(`${process.env.CORE_API}/api/updates`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      catCode: typeof catCode === "string" ? catCode : "",
-      storyStatus: status,
-      sortCondition: sortCondition,
-      pageIndex: pageIndex,
-      pageSize: 12,
-    }),
-  });
+  const storiesResponse = await fetch(
+    `${process.env.CORE_API}/api/category/getStoryByCatCode`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        catCode: typeof catCode === "string" ? catCode : "",
+        storyStatus: status,
+        sortCondition: sortCondition,
+        pageIndex: pageIndex,
+        pageSize: 12,
+      }),
+    }
+  );
   const stories = await storiesResponse.json();
 
   return {

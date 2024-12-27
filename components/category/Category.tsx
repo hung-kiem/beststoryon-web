@@ -79,6 +79,7 @@ export function CategoryPage({
 
   const handleStatusChange = (newStatus: string) => {
     setStatus(newStatus);
+    console.log("status", newStatus);
     router.push({
       pathname: `/categories/${catCode}/list-1.html`,
       query: { status: newStatus, sort: sortCondition },
