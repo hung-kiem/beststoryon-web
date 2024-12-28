@@ -45,11 +45,6 @@ export async function getServerSideProps(
   pageIndex = pageIndex.replaceAll("list-", "");
   pageIndex = pageIndex.replaceAll(".html", "");
 
-  console.log("pageIndex", pageIndex);
-  console.log("status", status);
-  console.log("sort", sort);
-  console.log("tagCode", tagCode);
-
   const storiesResponse = await fetch(
     `${process.env.CORE_API}/api/tag/getStoryByTag`,
     {

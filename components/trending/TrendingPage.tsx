@@ -43,11 +43,29 @@ const TrendingPage = ({
     event: React.ChangeEvent<unknown>,
     value: number
   ) => {
-    router.push(`/trending/${catCode}/list-${value}.html`, undefined);
+    router.push(`/trending/${catCode}/list-${value}.html`);
   };
 
   const handleCategoryClick = (code: string) => {
-    router.push(`/trending/${code}/list-1.html`, undefined, { shallow: true });
+    router.push({
+      pathname: `/trending/${code}/list-1.html`,
+    });
+  };
+
+  const handleStatusChange = (newStatus: string) => {
+    setStatus(newStatus);
+    router.push({
+      pathname: `/trending/${catCode}/list-1.html`,
+      query: { status: newStatus, sort: sortCondition },
+    });
+  };
+
+  const handleSortChange = (newSortCondition: string) => {
+    setSortCondition(newSortCondition);
+    router.push({
+      pathname: `/categories/${catCode}/list-1.html`,
+      query: { status, sort: newSortCondition },
+    });
   };
 
   const currentCategory = categories?.find((cat) => cat.catCode === catCode);
@@ -250,7 +268,7 @@ const TrendingPage = ({
                     title={s}
                     code={s}
                     isActive={s === status}
-                    onClick={() => setStatus(s)}
+                    onClick={() => handleStatusChange(s)}
                   />
                 ))}
               </Stack>
@@ -266,7 +284,7 @@ const TrendingPage = ({
                     title={s}
                     code={s}
                     isActive={s === sortCondition}
-                    onClick={() => setSortCondition(s)}
+                    onClick={() => handleSortChange(s)}
                   />
                 ))}
               </Stack>

@@ -21,7 +21,6 @@ const Author: NextPage<AuthorPageProps> & {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { authorCode = "", pageIndex = "1" } = context.query;
-
   const page = parseInt(pageIndex as string, 10) || 1;
 
   const storiesResponse = await fetch(

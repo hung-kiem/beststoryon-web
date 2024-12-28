@@ -62,6 +62,8 @@ export async function getServerSideProps(
   const { catCode = "ALL" } = context.query;
   let pageIndex = context.query.pageIndex || "list-1";
   pageIndex = pageIndex.replaceAll("list-", "");
+  pageIndex = pageIndex.replaceAll(".html", "");
+
   const categoriesResponse = await fetch(
     `${process.env.CORE_API}/api/category/getList`,
     {

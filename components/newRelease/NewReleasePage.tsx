@@ -39,22 +39,31 @@ export function NewReleasePage({
     event: React.ChangeEvent<unknown>,
     value: number
   ) => {
-    router.push(
-      {
-        pathname: `/newRelease/${catCode}/list-${value}.html`,
-      },
-      undefined
-    );
+    router.push({
+      pathname: `/newRelease/${catCode}/list-${value}.html`,
+    });
   };
 
   const handleCategoryClick = (code: string) => {
-    router.push(
-      {
-        pathname: `/newRelease/${code}/list-1.html`,
-      },
-      undefined,
-      { shallow: true }
-    );
+    router.push({
+      pathname: `/newRelease/${code}/list-1.html`,
+    });
+  };
+
+  const handleStatusChange = (newStatus: string) => {
+    setStatus(newStatus);
+    router.push({
+      pathname: `/trending/${catCode}/list-1.html`,
+      query: { status: newStatus, sort: sortCondition },
+    });
+  };
+
+  const handleSortChange = (newSortCondition: string) => {
+    setSortCondition(newSortCondition);
+    router.push({
+      pathname: `/categories/${catCode}/list-1.html`,
+      query: { status, sort: newSortCondition },
+    });
   };
 
   const currentCategory = categories?.find((cat) => cat.catCode === catCode);
@@ -232,7 +241,7 @@ export function NewReleasePage({
                       title="ALL"
                       code="ALL"
                       isActive={catCode === "ALL"}
-                      onClick={handleCategoryClick}
+                      onClick={() => handleCategoryClick("ALL")}
                     />
                   </Grid>
                   {categories?.map((cat) => (
@@ -241,7 +250,7 @@ export function NewReleasePage({
                         title={cat.catName}
                         code={cat.catCode}
                         isActive={cat.catCode === catCode}
-                        onClick={handleCategoryClick}
+                        onClick={() => handleCategoryClick(cat.catCode)}
                       />
                     </Grid>
                   ))}
@@ -259,7 +268,7 @@ export function NewReleasePage({
                     title={s}
                     code={s}
                     isActive={s === status}
-                    onClick={setStatus}
+                    onClick={() => handleStatusChange(s)}
                   />
                 ))}
               </Stack>
@@ -275,7 +284,7 @@ export function NewReleasePage({
                     title={s}
                     code={s}
                     isActive={s === sortCondition}
-                    onClick={setSortCondition}
+                    onClick={() => handleSortChange(s)}
                   />
                 ))}
               </Stack>
