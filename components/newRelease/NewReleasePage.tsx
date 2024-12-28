@@ -53,7 +53,7 @@ export function NewReleasePage({
   const handleStatusChange = (newStatus: string) => {
     setStatus(newStatus);
     router.push({
-      pathname: `/trending/${catCode}/list-1.html`,
+      pathname: `/newRelease/${catCode}/list-1.html`,
       query: { status: newStatus, sort: sortCondition },
     });
   };
@@ -61,7 +61,7 @@ export function NewReleasePage({
   const handleSortChange = (newSortCondition: string) => {
     setSortCondition(newSortCondition);
     router.push({
-      pathname: `/categories/${catCode}/list-1.html`,
+      pathname: `/newRelease/${catCode}/list-1.html`,
       query: { status, sort: newSortCondition },
     });
   };

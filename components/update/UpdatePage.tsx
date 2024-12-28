@@ -35,17 +35,16 @@ export function UpdatePage({
     event: React.ChangeEvent<unknown>,
     value: number
   ) => {
-    router.push(
-      {
-        pathname: `/update/${catCode}/list-${value}.html`,
-      },
-      undefined
-    );
+    router.push({
+      pathname: `/update/${catCode}/list-${value}.html`,
+      query: router.query,
+    });
   };
 
   const handleCategoryClick = (code: string) => {
     router.push({
       pathname: `/update/${code}/list-1.html`,
+      query: router.query,
     });
   };
 

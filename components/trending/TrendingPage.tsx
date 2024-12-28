@@ -43,12 +43,16 @@ const TrendingPage = ({
     event: React.ChangeEvent<unknown>,
     value: number
   ) => {
-    router.push(`/trending/${catCode}/list-${value}.html`);
+    router.push({
+      pathname: `/trending/${catCode}/list-${value}.html`,
+      query: { status, sort: sortCondition },
+    });
   };
 
   const handleCategoryClick = (code: string) => {
     router.push({
       pathname: `/trending/${code}/list-1.html`,
+      query: { status, sort: sortCondition },
     });
   };
 
@@ -63,7 +67,7 @@ const TrendingPage = ({
   const handleSortChange = (newSortCondition: string) => {
     setSortCondition(newSortCondition);
     router.push({
-      pathname: `/categories/${catCode}/list-1.html`,
+      pathname: `/trending/${catCode}/list-1.html`,
       query: { status, sort: newSortCondition },
     });
   };

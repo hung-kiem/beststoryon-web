@@ -75,23 +75,34 @@ export function CategoryPage({
   const handleCategoryClick = (code: string) => {
     router.push({
       pathname: `/categories/${code}/list-1.html`,
+      query: { status, sort: sortCondition },
     });
   };
 
   const handleStatusChange = (newStatus: string) => {
+    // console.log("newStatus", newStatus);
     setStatus(newStatus);
-    router.push({
-      pathname: `/categories/${catCode}/list-1.html`,
-      query: { status: newStatus, sort: sortCondition },
-    });
+    router.push(
+      {
+        pathname: `/categories/${catCode}/list-1.html`,
+        query: { status: newStatus, sort: sortCondition },
+      },
+      undefined,
+      { shallow: false }
+    );
   };
 
   const handleSortChange = (newSortCondition: string) => {
+    // console.log("newStatus", newStatus);
     setSortCondition(newSortCondition);
-    router.push({
-      pathname: `/categories/${catCode}/list-1.html`,
-      query: { status, sort: newSortCondition },
-    });
+    router.push(
+      {
+        pathname: `/categories/${catCode}/list-1.html`,
+        query: { status, sort: newSortCondition },
+      },
+      undefined,
+      { shallow: false }
+    );
   };
 
   const { data: bannerList } = useSWR(
