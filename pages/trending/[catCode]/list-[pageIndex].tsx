@@ -40,6 +40,8 @@ interface GetServerSidePropsContext {
   query: {
     catCode?: string;
     pageIndex?: string;
+    status?: string;
+    sort?: string;
   };
 }
 
@@ -56,7 +58,7 @@ interface GetServerSidePropsResult {
 export async function getServerSideProps(
   context: GetServerSidePropsContext
 ): Promise<GetServerSidePropsResult> {
-  const { catCode = "ALL" } = context.query;
+  const { catCode = "ALL", status = "ALL", sort = "Popular" } = context.query;
   let pageIndex = context.query.pageIndex || "list-1";
   pageIndex = pageIndex.replaceAll("list-", "");
   pageIndex = pageIndex.replaceAll(".html", "");
@@ -80,8 +82,8 @@ export async function getServerSideProps(
       },
       body: JSON.stringify({
         catCode: typeof catCode === "string" ? catCode : "",
-        storyStatus: "All",
-        sortCondition: "Popular",
+        storyStatus: status,
+        sortCondition: sort,
         pageIndex: Number(pageIndex) || 1,
         pageSize: 12,
       }),

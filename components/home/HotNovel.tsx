@@ -32,7 +32,11 @@ export function HotNovel({ data }: HotProps) {
               Hot
             </Typography>
           </Stack>
-          <Link passHref href="/hot/ALL/list-1.html" legacyBehavior>
+          <Link
+            passHref
+            href="/hot/ALL/list-1.html?status=All&sort=Popular"
+            legacyBehavior
+          >
             <MuiLink color="background.paper">View all</MuiLink>
           </Link>
         </Stack>
